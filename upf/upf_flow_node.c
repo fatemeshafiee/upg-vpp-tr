@@ -24,6 +24,7 @@
 #include "upf_pfcp.h"
 #include "flowtable.h"
 #include "flowtable_tcp.h"
+#include <stdio.h>
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
@@ -109,7 +110,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
 
-  flow_debug("[FATEMEH] Got packet");
+  printf("[FATEMEH] Got packet");
 
   u32 cpu_index = os_get_thread_index ();
   flowtable_main_per_cpu_t *fmt = &fm->per_cpu[cpu_index];
