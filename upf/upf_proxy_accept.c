@@ -192,6 +192,8 @@ upf_proxy_accept_inline (vlib_main_t * vm, vlib_node_runtime_t * node,
 {
   upf_main_t *gtm = &upf_main;
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000013);
   upf_proxy_main_t *pm = &upf_proxy_main;
   u32 thread_index = vm->thread_index;
   u32 n_left_from, *from, *first_buffer;

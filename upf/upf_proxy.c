@@ -110,6 +110,9 @@ proxy_session_free (upf_proxy_session_t * ps)
 {
   upf_proxy_main_t *pm = &upf_proxy_main;
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000008);
+
   flow_entry_t *flow;
   if (ps->flow_index != ~0)
     {
@@ -334,6 +337,10 @@ proxy_start_connect_fn (const u32 * session_index)
   upf_main_t *gtm = &upf_main;
   upf_proxy_main_t *pm = &upf_proxy_main;
   flowtable_main_t *fm = &flowtable_main;
+
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000018);
+
   vnet_connect_args_t _a, *a = &_a;
   ip46_address_t *src, *dst;
   upf_proxy_session_t *ps;
@@ -596,6 +603,8 @@ static void
 session_cleanup (session_t * s, session_cleanup_ntf_t ntf, int is_active_open)
 {
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000009);
   upf_proxy_session_t *ps;
   flow_entry_t *flow;
   flow_tc_t *ftc;
@@ -689,6 +698,8 @@ static int
 proxy_accept_callback (session_t * s)
 {
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000010);
   upf_proxy_session_t *ps;
   flow_entry_t *flow;
 
@@ -847,6 +858,8 @@ proxy_rx_callback_static (session_t * s, upf_proxy_session_t * ps)
 {
   upf_main_t *gtm = &upf_main;
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000012);
   struct rules *active;
   flow_entry_t *flow;
   upf_session_t *sx;
@@ -1008,6 +1021,10 @@ active_open_connected_callback (u32 app_index, u32 opaque,
   u8 thread_index = vlib_get_thread_index ();
   upf_proxy_main_t *pm = &upf_proxy_main;
   flowtable_main_t *fm = &flowtable_main;
+
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000013);
+
   upf_proxy_session_t *ps;
 
   upf_debug ("sidx %d psidx %d", s ? s->session_index : 0, opaque);

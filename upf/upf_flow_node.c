@@ -110,7 +110,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
 
-  printf("[FATEMEH] Got packet");
+  clib_warning("[FATEMEH] Got packet: %d", 10000001);
 
   u32 cpu_index = os_get_thread_index ();
   flowtable_main_per_cpu_t *fmt = &fm->per_cpu[cpu_index];

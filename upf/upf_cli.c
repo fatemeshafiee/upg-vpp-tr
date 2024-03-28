@@ -1011,6 +1011,8 @@ upf_flows_out_cb (BVT (clib_bihash_kv) * kvp, void *arg)
   vlib_main_t *vm = (vlib_main_t *) arg;
   flow_entry_t *flow;
 
+  clib_warning("[FATEMEH] Got packet: %d", 10000006);
+
   flow = pool_elt_at_index (fm->flows, kvp->value);
   vlib_cli_output (vm, "%U", format_flow, flow);
 
@@ -1228,6 +1230,8 @@ upf_show_flows_command_fn (vlib_main_t * vm,
 {
   u32 cpu_index;
   flowtable_main_t *fm = &flowtable_main;
+
+  clib_warning("[FATEMEH] Got packet: %d", 10000007);
   vlib_thread_main_t *tm = vlib_get_thread_main ();
 
   for (cpu_index = 0; cpu_index < tm->n_vlib_mains; cpu_index++)

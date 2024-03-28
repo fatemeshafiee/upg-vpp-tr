@@ -109,6 +109,8 @@ upf_proxy_output (vlib_main_t * vm, vlib_node_runtime_t * node,
   vnet_interface_main_t *im = &vnm->interface_main;
   flowtable_main_t *fm = &flowtable_main;
 
+  clib_warning("[FATEMEH] Got packet: %d", 10000015);
+
   from = vlib_frame_vector_args (from_frame);
   n_left_from = from_frame->n_vectors;
 

@@ -37,7 +37,7 @@ clib_error_t *
 flowtable_lifetime_update (flowtable_timeout_type_t type, u16 value)
 {
   flowtable_main_t *fm = &flowtable_main;
-
+  clib_warning("[FATEMEH] Got packet: %d", 10000002);
   if (value > fm->timer_max_lifetime)
     return clib_error_return (0, "value is too big");
 
@@ -58,7 +58,7 @@ flowtable_max_lifetime_update (u16 value)
    */
   clib_error_t *error = 0;
   flowtable_main_t *fm = &flowtable_main;
-
+    clib_warning("[FATEMEH] Got packet: %d", 10000003);
   fm->timer_max_lifetime = value;
 
   return error;
