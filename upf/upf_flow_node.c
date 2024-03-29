@@ -110,6 +110,9 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
 
+  // [GOAL: 1 / FATEMEH] DONE
+  // This is the first entry point for every packet that is processed by flow.
+  // i.e. when running curl
   clib_warning("[FATEMEH] Got packet: %d", 10000001);
 
   u32 cpu_index = os_get_thread_index ();
