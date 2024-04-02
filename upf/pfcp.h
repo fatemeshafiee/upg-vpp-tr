@@ -2247,7 +2247,7 @@ typedef struct
   pfcp_tp_now_t tp_now;
   pfcp_tp_start_time_t tp_start_time;
   pfcp_tp_end_time_t tp_end_time;
-  // [FATEMEH]TODO: Add packet header and packet data
+  // [FATEMEH]: Add packet header and packet data
 } pfcp_usage_report_t;
 
 
@@ -2759,7 +2759,10 @@ typedef struct {
 
 }pfcp_fatemeh_packet_header_t;
 
-typedef u8* pfcp_fatemeh_packet_data_t;
+typedef struct {
+    u16 length;
+    u8* data;
+}pfcp_fatemeh_packet_data_t;
 
 
 // FATEMEH: added type for packet report
@@ -2777,7 +2780,6 @@ typedef struct
 enum
 {
     TRAFFIC_REPORT_PACKET_TYPE,
-    TRAFFIC_REPORT_PACKET_DIRECTION,
     TRAFFIC_REPORT_PACKET_HEADER,
     TRAFFIC_REPORT_PACKET_DATA
 };

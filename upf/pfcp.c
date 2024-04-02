@@ -2673,6 +2673,7 @@ decode_flow_information (u8 * data, u16 length, void *p)
   if (length < len)
     return PFCP_CAUSE_INVALID_LENGTH;
 
+  // FATEMEH
   get_vec (v->flow_description, len, data);
   length -= len;
 
@@ -4271,6 +4272,11 @@ free_mac_addresses_vec (void *p)
 #define decode_subsequent_event_threshold decode_u32_ie
 #define encode_subsequent_event_threshold encode_u32_ie
 
+// TODO: here we add types [FATEMEH]
+
+#define decode_packet_type decode_u8_ie
+#define encode_packet_type encode_u8_ie
+
 static u8 *
 format_digit (u8 * s, u8 c)
 {
@@ -5699,7 +5705,7 @@ static struct pfcp_group_ie_def pfcp_packet_report_group[] =
         .offset = offsetof(pfcp_fatemeh_packet_report_t, packet_header)
     },
     [TRAFFIC_REPORT_PACKET_DATA] = {
-        .type = TRAFFIC_REPORT_PACKET_DATA,
+        .type = PFCP_IE_TRAFFIC_REPORT_PACKET_DATA,
         .offset = offsetof(pfcp_fatemeh_packet_report_t, packet_data)
     },
 };
@@ -6349,6 +6355,7 @@ static struct pfcp_group_ie_def pfcp_tp_created_binding_group[] =
     .free = free_ ## TYPE,				\
 }
 
+
 static struct pfcp_ie_def tgpp_specs[] =
   {
     [PFCP_IE_CREATE_PDR] =
@@ -6587,7 +6594,11 @@ static struct pfcp_ie_def tgpp_specs[] =
     SIMPLE_IE(PFCP_IE_USAGE_REPORT_TRIGGER, usage_report_trigger, "Usage Report Trigger"),
     SIMPLE_IE(PFCP_IE_MEASUREMENT_PERIOD, measurement_period, "Measurement Period"),
     SIMPLE_IE(PFCP_IE_FQ_CSID, fq_csid, "FQ-CSID"),
-    // [FATEMEH] This is volume measurement IE
+    // [FATEMEH] TODO:This is volume measurement IE
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE, packet_type, "Traffic Report Packet Type"),
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_HEADER, packet_header, "Traffic Report Packet Header"),
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_DATA, packet_data, "Traffic Report Packet Data"),
+
     SIMPLE_IE(PFCP_IE_VOLUME_MEASUREMENT, volume_measurement, "Volume Measurement"),
     SIMPLE_IE(PFCP_IE_DURATION_MEASUREMENT, duration_measurement, "Duration Measurement"),
     [PFCP_IE_APPLICATION_DETECTION_INFORMATION] =
@@ -8386,12 +8397,7 @@ static int
 decode_packet_header (u8 * data, u16 length, void *p)
 {
   pfcp_fatemeh_packet_header_t *v = (pfcp_fatemeh_packet_header_t *) p;
-
-  if (length < 1)
-    return PFCP_CAUSE_INVALID_LENGTH;
-
-  v->fields = get_u8 (data) & 0x07;
-
+  x
   if (length < 20 * sizeof (u8))
     return PFCP_CAUSE_INVALID_LENGTH;
 
@@ -8425,6 +8431,44 @@ encode_packet_header (void *p, u8 ** vec)
   put_u16(*vec, v->checksum);
   put_u32(*vec, v->src);
   put_u32(*vec, v->dst);
+
+  return 0;
+}
+
+
+// [FATEMEH] :  let's define these for packet_data
+static u8 *
+format_packet_data (u8 * s, va_list * args)
+{
+  pfcp_fatemeh_packet_data_t *v = va_arg (*args, pfcp_fatemeh_packet_data_t *);
+
+  return format(s, "Packet Length :%d", v->length) ;
+}
+
+static int
+decode_packet_data (u8 * data, u16 length, void *p)
+{
+  pfcp_fatemeh_packet_data_t *v = (pfcp_fatemeh_packet_data_t *) p;
+
+
+  if (length < 1 * sizeof (u16))
+    return PFCP_CAUSE_INVALID_LENGTH;
+
+  v->length = get_u16(data);
+  get_vec (v->data, v->length , data);
+  length -= v->length;
+
+  return 0;
+}
+
+static int
+encode_packet_data (void *p, u8 ** vec)
+{
+  pfcp_fatemeh_packet_data_t *v = (pfcp_fatemeh_packet_data_t *) p;
+
+
+  put_u16(*vec, v->length);
+  vec_add(*vec, v->data, v->length);
 
   return 0;
 }

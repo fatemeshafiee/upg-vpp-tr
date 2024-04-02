@@ -704,6 +704,8 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
 
   SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_HEADER);
   pfcp_fatemeh_packet_header_t* header = &packet_report->packet_header;
+
+  clib_warning("upf_pfcp_fatemeh_traffic_report function! line 708");
   ip4_header_t* p4= (ip4_header_t*) p0;
   header->ip_version_and_header_length = p4->ip_version_and_header_length;
   header->tos = p4->tos;
@@ -715,9 +717,14 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
   header->checksum = p4->checksum;
   header->src = p4->src_address.data_u32;
   header->dst = p4->dst_address.data_u32;
+  clib_warning("upf_pfcp_fatemeh_traffic_report function! line 720");
   SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_DATA);
-  packet_report->packet_data = vlib_buffer_get_current (b0) +
-                               upf_buffer_opaque (b0)->gtpu.data_offset;
+  pfcp_fatemeh_packet_data_t* p_data = &packet_report->packet_data;
+  p_data->length = header->length - 20;
+  p_data->data = vlib_buffer_get_current (b0) +
+                               upf_buffer_opaque (b0)->gtpu.data_offset + 20; //considering the fact that it is
+  clib_warning("upf_pfcp_fatemeh_traffic_report function! line 726");
+
 
 
 
@@ -729,6 +736,9 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
   }
 
   pfcp_free_dmsg_contents (&dmsg);
+  clib_warning("upf_pfcp_fatemeh_traffic_report function! line 739");
+
+
 }
 
 void
