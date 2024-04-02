@@ -31,8 +31,8 @@ env:
 
 jobs:
   prepare:
-    # runs-on: ubuntu-20.04
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
+#    runs-on: ubuntu-20.04
     env:
       REGISTRY_LOGIN: ${{ secrets.QUAY_USER_ID }}
       REGISTRY_PASSWORD: ${{ secrets.QUAY_TOKEN }}
@@ -43,7 +43,7 @@ jobs:
       run: make ensure-build-image USE_BUILDCTL=1 PUSH_BUILD_IMAGE=1
 
   build:
-    runs-on: ["self-hosted"]
+    runs-on: ["ubuntu-20.04"]
     strategy:
       matrix:
         variant: [debug, release]
@@ -81,7 +81,7 @@ jobs:
         path: image-${{ matrix.variant }}.txt
 
   checkstyle:
-    runs-on: ["self-hosted"]
+    runs-on: ["ubuntu-20.04"]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -95,7 +95,7 @@ jobs:
       run: hack/buildenv.sh clean
 
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
@@ -146,7 +146,7 @@ jobs:
 
   # dummy job for release.yaml to wait on
   conclude:
-    runs-on: ["self-hosted"]
+    runs-on: ["ubuntu-20.04"]
     needs:
     - checkstyle
     - test
@@ -158,7 +158,7 @@ jobs:
   slack:
     needs:
     - conclude
-    runs-on: ["self-hosted"]
+    runs-on: ["ubuntu-20.04"]
     if: always()
     steps:
     - name: Set status
