@@ -317,6 +317,7 @@ typedef struct
 
 #define PFCP_IE_REPORT_TYPE				39
 typedef u8 pfcp_report_type_t;
+// FATEMEH
 
 #define REPORT_TYPE_DLDR				BIT(0)
 #define REPORT_TYPE_USAR				BIT(1)
@@ -325,7 +326,8 @@ typedef u8 pfcp_report_type_t;
 #define REPORT_TYPE_PMIR				BIT(4)
 #define REPORT_TYPE_SESR				BIT(5)
 #define REPORT_TYPE_UISR				BIT(6)
-
+// FATEMEH
+#define REPORT_TYPE_PACK BIT(7)
 #define PFCP_IE_OFFENDING_IE				40
 typedef u32 pfcp_offending_ie_t;
 
@@ -688,7 +690,7 @@ typedef struct
   u8 direction;
   u8 *flow_description;
 } pfcp_flow_information_t;
-
+// FATEMEH: Sample vector
 #define PFCP_IE_UE_IP_ADDRESS				93
 typedef struct
 {
@@ -2245,7 +2247,9 @@ typedef struct
   pfcp_tp_now_t tp_now;
   pfcp_tp_start_time_t tp_start_time;
   pfcp_tp_end_time_t tp_end_time;
+  // [FATEMEH]TODO: Add packet header and packet data
 } pfcp_usage_report_t;
+
 
 enum
 {
@@ -2327,6 +2331,12 @@ typedef struct
 #define PFCP_SESSION_DELETION_RESPONSE		55
 #define PFCP_SESSION_REPORT_REQUEST		56
 #define PFCP_SESSION_REPORT_RESPONSE		57
+
+//[FATEMEH]: add type for decode
+#define PFCP_IE_PACKET_REPORT 1000
+#define PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE 1001
+#define PFCP_IE_TRAFFIC_REPORT_PACKET_HEADER 1002
+#define PFCP_IE_TRAFFIC_REPORT_PACKET_DATA 1003
 
 enum
 {
@@ -2693,9 +2703,13 @@ enum
   SESSION_REPORT_REQUEST_LOAD_CONTROL_INFORMATION,
   SESSION_REPORT_REQUEST_OVERLOAD_CONTROL_INFORMATION,
   SESSION_REPORT_REQUEST_ADDITIONAL_USAGE_REPORTS_INFORMATION,
+  SESSION_REPORT_REQUEST_PACKET_REPORT,
   SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS,
   SESSION_REPORT_REQUEST_LAST = SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS
 };
+
+
+
 
 typedef struct
 {
@@ -2709,7 +2723,10 @@ typedef struct
   pfcp_overload_control_information_t overload_control_information;
     pfcp_additional_usage_reports_information_t
     additional_usage_reports_information;
-  pfcp_pfcpsrreq_flags_t pfcpsrreq_flags;
+    // FATEMEH: added field for packet report
+    pfcp_fatemeh_packet_report_t packet_report;
+    pfcp_pfcpsrreq_flags_t pfcpsrreq_flags;
+
 } pfcp_session_report_request_t;
 
 enum
@@ -2723,6 +2740,48 @@ enum
   SESSION_REPORT_RESPONSE_N4_u_F_TEID,
   SESSION_REPORT_RESPONSE_LAST = SESSION_REPORT_RESPONSE_N4_u_F_TEID,
 };
+
+
+
+typedef u8 pfcp_fatemeh_packet_type_t;
+
+typedef struct {
+    u8   ip_version_and_header_length;
+    u8   tos;
+    u16  length;
+    u16  fragment_id;
+    u16  flags_and_fragment_offset;
+    u8   ttl;
+    u8   protocol;
+    u16  checksum;
+    u32 src;
+    u32 dst;
+
+}pfcp_fatemeh_packet_header_t;
+
+typedef u8* pfcp_fatemeh_packet_data_t;
+
+
+// FATEMEH: added type for packet report
+//[FATEMEH]: TODO: define format, decode, encode for the following struct.
+typedef struct
+{
+    struct pfcp_group grp;
+
+    pfcp_fatemeh_packet_type_t packet_type;
+//    pfcp_fatemeh_packet_direction_t packet_direction;
+    pfcp_fatemeh_packet_header_t packet_header;
+    pfcp_fatemeh_packet_data_t packet_data;
+} pfcp_fatemeh_packet_report_t;
+
+enum
+{
+    TRAFFIC_REPORT_PACKET_TYPE,
+    TRAFFIC_REPORT_PACKET_DIRECTION,
+    TRAFFIC_REPORT_PACKET_HEADER,
+    TRAFFIC_REPORT_PACKET_DATA
+};
+
 
 typedef struct
 {

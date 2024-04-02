@@ -22,6 +22,7 @@
 
 #include "upf.h"
 #include "upf_pfcp.h"
+#include "upf_pfcp_server.h"
 #include "flowtable.h"
 #include "flowtable_tcp.h"
 #include <stdio.h>
@@ -110,7 +111,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
 
-  // [GOAL: 1 / FATEMEH] DONE
+  // [GOAL 1 | FATEMEH] DONE
   // This is the first entry point for every packet that is processed by flow.
   // i.e. when running curl
   clib_warning("[FATEMEH] Got packet: %d", 10000001);
@@ -287,9 +288,14 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
 
+
+
+//    b0->flags |= VLIB_BUFFER_IS_TRACED;
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
 	    {
 	      u32 sidx = upf_buffer_opaque (b0)->gtpu.session_index;
+
+        // [GOAL 2 | FATEMEH] TODO: This is the same session we can use to send PFCP server
 	      upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
 	      flow_trace_t *t = vlib_add_trace (vm, node, b0, sizeof (*t));
 	      t->session_index = sidx;
@@ -299,6 +305,13 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      clib_memcpy (t->packet_data, vlib_buffer_get_current (b0) +
 			   upf_buffer_opaque (b0)->gtpu.data_offset,
 			   sizeof (t->packet_data));
+
+        // [GOAL 2 | FATEMEH] TODO: t->packet_data is the data | p0 is the packet header
+        // Forward Section:
+        // best idea ?!
+        // define a function fatemeh_packet_handle(flow_table, header, data)
+        // fatemeh_packet_handle(fm, p0, t->packet_data);
+
 	    }
 	  if (b1->flags & VLIB_BUFFER_IS_TRACED)
 	    {
@@ -312,7 +325,21 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      clib_memcpy (t->packet_data, vlib_buffer_get_current (b1) +
 			   upf_buffer_opaque (b1)->gtpu.data_offset,
 			   sizeof (t->packet_data));
+        // [GOAL 2 | FATEMEH] TODO: similar to above block
+        // Backward Section:
+        // fatemeh_packet_handle(fm, p1, t->packet_data);
 	    }
+        /* [FATEMEH]: let's send packets to SMF*/
+      if(b0->current_length > 0)
+        {
+          upf_pfcp_fatemeh_traffic_report(sess, fm, p0, b0);
+          clib_warning("[FATEMEH] Called Traffic report for b0 in dual loop.  %d", 10000001);
+        }
+      if(b1->current_length > 0)
+        {
+          upf_pfcp_fatemeh_traffic_report(sess, fm, p1, b1);
+          clib_warning("[FATEMEH] Called Traffic report for b1 in dual loop. %d", 10000001);
+        }
 
 	  vlib_validate_buffer_enqueue_x2 (vm, node, next_index, to_next,
 					   n_left_to_next, bi0, bi1, next0,
@@ -435,8 +462,14 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 			   upf_buffer_opaque (b0)->gtpu.data_offset,
 			   sizeof (t->packet_data));
 	    }
+    if(b0->current_length > 0)
+    {
+      upf_pfcp_fatemeh_traffic_report(sess, fm, p, b0);
+      clib_warning("[FATEMEH] Called Traffic report for b0 in single loop.  %d", 10000001);
+    }
 
-	  vlib_validate_buffer_enqueue_x1 (vm, node, next_index, to_next,
+
+    vlib_validate_buffer_enqueue_x1 (vm, node, next_index, to_next,
 					   n_left_to_next, bi0, next0);
 	}
       vlib_put_next_frame (vm, node, next_index, n_left_to_next);

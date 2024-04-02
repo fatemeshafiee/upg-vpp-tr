@@ -30,9 +30,18 @@
 
 #include <vppinfra/bihash_template.c>
 
+#include "upf.h"
 #include "upf_pfcp.h"
 #include "upf_pfcp_api.h"
 #include "upf_pfcp_server.h"
+
+#include <vppinfra/dlist.h>
+#include <vppinfra/types.h>
+#include "upf.h"#include <vnet/ip/ip4_packet.h>
+
+
+#include "flowtable.h"
+#include "flowtable_tcp.h"
 
 #define RESPONSE_TIMEOUT 30
 
@@ -538,6 +547,8 @@ upf_pfcp_session_up_deletion_report (upf_session_t * sx)
   memset (req, 0, sizeof (*req));
   SET_BIT (req->grp.fields, SESSION_REPORT_REQUEST_REPORT_TYPE);
 
+  // [GOAL 2 | FATEMEH] TODO: This is how the usage report is sent via N4 PFCP Server to SMF
+
   active = pfcp_get_rules (sx, PFCP_ACTIVE);
   if (vec_len (active->urr) != 0)
     {
@@ -658,6 +669,66 @@ upf_pfcp_session_usage_report (upf_session_t * sx, ip46_address_t * ue,
 
   pfcp_free_dmsg_contents (&dmsg);
   upf_usage_report_free (&report);
+}
+
+// FATEMEH: this is to send packet and its header
+static void
+// change to get the header and send that
+upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0)
+{
+
+  //defining the decode method of message, PFCP_SESSION_REPORT_REQUEST
+  pfcp_decoded_msg_t dmsg = {
+          .type = PFCP_SESSION_REPORT_REQUEST
+  };
+  pfcp_session_report_request_t *req = &dmsg.session_report_request;
+  int send = 1;
+
+  active = pfcp_get_rules (sx, PFCP_ACTIVE);
+
+  upf_debug ("Active: %p (%d)\n", active, vec_len (active->urr));
+
+  if (vec_len (active->urr) == 0)
+    /* how could that happen? */
+    return;
+
+  memset (req, 0, sizeof (*req));
+  SET_BIT (req->grp.fields, SESSION_REPORT_REQUEST_REPORT_TYPE);
+  req->report_type = REPORT_TYPE_PACK;
+
+  SET_BIT (req->grp.fields, SESSION_REPORT_REQUEST_PACKET_REPORT);
+  pfcp_fatemeh_packet_report_t* packet_report = &req->packet_report;
+
+  SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_TYPE);
+  packet_report->paket_type = 4;
+
+  SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_HEADER);
+  pfcp_fatemeh_packet_header_t* header = &packet_report->packet_header;
+  ip4_header_t* p4= (ip4_header_t*) p0;
+  header->ip_version_and_header_length = p4->ip_version_and_header_length;
+  header->tos = p4->tos;
+  header->length = p4->length;
+  header->fragment_id = p4->fragment_id;
+  header->flags_and_fragment_offset = p4->flags_and_fragment_offset;
+  header->ttl = p4->ttl ;
+  header->protocol = p4->protocol;
+  header->checksum = p4->checksum;
+  header->src = p4->src_address.data_u32;
+  header->dst = p4->dst_address.data_u32;
+  SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_DATA);
+  packet_report->packet_data = vlib_buffer_get_current (b0) +
+                               upf_buffer_opaque (b0)->gtpu.data_offset;
+
+
+
+
+
+  if (send)
+  {
+    upf_pfcp_server_send_session_request (sx, &dmsg);
+  }
+
+  pfcp_free_dmsg_contents (&dmsg);
 }
 
 void

@@ -89,7 +89,7 @@ upf_usage_report_build (upf_session_t * sx,
 			ip46_address_t * ue,
 			upf_urr_t * urr, f64 now,
 			upf_usage_report_t * report,
-			pfcp_usage_report_t ** usage_report);
+			s ** usage_report);
 
 #endif /* _UPF_PFCP_ERL_H */
 

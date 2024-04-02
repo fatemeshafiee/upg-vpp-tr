@@ -2131,6 +2131,7 @@ format_usage_report_trigger (u8 * s, va_list * args)
   return s;
 }
 
+// [FATEMEH] Group DEF
 static int
 decode_usage_report_trigger (u8 * data, u16 length, void *p)
 {
@@ -2287,7 +2288,7 @@ encode_fq_csid (void *p, u8 ** vec)
 
   return 0;
 }
-
+//[FATEMEH]: this is how format, decode, and encode work.
 static u8 *
 format_volume_measurement (u8 * s, va_list * args)
 {
@@ -2681,6 +2682,7 @@ decode_flow_information (u8 * data, u16 length, void *p)
 static int
 encode_flow_information (void *p, u8 ** vec)
 {
+  // [FATEMEH]: Sample encode
   pfcp_flow_information_t *v = p;
 
   put_u8 (*vec, v->direction);
@@ -5685,6 +5687,23 @@ static struct pfcp_group_ie_def pfcp_usage_report_smr_group[] =
     },
   };
 
+// [FATEMEH] Group DEF
+static struct pfcp_group_ie_def pfcp_packet_report_group[] =
+  {
+    [TRAFFIC_REPORT_PACKET_TYPE] = {
+      .type = PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE,
+      .offset = offsetof(pfcp_fatemeh_packet_report_t, packet_type)
+    },
+    [TRAFFIC_REPORT_PACKET_HEADER] = {
+        .type = PFCP_IE_TRAFFIC_REPORT_PACKET_HEADER,
+        .offset = offsetof(pfcp_fatemeh_packet_report_t, packet_header)
+    },
+    [TRAFFIC_REPORT_PACKET_DATA] = {
+        .type = TRAFFIC_REPORT_PACKET_DATA,
+        .offset = offsetof(pfcp_fatemeh_packet_report_t, packet_data)
+    },
+};
+
 static struct pfcp_group_ie_def pfcp_usage_report_sdr_group[] =
   {
     [USAGE_REPORT_URR_ID] = {
@@ -6310,6 +6329,7 @@ static struct pfcp_group_ie_def pfcp_tp_created_binding_group[] =
 
 /**********************************************************/
 
+// [FATEMEH] This is how IE encode decode is used.
 #define SIMPLE_IE(IE, TYPE, NAME)			\
   [IE] = {						\
     .name = NAME,					\
@@ -6567,6 +6587,7 @@ static struct pfcp_ie_def tgpp_specs[] =
     SIMPLE_IE(PFCP_IE_USAGE_REPORT_TRIGGER, usage_report_trigger, "Usage Report Trigger"),
     SIMPLE_IE(PFCP_IE_MEASUREMENT_PERIOD, measurement_period, "Measurement Period"),
     SIMPLE_IE(PFCP_IE_FQ_CSID, fq_csid, "FQ-CSID"),
+    // [FATEMEH] This is volume measurement IE
     SIMPLE_IE(PFCP_IE_VOLUME_MEASUREMENT, volume_measurement, "Volume Measurement"),
     SIMPLE_IE(PFCP_IE_DURATION_MEASUREMENT, duration_measurement, "Duration Measurement"),
     [PFCP_IE_APPLICATION_DETECTION_INFORMATION] =
@@ -6603,7 +6624,7 @@ static struct pfcp_ie_def tgpp_specs[] =
 		    BIT(USAGE_REPORT_USAGE_REPORT_TRIGGER)),
       .size = ARRAY_LEN(pfcp_usage_report_smr_group),
       .group = pfcp_usage_report_smr_group,
-    },
+    }, // [FATEMEH] Group DEF
     [PFCP_IE_USAGE_REPORT_SDR] =
     {
       .name = "Usage Report SDR",
@@ -7559,7 +7580,7 @@ static struct pfcp_group_ie_def pfcp_session_deletion_response_group[] =
       .offset = offsetof(pfcp_session_procedure_response_t, usage_report)
     },
   };
-
+// TODO:Add our elements.
 static struct pfcp_group_ie_def pfcp_session_report_request_group[] =
   {
     [SESSION_REPORT_REQUEST_REPORT_TYPE] = {
@@ -7590,6 +7611,10 @@ static struct pfcp_group_ie_def pfcp_session_report_request_group[] =
     [SESSION_REPORT_REQUEST_ADDITIONAL_USAGE_REPORTS_INFORMATION] = {
       .type = PFCP_IE_ADDITIONAL_USAGE_REPORTS_INFORMATION,
       .offset = offsetof(pfcp_session_report_request_t, additional_usage_reports_information)
+    },
+    [SESSION_REPORT_REQUEST_PACKET_REPORT] = {
+      .type = PFCP_IE_PACKET_REPORT,
+      .offset= offsetof(pfcp_session_report_request_t,packet_report)
     },
     [SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS] = {
       .type = PFCP_IE_PFCPSRREQ_FLAGS,
@@ -8000,6 +8025,7 @@ static int
 encode_ie (const struct pfcp_group_ie_def *item,
 	   const struct pfcp_ie_def *def, u8 * v, u8 ** vec)
 {
+  // [FATEMEH] Check encode ie here.
   int hdr = _vec_len (*vec);
   int r = 0;
 
@@ -8341,6 +8367,66 @@ format_dmsg (u8 * s, va_list * args)
 
   return format (s, "%U", format_group, 0, &msg_specs[dmsg->type],
 		 &dmsg->grp);
+}
+// [FATEMEH] :  let's define these for packet_header
+static u8 *
+format_packet_header (u8 * s, va_list * args)
+{
+  pfcp_fatemeh_packet_header_t *v = va_arg (*args, pfcp_fatemeh_packet_header_t *);
+
+  return format(s, "IP Header: [Version and Header Length:%d, ToS:%d, Total Length:%d, "
+                   "ID:%d, Flags and Fragment Offset:%d, TTL:%d, Protocol:%d, Checksum:%d, "
+                   "Source IP:%u, Destination IP:%u]",
+                v->ip_version_and_header_length, v->tos, v->length,
+                v->fragment_id, v->flags_and_fragment_offset, v->ttl,
+                v->protocol, v->checksum, v->src, v->dst);
+}
+
+static int
+decode_packet_header (u8 * data, u16 length, void *p)
+{
+  pfcp_fatemeh_packet_header_t *v = (pfcp_fatemeh_packet_header_t *) p;
+
+  if (length < 1)
+    return PFCP_CAUSE_INVALID_LENGTH;
+
+  v->fields = get_u8 (data) & 0x07;
+
+  if (length < 20 * sizeof (u8))
+    return PFCP_CAUSE_INVALID_LENGTH;
+
+  v->ip_version_and_header_length = get_u8(data);
+  v->tos = get_u8(data);
+  v->length = get_u16(data);
+  v->fragment_id = get_u16(data);
+  v->flags_and_fragment_offset = get_u16(data);
+  v->ttl = get_u8(data);
+  v->protocol = get_u8(data);
+  v->checksum = get_u16(data);
+  v->src = get_u32(data);
+  v->dst = get_u32(dst);
+
+
+  return 0;
+}
+
+static int
+encode_packet_header (void *p, u8 ** vec)
+{
+  pfcp_fatemeh_packet_header_t *v = (pfcp_fatemeh_packet_header_t *) p;
+
+  put_u8 (*vec, v->ip_version_and_header_length);
+  put_u8(*vec, v->tos);
+  put_u16(*vec, v->length);
+  put_u16(*vec, v->fragment_id);
+  put_u16(*vec, v->flags_and_fragment_offset);
+  put_u8(*vec, v->ttl);
+  put_u8(*vec,v->protocol);
+  put_u16(*vec, v->checksum);
+  put_u32(*vec, v->src);
+  put_u32(*vec, v->dst);
+
+  return 0;
 }
 
 /*
