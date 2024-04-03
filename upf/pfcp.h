@@ -2694,54 +2694,6 @@ typedef struct
   pfcp_tp_created_binding_t created_binding;
 } pfcp_session_procedure_response_t;
 
-enum
-{
-  SESSION_REPORT_REQUEST_REPORT_TYPE,
-  SESSION_REPORT_REQUEST_DOWNLINK_DATA_REPORT,
-  SESSION_REPORT_REQUEST_USAGE_REPORT,
-  SESSION_REPORT_REQUEST_ERROR_INDICATION_REPORT,
-  SESSION_REPORT_REQUEST_LOAD_CONTROL_INFORMATION,
-  SESSION_REPORT_REQUEST_OVERLOAD_CONTROL_INFORMATION,
-  SESSION_REPORT_REQUEST_ADDITIONAL_USAGE_REPORTS_INFORMATION,
-  SESSION_REPORT_REQUEST_PACKET_REPORT,
-  SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS,
-  SESSION_REPORT_REQUEST_LAST = SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS
-};
-
-
-
-
-typedef struct
-{
-  struct pfcp_group grp;
-
-  pfcp_report_type_t report_type;
-  pfcp_downlink_data_report_t downlink_data_report;
-  pfcp_usage_report_t *usage_report;
-  pfcp_error_indication_report_t error_indication_report;
-  pfcp_load_control_information_t load_control_information;
-  pfcp_overload_control_information_t overload_control_information;
-    pfcp_additional_usage_reports_information_t
-    additional_usage_reports_information;
-    // FATEMEH: added field for packet report
-    pfcp_fatemeh_packet_report_t packet_report;
-    pfcp_pfcpsrreq_flags_t pfcpsrreq_flags;
-
-} pfcp_session_report_request_t;
-
-enum
-{
-  SESSION_REPORT_RESPONSE_CAUSE = PFCP_RESPONSE_CAUSE,
-  SESSION_REPORT_RESPONSE_OFFENDING_IE = PFCP_RESPONSE_OFFENDING_IE,
-  SESSION_REPORT_RESPONSE_TP_ERROR_REPORT = PFCP_RESPONSE_TP_ERROR_REPORT,
-  SESSION_REPORT_RESPONSE_UPDATE_BAR,
-  SESSION_REPORT_RESPONSE_PFCPSRRSP_FLAGS,
-  SESSION_REPORT_RESPONSE_CP_F_SEID,
-  SESSION_REPORT_RESPONSE_N4_u_F_TEID,
-  SESSION_REPORT_RESPONSE_LAST = SESSION_REPORT_RESPONSE_N4_u_F_TEID,
-};
-
-
 
 typedef u8 pfcp_fatemeh_packet_type_t;
 
@@ -2783,6 +2735,53 @@ enum
     TRAFFIC_REPORT_PACKET_HEADER,
     TRAFFIC_REPORT_PACKET_DATA
 };
+
+
+enum
+{
+    SESSION_REPORT_REQUEST_REPORT_TYPE,
+    SESSION_REPORT_REQUEST_DOWNLINK_DATA_REPORT,
+    SESSION_REPORT_REQUEST_USAGE_REPORT,
+    SESSION_REPORT_REQUEST_ERROR_INDICATION_REPORT,
+    SESSION_REPORT_REQUEST_LOAD_CONTROL_INFORMATION,
+    SESSION_REPORT_REQUEST_OVERLOAD_CONTROL_INFORMATION,
+    SESSION_REPORT_REQUEST_ADDITIONAL_USAGE_REPORTS_INFORMATION,
+    SESSION_REPORT_REQUEST_PACKET_REPORT,
+    SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS,
+    SESSION_REPORT_REQUEST_LAST = SESSION_REPORT_REQUEST_PFCPSRREQ_FLAGS
+};
+
+
+typedef struct
+{
+  struct pfcp_group grp;
+
+  pfcp_report_type_t report_type;
+  pfcp_downlink_data_report_t downlink_data_report;
+  pfcp_usage_report_t *usage_report;
+  pfcp_error_indication_report_t error_indication_report;
+  pfcp_load_control_information_t load_control_information;
+  pfcp_overload_control_information_t overload_control_information;
+    pfcp_additional_usage_reports_information_t
+    additional_usage_reports_information;
+    // FATEMEH: added field for packet report
+    pfcp_fatemeh_packet_report_t packet_report;
+    pfcp_pfcpsrreq_flags_t pfcpsrreq_flags;
+
+} pfcp_session_report_request_t;
+
+enum
+{
+  SESSION_REPORT_RESPONSE_CAUSE = PFCP_RESPONSE_CAUSE,
+  SESSION_REPORT_RESPONSE_OFFENDING_IE = PFCP_RESPONSE_OFFENDING_IE,
+  SESSION_REPORT_RESPONSE_TP_ERROR_REPORT = PFCP_RESPONSE_TP_ERROR_REPORT,
+  SESSION_REPORT_RESPONSE_UPDATE_BAR,
+  SESSION_REPORT_RESPONSE_PFCPSRRSP_FLAGS,
+  SESSION_REPORT_RESPONSE_CP_F_SEID,
+  SESSION_REPORT_RESPONSE_N4_u_F_TEID,
+  SESSION_REPORT_RESPONSE_LAST = SESSION_REPORT_RESPONSE_N4_u_F_TEID,
+};
+
 
 
 typedef struct
