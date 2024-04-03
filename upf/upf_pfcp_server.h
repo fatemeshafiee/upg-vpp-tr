@@ -20,6 +20,9 @@
 #include <time.h>
 #include "upf.h"
 #include "pfcp.h"
+#include "flowtable.h"
+#include <vppinfra/vec.h>
+#include <vppinfra/format.h>
 #include <vppinfra/tw_timer_1t_3w_1024sl_ov.h>
 
 #define PFCP_HB_INTERVAL 10

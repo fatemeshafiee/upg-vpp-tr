@@ -684,7 +684,7 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
   pfcp_session_report_request_t *req = &dmsg.session_report_request;
   int send = 1;
 
-  active = pfcp_get_rules (sx, PFCP_ACTIVE);
+  struct rules * active = pfcp_get_rules (sx, PFCP_ACTIVE);
 
   upf_debug ("Active: %p (%d)\n", active, vec_len (active->urr));
 
@@ -700,7 +700,7 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
   pfcp_fatemeh_packet_report_t* packet_report = &req->packet_report;
 
   SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_TYPE);
-  packet_report->paket_type = 4;
+  packet_report->packet_type = 4;
 
   SET_BIT (packet_report->grp.fields, TRAFFIC_REPORT_PACKET_HEADER);
   pfcp_fatemeh_packet_header_t* header = &packet_report->packet_header;
