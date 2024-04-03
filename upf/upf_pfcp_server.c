@@ -672,7 +672,7 @@ upf_pfcp_session_usage_report (upf_session_t * sx, ip46_address_t * ue,
 }
 
 // FATEMEH: this is to send packet and its header
-static void
+void
 // change to get the header and send that
 upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0)
 {
