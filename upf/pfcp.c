@@ -6450,7 +6450,7 @@ static struct pfcp_group_ie_def pfcp_tp_created_binding_group[] =
     .free = free_ ## TYPE,				\
 }
 
-
+// FATEMEH, 3GPP Object Defs
 static struct pfcp_ie_def tgpp_specs[] =
   {
     [PFCP_IE_CREATE_PDR] =
@@ -6689,10 +6689,6 @@ static struct pfcp_ie_def tgpp_specs[] =
     SIMPLE_IE(PFCP_IE_USAGE_REPORT_TRIGGER, usage_report_trigger, "Usage Report Trigger"),
     SIMPLE_IE(PFCP_IE_MEASUREMENT_PERIOD, measurement_period, "Measurement Period"),
     SIMPLE_IE(PFCP_IE_FQ_CSID, fq_csid, "FQ-CSID"),
-    // [FATEMEH] TODO:This is volume measurement IE
-    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE, fatemeh_packet_type, "Traffic Report Packet Type"),
-    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_HEADER, fatemeh_packet_header, "Traffic Report Packet Header"),
-    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_DATA, fatemeh_packet_data, "Traffic Report Packet Data"),
 
     SIMPLE_IE(PFCP_IE_VOLUME_MEASUREMENT, volume_measurement, "Volume Measurement"),
     SIMPLE_IE(PFCP_IE_DURATION_MEASUREMENT, duration_measurement, "Duration Measurement"),
@@ -7024,6 +7020,19 @@ static struct pfcp_ie_def tgpp_specs[] =
       .group = (pfcp_ue_ip_address_pool_group),
     },
     SIMPLE_IE(PFCP_IE_IP_VERSION, ip_version, "IP Version"),
+
+    // [FATEMEH] TODO:This is volume measurement IE
+    [PFCP_IE_PACKET_REPORT] =
+    {
+      .name = "Traffic Report Packet",
+      .length = sizeof(pfcp_fatemeh_packet_report_t),
+      .mandatory = BIT(PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE),
+      .size = ARRAY_LEN(pfcp_packet_report_group),
+      .group = pfcp_packet_report_group,
+    },
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE, fatemeh_packet_type, "Traffic Report Packet Type"),
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_HEADER, fatemeh_packet_header, "Traffic Report Packet Header"),
+    SIMPLE_IE(PFCP_IE_TRAFFIC_REPORT_PACKET_DATA, fatemeh_packet_data, "Traffic Report Packet Data"),
   };
 
 static struct pfcp_ie_def vendor_tp_specs[] =
@@ -7956,8 +7965,7 @@ get_ie_spec (const struct pfcp_ie_def *def, u16 type)
   return NULL;
 }
 
-static const struct pfcp_ie_def *
-get_ie_def (const struct pfcp_group_ie_def *item)
+static const struct pfcp_ie_def *get_ie_def (const struct pfcp_group_ie_def *item)
 {
   switch (item->vendor)
     {
