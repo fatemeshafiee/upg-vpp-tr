@@ -730,7 +730,7 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_
     pfcp_decoded_msg_t *uev = NULL;
     vec_add1_ha (uev, ev, sizeof (upf_event_urr_hdr_t), 0);
     vec_validate_ha (uev, 0, sizeof (upf_event_urr_hdr_t), 0);
-    ueh =
+    upf_event_urr_hdr_t * ueh =
             (upf_event_urr_hdr_t *) vec_header (uev,
                                                 sizeof (upf_event_urr_hdr_t));
     ueh->session_idx = sIdx; //(uword) (sess - gtm->sessions)
@@ -1360,10 +1360,7 @@ static uword
 	  }
   case EVENT_PACK:
     {
-      upf_event_urr_hdr_t *ueh =
-              (upf_event_urr_hdr_t *) vec_header (uev,
-                                                  sizeof
-                                                          (upf_event_urr_hdr_t));
+      upf_event_urr_hdr_t *ueh =(upf_event_urr_hdr_t *) vec_header (uev,sizeof(upf_event_urr_hdr_t));
       upf_session_t *sx = 0;
       if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
         sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
