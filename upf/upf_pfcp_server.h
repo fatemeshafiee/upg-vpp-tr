@@ -149,7 +149,7 @@ void upf_pfcp_session_up_deletion_report (upf_session_t * sx);
 
 void upf_pfcp_server_fatemeh_packet_report(void * uev);
 void upf_pfcp_server_session_usage_report (upf_event_urr_data_t * uev);
-void upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0);
+void upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0);
 clib_error_t *pfcp_server_main_init (vlib_main_t * vm);
 
 static inline void

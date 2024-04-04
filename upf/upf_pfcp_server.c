@@ -674,7 +674,7 @@ upf_pfcp_session_usage_report (upf_session_t * sx, ip46_address_t * ue,
 // FATEMEH: this is to send packet and its header
 void
 // change to get the header and send that
-upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0)
+upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0)
 {
 
   //defining the decode method of message, PFCP_SESSION_REPORT_REQUEST
@@ -727,6 +727,13 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
 
   if (send)
   {
+    pfcp_decoded_msg_t *uev = NULL;
+    vec_add1_ha (uev, ev, sizeof (upf_event_urr_hdr_t), 0);
+    vec_validate_ha (uev, 0, sizeof (upf_event_urr_hdr_t), 0);
+    ueh =
+            (upf_event_urr_hdr_t *) vec_header (uev,
+                                                sizeof (upf_event_urr_hdr_t));
+    ueh->session_idx = sIdx; //(uword) (sess - gtm->sessions)
     upf_pfcp_server_fatemeh_packet_report(&dmsg);
   }
 
@@ -1353,6 +1360,10 @@ static uword
 	  }
   case EVENT_PACK:
     {
+      upf_event_urr_hdr_t *ueh =
+              (upf_event_urr_hdr_t *) vec_header (uev,
+                                                  sizeof
+                                                          (upf_event_urr_hdr_t));
       upf_session_t *sx = 0;
       if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
         sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);

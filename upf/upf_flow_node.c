@@ -335,14 +335,14 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
         {
           u32 sidx = upf_buffer_opaque (b0)->gtpu.session_index;
           upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
-          upf_pfcp_fatemeh_traffic_report(sess, fm, p0, b0);
+          upf_pfcp_fatemeh_traffic_report(sess, (uword) sidx, fm, p0, b0);
           clib_warning("[FATEMEH] Called Traffic report for b0 in dual loop.  %d", 10000001);
         }
       if(b1->current_length > 0)
         {
           u32 sidx = upf_buffer_opaque (b1)->gtpu.session_index;
           upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
-          upf_pfcp_fatemeh_traffic_report(sess, fm, p1, b1);
+          upf_pfcp_fatemeh_traffic_report(sess, (uword) sidx, fm, p1, b1);
           clib_warning("[FATEMEH] Called Traffic report for b1 in dual loop. %d", 10000001);
         }
 
@@ -471,7 +471,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     {
       u32 sidx = upf_buffer_opaque (b0)->gtpu.session_index;
       upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
-      upf_pfcp_fatemeh_traffic_report(sess, fm, p, b0);
+      upf_pfcp_fatemeh_traffic_report(sess, sidx, fm, p, b0);
       clib_warning("[FATEMEH] Called Traffic report for b0 in single loop.  %d", 10000001);
     }
 
