@@ -50,6 +50,7 @@
 
 #define LATE_TIMER_WARNING_THRESHOLD 5
 
+# define CLIB_DEBUG 2
 #if CLIB_DEBUG > 1
 #define upf_debug clib_warning
 #define urr_debug_out(format, args...)				\
