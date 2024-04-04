@@ -48,11 +48,11 @@ upf_adr_try_tls (u16 port, u8 * p, u8 ** uri)
   word frgmt_len, hsk_len, len;
   uword length = vec_len (p);
 
-  upf_debug ("Length: %d", length);
+  clib_warning ("Length: %d", length);
   if (length < sizeof (*hdr))
     return ADR_NEED_MORE_DATA;
 
-  upf_debug ("HDR: %u, v: %u.%u, Len: %d",
+  clib_warning ("HDR: %u, v: %u.%u, Len: %d",
 	     hdr->type, hdr->major, hdr->minor,
 	     clib_net_to_host_u16 (hdr->length));
   if (hdr->type != TLS_HANDSHAKE)
@@ -72,7 +72,7 @@ upf_adr_try_tls (u16 port, u8 * p, u8 ** uri)
     return ADR_NEED_MORE_DATA;
 
   hsk_len = hsk->length[0] << 16 | hsk->length[1] << 8 | hsk->length[2];
-  upf_debug ("TLS Hello: %u, v: Len: %d", hsk->type, hsk_len);
+  clib_warning ("TLS Hello: %u, v: Len: %d", hsk->type, hsk_len);
 
   if (hsk_len + sizeof (*hsk) < frgmt_len)
     /* Hello is longer that the current fragment */
@@ -81,7 +81,7 @@ upf_adr_try_tls (u16 port, u8 * p, u8 ** uri)
   if (hsk->type != TLS_CLIENT_HELLO)
     return ADR_FAIL;
 
-  upf_debug ("TLS Client Hello: %u.%u", hlo->major, hlo->minor);
+  clib_warning ("TLS Client Hello: %u.%u", hlo->major, hlo->minor);
   if (hlo->major != 3 || hlo->minor < 1 || hlo->minor > 3)
     /* TLS 1.0, 1.1 and 1.2 only (for now) */
     return ADR_FAIL;
@@ -123,35 +123,35 @@ upf_adr_try_tls (u16 port, u8 * p, u8 ** uri)
       ext_type = clib_net_to_host_unaligned_mem_u16 ((u16 *) data);
       ext_len = clib_net_to_host_unaligned_mem_u16 ((u16 *) (data + 2));
 
-      upf_debug ("TLS Hello Extension: %u, %u", ext_type, ext_len);
+      clib_warning ("TLS Hello Extension: %u, %u", ext_type, ext_len);
 
       if (ext_type != TLS_EXT_SNI)
 	goto skip_extension;
 
       if (ext_len < 5 || ext_len + 4 > len)
 	{
-	  upf_debug ("invalid extension len: %u (%u)", ext_len, len);
+	  clib_warning ("invalid extension len: %u (%u)", ext_len, len);
 	  goto skip_extension;
 	}
 
       sni_len = clib_net_to_host_unaligned_mem_u16 ((u16 *) (data + 4));
       if (sni_len != ext_len - 2)
 	{
-	  upf_debug ("invalid SNI extension len: %u != %u", sni_len,
+	  clib_warning ("invalid SNI extension len: %u != %u", sni_len,
 		     ext_len - 2);
 	  goto skip_extension;
 	}
 
       if (*(data + 6) != 0)
 	{
-	  upf_debug ("invalid SNI name type: %u", *(data + 6));
+	  clib_warning ("invalid SNI name type: %u", *(data + 6));
 	  goto skip_extension;
 	}
 
       name_len = clib_net_to_host_unaligned_mem_u16 ((u16 *) (data + 7));
       if (name_len != sni_len - 3)
 	{
-	  upf_debug ("invalid server name len: %u != %u", name_len,
+	  clib_warning ("invalid server name len: %u != %u", name_len,
 		     sni_len - 3);
 	  goto skip_extension;
 	}
@@ -184,15 +184,15 @@ upf_adr_try_http (u16 port, u8 * p, u8 ** uri)
   if ((r = is_http_request (&p, &len)) != ADR_OK)
     return r;
 
-  upf_debug ("p: %*s", len, p);
+  clib_warning ("p: %*s", len, p);
   eol = memchr (p, '\n', len);
-  upf_debug ("eol %p", eol);
+  clib_warning ("eol %p", eol);
   if (!eol)
     /* not EOL found */
     return ADR_NEED_MORE_DATA;
 
   s = memchr (p, ' ', eol - p);
-  upf_debug ("s: %p", s);
+  clib_warning ("s: %p", s);
   if (!s)
     /* HTTP/0.9 - can find the Host Header */
     return ADR_FAIL;
@@ -202,7 +202,7 @@ upf_adr_try_http (u16 port, u8 * p, u8 ** uri)
   {
     u64 d0 = *(u64 *) (s + 1);
 
-    upf_debug ("d0: 0x%016x, 1.0: 0x%016x, 1.1: 0x%016x", d0,
+    clib_warning ("d0: 0x%016x, 1.0: 0x%016x, 1.1: 0x%016x", d0,
 	       char_to_u64 ('H', 'T', 'T', 'P', '/', '1', '.', '0'),
 	       char_to_u64 ('H', 'T', 'T', 'P', '/', '1', '.', '1'));
     if (d0 != char_to_u64 ('H', 'T', 'T', 'P', '/', '1', '.', '0') &&
@@ -223,7 +223,7 @@ upf_adr_try_http (u16 port, u8 * p, u8 ** uri)
       if (!eol)
 	return ADR_NEED_MORE_DATA;
 
-      upf_debug ("l: %*s", eol - s, s);
+      clib_warning ("l: %*s", eol - s, s);
 
       ll = eol - s;
       if (ll == 0 || (ll == 1 && s[0] == '\r'))
@@ -297,7 +297,7 @@ app_scan_for_uri (u8 * uri, flow_entry_t * flow, struct rules *active,
 	addr =
 	  &flow->key.ip[direction ^ flow->is_reverse ^
 			!!(pdr->pdi.ue_addr.flags & IE_UE_IP_ADDRESS_SD)];
-	upf_debug ("Using %U as UE IP, S/D: %u",
+	clib_warning ("Using %U as UE IP, S/D: %u",
 		   format_ip46_address, addr, IP46_TYPE_ANY,
 		   !!(pdr->pdi.ue_addr.flags & IE_UE_IP_ADDRESS_SD));
 
@@ -399,7 +399,7 @@ upf_application_detection (vlib_main_t * vm, u8 * p,
 
       port =
 	clib_net_to_host_u16 (flow->key.port[FT_REVERSE ^ flow->is_reverse]);
-      upf_debug ("Using port %u, instead of %u", port,
+      clib_warning ("Using port %u, instead of %u", port,
 		 clib_net_to_host_u16 (flow->
 				       key.port[FT_ORIGIN ^ flow->
 						is_reverse]));

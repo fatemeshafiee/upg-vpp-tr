@@ -151,19 +151,19 @@ upf_forward (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 	  if (is_ip4)
 	    {
-	      upf_debug ("IP hdr: %U", format_ip4_header,
+	      clib_warning ("IP hdr: %U", format_ip4_header,
 			 vlib_buffer_get_current (b), b->current_length);
 	    }
 	  else
 	    {
-	      upf_debug ("IP hdr: %U", format_ip6_header,
+	      clib_warning ("IP hdr: %U", format_ip6_header,
 			 vlib_buffer_get_current (b), b->current_length);
 	    }
 
 	  if (PREDICT_FALSE (!pdr) || PREDICT_FALSE (!far))
 	    goto stats;
 
-	  upf_debug ("PDR: %u, FAR: %u", pdr->id, far->id);
+	  clib_warning ("PDR: %u, FAR: %u", pdr->id, far->id);
 
 	  if (PREDICT_TRUE (far->apply_action & FAR_FORWARD))
 	    {
@@ -233,7 +233,7 @@ upf_forward (vlib_main_t * vm, vlib_node_runtime_t * node,
 #define IS_UL(_pdr, _far)						\
 	  ((_pdr)->pdi.src_intf == SRC_INTF_ACCESS || (_far)->forward.dst_intf == DST_INTF_CORE)
 
-	  upf_debug ("pdr: %d, far: %d\n", pdr->id, far->id);
+	  clib_warning ("pdr: %d, far: %d\n", pdr->id, far->id);
 	  next = process_qers (vm, sess, active, pdr, b,
 			       IS_DL (pdr, far), IS_UL (pdr, far), next);
 	  next = process_urrs (vm, sess, node_name, active, pdr, b,

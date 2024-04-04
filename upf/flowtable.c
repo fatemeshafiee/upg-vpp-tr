@@ -81,7 +81,7 @@ flow_entry_cache_empty (flowtable_main_t * fm, flowtable_main_per_cpu_t * fmt)
 	{
 	  u32 f_index = vec_pop (fmt->flow_cache);
 
-	  upf_debug ("releasing flow %p, index %u",
+	  clib_warning ("releasing flow %p, index %u",
 		     pool_elt_at_index (fm->flows, f_index), f_index);
 #if CLIB_DEBUG > 0
 	  ASSERT (pool_elt_at_index (fm->flows, f_index)->cpu_index ==
@@ -151,14 +151,14 @@ expire_single_flow (flowtable_main_t * fm, flowtable_main_per_cpu_t * fmt,
   ASSERT (f->timer_index == (e - fmt->timers));
   ASSERT (f->active <= now);
 
-  upf_debug ("Flow Timeout Check %d: %u (%u) > %u (%u)",
+  clib_warning ("Flow Timeout Check %d: %u (%u) > %u (%u)",
 	     f - fm->flows, f->active + f->lifetime,
 	     (f->active + f->lifetime) % fm->timer_max_lifetime,
 	     now, fmt->time_index);
   if (!keep && flow_expiration_hook && flow_expiration_hook (f) != 0)
     {
       /* flow still in use, wait for another lifetime */
-      upf_debug ("Flow %d: expiration blocked by the hook", f - fm->flows);
+      clib_warning ("Flow %d: expiration blocked by the hook", f - fm->flows);
       f->active += f->lifetime;
       keep = true;
     }
@@ -173,7 +173,7 @@ expire_single_flow (flowtable_main_t * fm, flowtable_main_per_cpu_t * fmt,
 	(f->active + f->lifetime) % fm->timer_max_lifetime;
       if (timer_slot_head_index != f->timer_index)
 	{
-	  upf_debug ("Flow Reshedule %d to %u", f - fm->flows,
+	  clib_warning ("Flow Reshedule %d to %u", f - fm->flows,
 		     timer_slot_head_index);
 	  /* timers unlink */
 	  clib_dlist_remove (fmt->timers, f->timer_index);
@@ -187,7 +187,7 @@ expire_single_flow (flowtable_main_t * fm, flowtable_main_per_cpu_t * fmt,
   else
     {
       upf_main_t *gtm = &upf_main;
-      upf_debug ("Flow Remove %d", f - fm->flows);
+      clib_warning ("Flow Remove %d", f - fm->flows);
 
       /* timers unlink */
       clib_dlist_remove (fmt->timers, e - fmt->timers);
@@ -411,7 +411,7 @@ flowtable_entry_lookup_create (flowtable_main_t * fm,
   timer_entry->value = f - fm->flows;	/* index within the flow pool */
   f->timer_index = timer_entry - fmt->timers;	/* index within the timer pool */
   timer_wheel_insert_flow (fm, fmt, f);
-  upf_debug ("Flow Created: fidx %d timer_index %d", f - fm->flows,
+  clib_warning ("Flow Created: fidx %d timer_index %d", f - fm->flows,
 	     f->timer_index);
 
   vlib_increment_simple_counter (&gtm->upf_simple_counters[UPF_FLOW_COUNTER],

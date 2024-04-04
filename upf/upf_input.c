@@ -156,14 +156,14 @@ upf_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      far = pfcp_get_far_by_id (active, pdr->far_id);
 	    }
 
-	  upf_debug ("IP hdr: %U", format_ip4_header,
+	  clib_warning ("IP hdr: %U", format_ip4_header,
 		     vlib_buffer_get_current (b), b->current_length);
-	  upf_debug ("PDR Idx: %u, PDR: %p, FAR: %p",
+	  clib_warning ("PDR Idx: %u, PDR: %p, FAR: %p",
 		     upf_buffer_opaque (b)->gtpu.pdr_idx, pdr, far);
 	  if (PREDICT_FALSE (!pdr) || PREDICT_FALSE (!far))
 	    goto stats;
 
-	  upf_debug ("PDR OHR: %u", pdr->outer_header_removal);
+	  clib_warning ("PDR OHR: %u", pdr->outer_header_removal);
 
 	  /* Outer Header Removal */
 	  switch (pdr->outer_header_removal)
@@ -286,7 +286,7 @@ upf_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      clib_memcpy (tr->packet_data, vlib_buffer_get_current (b),
 			   sizeof (tr->packet_data));
 	    }
-	  upf_debug ("Next: %u, Error: %u", next, error);
+	  clib_warning ("Next: %u, Error: %u", next, error);
 
 	  vlib_validate_buffer_enqueue_x1 (vm, node, next_index,
 					   to_next, n_left_to_next, bi, next);

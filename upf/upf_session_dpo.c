@@ -402,7 +402,7 @@ VLIB_NODE_FN (upf_ip4_session_dpo_node) (vlib_main_t * vm,
 	  b = vlib_get_buffer (vm, bi);
 
 	  sidx = vnet_buffer (b)->ip.adj_index[VLIB_TX];
-	  upf_debug ("Session %d (0x%08x)", sidx, sidx);
+	  clib_warning ("Session %d (0x%08x)", sidx, sidx);
 	  ASSERT (~0 != sidx);
 	  ASSERT (!pool_is_free (gtm->sessions, gtm->sessions + sidx));
 
@@ -416,7 +416,7 @@ VLIB_NODE_FN (upf_ip4_session_dpo_node) (vlib_main_t * vm,
 	  if ((b->flags & VNET_BUFFER_F_LOCALLY_ORIGINATED)
 	      && ip0->protocol == IP_PROTOCOL_TCP)
 	    {
-	      upf_debug ("Proxy output loop detected: %U", format_ip4_header,
+	      clib_warning ("Proxy output loop detected: %U", format_ip4_header,
 			 ip0, b->current_length);
 	      error0 = UPF_SESSION_DPO_ERROR_PROXY_LOOP;
 	      next = UPF_SESSION_DPO_NEXT_FLOW_PROCESS;
@@ -426,7 +426,7 @@ VLIB_NODE_FN (upf_ip4_session_dpo_node) (vlib_main_t * vm,
 	  UPF_ENTER_SUBGRAPH (b, sidx, 1);
 	  error0 = IP4_ERROR_NONE;
 	  next = UPF_SESSION_DPO_NEXT_FLOW_PROCESS;
-	  upf_debug ("IP hdr: %U", format_ip4_header, ip0, b->current_length);
+	  clib_warning ("IP hdr: %U", format_ip4_header, ip0, b->current_length);
 
 	  ip4_ttl_and_checksum_check (b, ip0, &next, &error0);
 	  vnet_calc_checksums_inline
@@ -536,7 +536,7 @@ VLIB_NODE_FN (upf_ip6_session_dpo_node) (vlib_main_t * vm,
 	  b = vlib_get_buffer (vm, bi);
 
 	  sidx = vnet_buffer (b)->ip.adj_index[VLIB_TX];
-	  upf_debug ("Session %d (0x%08x)", sidx, sidx);
+	  clib_warning ("Session %d (0x%08x)", sidx, sidx);
 	  ASSERT (~0 != sidx);
 
 	  ip0 = vlib_buffer_get_current (b);
@@ -549,7 +549,7 @@ VLIB_NODE_FN (upf_ip6_session_dpo_node) (vlib_main_t * vm,
 	  if ((b->flags & VNET_BUFFER_F_LOCALLY_ORIGINATED)
 	      && ip0->protocol == IP_PROTOCOL_TCP)
 	    {
-	      upf_debug ("Proxy output loop detected: %U", format_ip4_header,
+	      clib_warning ("Proxy output loop detected: %U", format_ip4_header,
 			 ip0, b->current_length);
 	      error0 = UPF_SESSION_DPO_ERROR_PROXY_LOOP;
 	      next = UPF_SESSION_DPO_NEXT_FLOW_PROCESS;

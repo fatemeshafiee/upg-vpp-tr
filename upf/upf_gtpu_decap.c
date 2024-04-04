@@ -993,38 +993,38 @@ decode_error_indication (vlib_buffer_t * b, gtp_error_ind_t * error)
   u16 length;
   while (p < end)
     {
-      upf_debug ("IE: %d", *p);
+      clib_warning ("IE: %d", *p);
       switch (*p++)
 	{
 	case 14:		/* Recovery */
-	  upf_debug ("IE: Recovery");
+	  clib_warning ("IE: Recovery");
 	  p++;
 	  break;
 
 	case 16:		/* Tunnel Endpoint Identifier Data I */
-	  upf_debug ("IE: TEID I, %d", end - p);
+	  clib_warning ("IE: TEID I, %d", end - p);
 	  if ((flag & 1) | (end - p < 4))
 	    return -1;
 	  flag |= 1;
 	  error->teid = clib_net_to_host_u32 (*(u32 *) p);
-	  upf_debug ("IE: TEID I, 0x%08x", error->teid);
+	  clib_warning ("IE: TEID I, 0x%08x", error->teid);
 	  p += 4;
 	  break;
 
 	case 133:		/* GTP-U Peer Address */
-	  upf_debug ("IE: Peer, %d", end - p);
+	  clib_warning ("IE: Peer, %d", end - p);
 	  if ((flag & 2) | (end - p < 2))
 	    return -1;
 	  flag |= 2;
 	  length = clib_net_to_host_u16 (*(u16 *) p);
-	  upf_debug ("IE: Peer Length, %d, %d", length, end - p);
+	  clib_warning ("IE: Peer Length, %d, %d", length, end - p);
 	  p += 2;
 	  if ((end - p) < length)
 	    return -1;
 	  if (length != 4 && length != 16)
 	    return -1;
 	  error->addr = to_ip46 (length == 16, p);
-	  upf_debug ("IE: Peer %U", format_ip46_address, &error->addr,
+	  clib_warning ("IE: Peer %U", format_ip46_address, &error->addr,
 		     IP46_TYPE_ANY);
 	  p += length;
 	  break;
@@ -1072,8 +1072,8 @@ VLIB_NODE_FN (upf_gtp_error_ind_node) (vlib_main_t * vm,
       vlib_buffer_advance (b, vnet_buffer (b)->l4_hdr_offset);
       gtpu = vlib_buffer_get_current (b);
 
-      upf_debug ("P: %U", format_hex_bytes, gtpu, 16);
-      upf_debug ("%p, TEID: %u, Flags: %02x, Ext: %u", gtpu,
+      clib_warning ("P: %U", format_hex_bytes, gtpu, 16);
+      clib_warning ("%p, TEID: %u, Flags: %02x, Ext: %u", gtpu,
 		 gtpu->teid, gtpu->ver_flags & GTPU_E_S_PN_BIT,
 		 gtpu->next_ext_type);
 

@@ -108,7 +108,7 @@ pfcp_session_server_rx_callback (session_t * s)
       else
 	svm_fifo_overwrite_head (s->rx_fifo, (u8 *) & ph, sizeof (ph));
 
-      upf_debug ("sending event %d, %p %U:%d - %U:%d, data %p",
+      clib_warning ("sending event %d, %p %U:%d - %U:%d, data %p",
 		 ph.data_offset, msg,
 		 format_ip46_address, &msg->rmt.address, IP46_TYPE_ANY,
 		 clib_net_to_host_u16 (msg->rmt.port),
@@ -128,20 +128,20 @@ pfcp_session_server_rx_callback (session_t * s)
 static int
 pfcp_session_server_session_accept_callback (session_t * s)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
   return -1;
 }
 
 static void
 pfcp_session_server_session_disconnect_callback (session_t * s)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
 }
 
 static void
 pfcp_session_server_session_reset_callback (session_t * s)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
 }
 
 static int
@@ -150,7 +150,7 @@ pfcp_session_server_session_connected_callback (u32 app_index,
 						session_t * s,
 						session_error_t err)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
   return -1;
 }
 
@@ -158,7 +158,7 @@ static int
 pfcp_session_server_add_segment_callback (u32 client_index,
 					  u64 segment_handle)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
   return -1;
 }
 
@@ -176,7 +176,7 @@ static session_cb_vft_t pfcp_session_server_session_cb_vft = {
 static void
 pfcp_session_server_session_cleanup_cb (void *ps_handlep)
 {
-  upf_debug ("called...");
+  clib_warning ("called...");
 }
 
 static void
@@ -258,7 +258,7 @@ pfcp_server_attach (vlib_main_t * vm)
   if (vnet_application_attach (a))
     {
       vec_free (a->name);
-      upf_debug ("failed to attach server");
+      clib_warning ("failed to attach server");
       return -1;
     }
 

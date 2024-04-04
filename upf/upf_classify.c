@@ -142,7 +142,7 @@ upf_acl_classify_one (vlib_main_t * vm, u32 teid,
   if (!!is_ip4 != !!acl->is_ip4)
     return 0;
 
-  upf_debug ("TEID %08x, Match %u, ACL %08x\n",
+  clib_warning ("TEID %08x, Match %u, ACL %08x\n",
 	     teid, acl->match_teid, acl->teid);
   if (acl->match_teid && teid != acl->teid)
     return 0;
@@ -150,7 +150,7 @@ upf_acl_classify_one (vlib_main_t * vm, u32 teid,
   switch (acl->match_ue_ip)
     {
     case UPF_ACL_UL:
-      upf_debug ("UL: UE %U, Src: %U\n",
+      clib_warning ("UL: UE %U, Src: %U\n",
 		 format_ip46_address, &acl->ue_ip, IP46_TYPE_ANY,
 		 format_ip46_address, &flow->key.ip[FT_ORIGIN ^ is_reverse],
 		 IP46_TYPE_ANY);
@@ -160,7 +160,7 @@ upf_acl_classify_one (vlib_main_t * vm, u32 teid,
 	return 0;
       break;
     case UPF_ACL_DL:
-      upf_debug ("DL: UE %U, Dst: %U\n",
+      clib_warning ("DL: UE %U, Dst: %U\n",
 		 format_ip46_address, &acl->ue_ip, IP46_TYPE_ANY,
 		 format_ip46_address, &flow->key.ip[FT_REVERSE ^ is_reverse],
 		 IP46_TYPE_ANY);
@@ -189,7 +189,7 @@ upf_acl_classify_one (vlib_main_t * vm, u32 teid,
         return 0;
     }
 
-  upf_debug ("Protocol: 0x%04x/0x%04x, 0x%04x\n",
+  clib_warning ("Protocol: 0x%04x/0x%04x, 0x%04x\n",
 	     acl->match.protocol, acl->mask.protocol, flow->key.proto);
 
   if ((flow->key.proto & acl->mask.protocol) !=
@@ -256,7 +256,7 @@ upf_acl_classify_forward (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
     }
 
   acl_vec = is_ip4 ? active->v4_acls : active->v6_acls;
-  upf_debug ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
+  clib_warning ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
 
   /* find ACL with the highest precedence that matches this flow */
   vec_foreach (acl, acl_vec)
@@ -308,7 +308,7 @@ upf_acl_classify_forward (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
 	      flow->application_id = pdr->pdi.adr.application_id;
 	  }
 
-	upf_debug ("match PDR: %u, Proxy: %d, Redirect: %d\n",
+	clib_warning ("match PDR: %u, Proxy: %d, Redirect: %d\n",
 		   acl->pdr_idx, flow->is_l3_proxy, flow->is_redirect);
 	break;
       }
@@ -331,7 +331,7 @@ upf_acl_classify_proxied (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
     teid = flow_teid (flow, FT_REVERSE);
 
   acl_vec = is_ip4 ? active->v4_acls : active->v6_acls;
-  upf_debug ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
+  clib_warning ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
 
   /* find ACL with the highest precedence that matches this flow */
   vec_foreach (acl, acl_vec)
@@ -356,7 +356,7 @@ upf_acl_classify_proxied (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
 	if (pdr->pdi.fields & F_PDI_APPLICATION_ID)
 	  flow->application_id = pdr->pdi.adr.application_id;
 
-	upf_debug ("match PDR: %u, Proxy: %d, Redirect: %d\n",
+	clib_warning ("match PDR: %u, Proxy: %d, Redirect: %d\n",
 		   acl->pdr_idx, flow->is_l3_proxy, flow->is_redirect);
 	break;
       }
@@ -378,7 +378,7 @@ upf_acl_classify_return (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
     teid = flow_teid (flow, FT_REVERSE);
 
   acl_vec = is_ip4 ? active->v4_acls : active->v6_acls;
-  upf_debug ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
+  clib_warning ("TEID %08x, ACLs %p (%u)\n", teid, acl_vec, vec_len (acl_vec));
 
   /* find ACL with the highest precedence that matches this flow */
   vec_foreach (acl, acl_vec)
@@ -408,7 +408,7 @@ upf_acl_classify_return (vlib_main_t * vm, u32 teid, flow_entry_t * flow,
 	if (pdr->pdi.fields & F_PDI_APPLICATION_ID)
 	  flow->application_id = pdr->pdi.adr.application_id;
 
-	upf_debug ("match PDR: %u, Proxy: %d, Redirect: %d\n",
+	clib_warning ("match PDR: %u, Proxy: %d, Redirect: %d\n",
 		   acl->pdr_idx, flow->is_l3_proxy, flow->is_redirect);
 	break;
       }
@@ -477,7 +477,7 @@ upf_classify_fn (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 	  next = UPF_CLASSIFY_NEXT_PROCESS;
 
-	  upf_debug ("flow: %p (%u): %U\n",
+	  clib_warning ("flow: %p (%u): %U\n",
 		     fm->flows + upf_buffer_opaque (b)->gtpu.flow_id,
 		     upf_buffer_opaque (b)->gtpu.flow_id,
 		     format_flow_key,
@@ -495,7 +495,7 @@ upf_classify_fn (vlib_main_t * vm, vlib_node_runtime_t * node,
 	   * app detection just once
 	   */
 	  reclassify_proxy_flow = flow->is_l3_proxy;
-	  upf_debug ("is_rev %u, dir %s\n", is_reverse,
+	  clib_warning ("is_rev %u, dir %s\n", is_reverse,
 		     direction == FT_ORIGIN ? "FT_ORIGIN" : "FT_REVERSE");
 
 	  if (flow_next (flow, direction) != FT_NEXT_CLASSIFY)
@@ -551,7 +551,7 @@ upf_classify_fn (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  if (flow->app_detection_done)
 	    {
 	      /* try to reclassify the app based on the saved URI, if any */
-	      upf_debug ("re-run app detection (reverse)");
+	      clib_warning ("re-run app detection (reverse)");
 	      ar = upf_application_detection (vm, 0, flow, active);
 	      ASSERT (ar == ADR_OK);
 	      upf_buffer_opaque (b)->gtpu.pdr_idx =
@@ -559,7 +559,7 @@ upf_classify_fn (vlib_main_t * vm, vlib_node_runtime_t * node,
 	    }
 
 
-	  upf_debug ("Next: %u", next);
+	  clib_warning ("Next: %u", next);
 	  ASSERT (flow_next (flow, FT_ORIGIN) != FT_NEXT_PROXY
 		  || flow_pdr_id (flow, FT_ORIGIN) != ~0);
 	  ASSERT (flow_next (flow, FT_REVERSE) != FT_NEXT_PROXY

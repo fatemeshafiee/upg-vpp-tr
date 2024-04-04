@@ -50,7 +50,7 @@ upf_app_dpo_lookup (upf_adf_entry_t *appentry, ip46_address_t *addr)
   if (dpo->dpoi_type != upf_app_dpo_type)
     return INDEX_INVALID;
 
-  upf_debug ("FIB %d MATCH: %U dpo index %d",
+  clib_warning ("FIB %d MATCH: %U dpo index %d",
              ip46_address_is_ip4(addr) ?
              appentry->fib_index_ip4 :
              appentry->fib_index_ip6,
@@ -256,7 +256,7 @@ upf_ensure_app_fib_if_needed (upf_adf_entry_t *appentry)
       }
     pfx.fp_proto = app_dpo->is_ip4 ? FIB_PROTOCOL_IP4 : FIB_PROTOCOL_IP6;
     pfx.fp_len = app_dpo->src_preflen;
-    upf_debug ("add pfx: FIB %d is_ip4 %d fp_len %d IP %U dpo_index %d",
+    clib_warning ("add pfx: FIB %d is_ip4 %d fp_len %d IP %U dpo_index %d",
                app_dpo->is_ip4 ?
                appentry->fib_index_ip4 : appentry->fib_index_ip6,
                app_dpo->is_ip4, pfx.fp_len,
@@ -302,7 +302,7 @@ upf_app_fib_cleanup (upf_adf_entry_t *appentry)
       }
     pfx.fp_proto = app_dpo->is_ip4 ? FIB_PROTOCOL_IP4 : FIB_PROTOCOL_IP6;
     pfx.fp_len = app_dpo->src_preflen;
-    upf_debug ("del pfx: is_ip4 %d fp_len %d IP %U",
+    clib_warning ("del pfx: is_ip4 %d fp_len %d IP %U",
                app_dpo->is_ip4, pfx.fp_len,
                format_ip46_address, &pfx.fp_addr, IP46_TYPE_ANY);
     fib_table_entry_special_remove (app_dpo->is_ip4 ?

@@ -417,7 +417,7 @@ pfcp_release_association (upf_node_assoc_t * n)
       break;
     }
 
-  upf_debug ("pfcp_release_association idx: %u");
+  clib_warning ("pfcp_release_association idx: %u");
 
   while (idx != ~0)
     {
@@ -513,7 +513,7 @@ pfcp_create_session (upf_node_assoc_t * assoc,
   upf_main_t *gtm = &upf_main;
   upf_session_t *sx;
 
-  upf_debug ("CP F-SEID: 0x%016" PRIx64 " @ %U\n"
+  clib_warning ("CP F-SEID: 0x%016" PRIx64 " @ %U\n"
 	     "UP F-SEID: 0x%016" PRIx64 " @ %U\n",
 	     cp_seid, format_ip46_address, cp_address, IP46_TYPE_ANY,
 	     cp_seid, format_ip46_address, up_address, IP46_TYPE_ANY);
@@ -1278,7 +1278,7 @@ pfcp_add_del_tdf (const void *tdf, void *si, int is_ip4, int is_add)
   if (acl->fib_index >= vec_len (gtm->tdf_ul_table[pfx.fp_proto]))
     return;
 
-  upf_debug ("acl fib idx: 0x%08x, tdf fib idx: 0x%08x, ACL: %U\n",
+  clib_warning ("acl fib idx: 0x%08x, tdf fib idx: 0x%08x, ACL: %U\n",
 	     acl->fib_index,
 	     vec_elt (gtm->tdf_ul_table[pfx.fp_proto], acl->fib_index),
 	     format_upf_acl, acl);
@@ -1515,7 +1515,7 @@ compile_pdi (int is_ip4, const upf_pdr_t * pdr,
       (pdr->pdi.adr.flags & UPF_ADR_IP_RULES))
     acl->match_ip_app = 1;
 
-  upf_debug ("ACL: ip4 %u, %U\n", is_ip4, format_upf_acl, acl);
+  clib_warning ("ACL: ip4 %u, %U\n", is_ip4, format_upf_acl, acl);
   return 0;
 }
 
@@ -1631,7 +1631,7 @@ build_pfcp_rules (upf_session_t * sx)
 	      upf_fib_index_by_sw_if_index (sw_if_index, 1 /* is_ip4 */ );
 	    ue_ip.sw_if_index = sw_if_index;
 
-	    upf_debug ("UP FIB Idx %u, sw_if_index %u",
+	    clib_warning ("UP FIB Idx %u, sw_if_index %u",
 		       ue_ip.fib_index, ue_ip.sw_if_index);
 	    rules_add_ue_ip (pending, FIB_PROTOCOL_IP4, &ue_ip, is_dst);
 	  }
@@ -1860,11 +1860,11 @@ pfcp_update_apply (upf_session_t * sx)
       vec_diff (pending->v6_teid, active->v6_teid, v6_teid_cmp,
 		pfcp_add_del_v6_teid, sx);
 
-      upf_debug ("v4 TEIDs %u\n", pending->v4_teid);
-      upf_debug ("v6 TEIDs %u\n", pending->v6_teid);
-      upf_debug ("UE Src IPs %u\n", pending->ue_src_ip);
-      upf_debug ("v4 ACLs %u\n", pending->v4_acls);
-      upf_debug ("v6 ACLs %u\n", pending->v6_acls);
+      clib_warning ("v4 TEIDs %u\n", pending->v4_teid);
+      clib_warning ("v6 TEIDs %u\n", pending->v6_teid);
+      clib_warning ("UE Src IPs %u\n", pending->ue_src_ip);
+      clib_warning ("v4 ACLs %u\n", pending->v4_acls);
+      clib_warning ("v6 ACLs %u\n", pending->v6_acls);
 
       vec_diff (pending->ue_src_ip, active->ue_src_ip, ip46_address_fib_cmp,
 		pfcp_add_del_ue_ip, sx);
@@ -1919,7 +1919,7 @@ pfcp_update_apply (upf_session_t * sx)
 	  !!(far->forward.outer_header_creation.description &
 	     OUTER_HEADER_CREATION_ANY_IP4);
 
-	upf_debug ("TODO: send_end_marker for FAR %d", far->id);
+	clib_warning ("TODO: send_end_marker for FAR %d", far->id);
 	bi = upf_gtpu_end_marker (send_em->fib_index, send_em->dpoi_index,
 				  far->forward.rewrite, is_ip4);
 	upf_ip_lookup_tx (bi, is_ip4);
@@ -2214,7 +2214,7 @@ process_urrs (vlib_main_t * vm, upf_session_t * sess,
   u8 status = URR_OK;
   u16 *urr_id;
 
-  upf_debug ("DL: %d, UL: %d\n", is_dl, is_ul);
+  clib_warning ("DL: %d, UL: %d\n", is_dl, is_ul);
 
   clib_spinlock_lock (&sess->lock);
 
@@ -2339,7 +2339,7 @@ process_urrs (vlib_main_t * vm, upf_session_t * sess,
 	      }
 	  }
 
-	upf_debug ("Start Of Traffic UE IP: %U, Pool: %p, Hash: %p\n",
+	clib_warning ("Start Of Traffic UE IP: %U, Pool: %p, Hash: %p\n",
 		   format_ip46_address, &tt.ip, IP46_TYPE_ANY,
 		   urr->traffic, urr->traffic_by_ue);
 
@@ -2409,7 +2409,7 @@ process_urrs (vlib_main_t * vm, upf_session_t * sess,
       ueh->ue = tt.ip;
       ueh->status = status;
 
-      upf_debug ("sending URR event on %wd\n", (uword) ueh->session_idx);
+      clib_warning ("sending URR event on %wd\n", (uword) ueh->session_idx);
       upf_pfcp_server_session_usage_report (uev);
     }
 
@@ -2428,7 +2428,7 @@ process_qers (vlib_main_t * vm, upf_session_t * sess,
   u32 *qer_id;
   u32 len;
 
-  upf_debug ("DL: %d, UL: %d\n", is_dl, is_ul);
+  clib_warning ("DL: %d, UL: %d\n", is_dl, is_ul);
 
   /* must be UL or DL, not both and not none */
   if ((is_ul + is_dl) != 1)
@@ -2461,7 +2461,7 @@ process_qers (vlib_main_t * vm, upf_session_t * sess,
     col =
       vnet_police_packet (&pol->policer[direction], len, POLICE_CONFORM,
 			  time_in_policer_periods);
-    upf_debug ("QER color: %d\n", col);
+    clib_warning ("QER color: %d\n", col);
   }
 
   return next;

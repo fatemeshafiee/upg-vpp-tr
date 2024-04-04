@@ -168,7 +168,7 @@ splice_tcp_connection (upf_main_t * gtm, flow_entry_t * flow,
   if ((tcpRx->snd_mss > tcpTx->rcv_opts.mss) ||
       (tcpTx->snd_mss > tcpRx->rcv_opts.mss))
     {
-      upf_debug ("=============> DON'T SPLICE <=============");
+      clib_warning ("=============> DON'T SPLICE <=============");
       flow->dont_splice = 1;
       vlib_increment_simple_counter (&gtm->upf_simple_counters
 				     [UPF_FLOWS_NOT_STITCHED_MSS_MISMATCH],
@@ -179,7 +179,7 @@ splice_tcp_connection (upf_main_t * gtm, flow_entry_t * flow,
   if (tcp_opts_tstamp (&tcpTx->rcv_opts) !=
       tcp_opts_tstamp (&tcpRx->rcv_opts))
     {
-      upf_debug ("=============> DON'T SPLICE <=============");
+      clib_warning ("=============> DON'T SPLICE <=============");
       flow->dont_splice = 1;
       vlib_increment_simple_counter (&gtm->upf_simple_counters
 				     [UPF_FLOWS_NOT_STITCHED_TCP_OPS_TIMESTAMP],
@@ -190,7 +190,7 @@ splice_tcp_connection (upf_main_t * gtm, flow_entry_t * flow,
   if (tcp_opts_sack_permitted (&tcpTx->rcv_opts) !=
       tcp_opts_sack_permitted (&tcpRx->rcv_opts))
     {
-      upf_debug ("=============> DON'T SPLICE <=============");
+      clib_warning ("=============> DON'T SPLICE <=============");
       flow->dont_splice = 1;
       vlib_increment_simple_counter (&gtm->upf_simple_counters
 				     [UPF_FLOWS_NOT_STITCHED_TCP_OPS_SACK_PERMIT],
@@ -377,7 +377,7 @@ upf_proxy_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      break;
 	    }
 
-	  upf_debug ("flow: %p (0x%08x): %U\n",
+	  clib_warning ("flow: %p (0x%08x): %U\n",
 		     fm->flows + upf_buffer_opaque (b)->gtpu.flow_id,
 		     upf_buffer_opaque (b)->gtpu.flow_id,
 		     format_flow_key,
@@ -392,7 +392,7 @@ upf_proxy_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 	    (flow->is_reverse ==
 	     upf_buffer_opaque (b)->gtpu.is_reverse) ? FT_ORIGIN : FT_REVERSE;
 
-	  upf_debug ("direction: %u, buffer: %u, flow: %u", direction,
+	  clib_warning ("direction: %u, buffer: %u, flow: %u", direction,
 		     upf_buffer_opaque (b)->gtpu.is_reverse,
 		     flow->is_reverse);
 
@@ -401,14 +401,14 @@ upf_proxy_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  if (flow->is_spliced)
 	    {
 	      /* bypass TCP connection handling */
-	      upf_debug ("TCP_FORWARD");
+	      clib_warning ("TCP_FORWARD");
 	      next = UPF_PROXY_INPUT_NEXT_TCP_FORWARD;
 	    }
 	  else if (ftc->conn_index != ~0)
 	    {
 	      ASSERT (ftc->thread_index == thread_index);
 
-	      upf_debug ("existing connection 0x%08x", ftc->conn_index);
+	      clib_warning ("existing connection 0x%08x", ftc->conn_index);
 	      vnet_buffer (b)->tcp.connection_index = ftc->conn_index;
 
 	      /* transport connection already setup */
@@ -422,18 +422,18 @@ upf_proxy_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 		{
 		  /* the flow already had a serving session, but that session was closed
 		     signaled by conn_index == ~0 && thread_index != ~0 */
-		  upf_debug ("LATE TCP FRAGMENT");
+		  clib_warning ("LATE TCP FRAGMENT");
 		  next = UPF_FORWARD_NEXT_DROP;
 		}
 	      else if (direction == FT_ORIGIN)
 		{
-		  upf_debug ("PROXY_ACCEPT");
+		  clib_warning ("PROXY_ACCEPT");
 		  load_tstamp_offset (b, direction, flow);
 		  next = UPF_PROXY_INPUT_NEXT_PROXY_ACCEPT;
 		}
 	      else if (direction == FT_REVERSE)
 		{
-		  upf_debug ("INPUT_LOOKUP");
+		  clib_warning ("INPUT_LOOKUP");
 		  load_tstamp_offset (b, direction, flow);
 		  next = UPF_PROXY_INPUT_NEXT_TCP_INPUT_LOOKUP;
 		}
@@ -465,7 +465,7 @@ upf_proxy_input (vlib_main_t * vm, vlib_node_runtime_t * node,
 #define IS_UL(_pdr, _far)						\
               ((_pdr)->pdi.src_intf == SRC_INTF_ACCESS || (_far)->forward.dst_intf == DST_INTF_CORE)
 
-	      upf_debug ("pdr: %d, far: %d\n", pdr->id, far->id);
+	      clib_warning ("pdr: %d, far: %d\n", pdr->id, far->id);
 	      next = process_qers (vm, sess, active, pdr, b,
 				   IS_DL (pdr, far), IS_UL (pdr, far), next);
 	      next = process_urrs (vm, sess, node_name, active, pdr, b,

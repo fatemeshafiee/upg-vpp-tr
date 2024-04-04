@@ -162,13 +162,13 @@ upf_proxy_output (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 	  flow = pool_elt_at_index (fm->flows, flow_id);
 
-	  upf_debug ("flow: %p (0x%08x): %U\n",
+	  clib_warning ("flow: %p (0x%08x): %U\n",
 		     flow, flow_id, format_flow_key, &flow->key);
-	  upf_debug ("flow: %U\n", format_flow, flow);
+	  clib_warning ("flow: %U\n", format_flow, flow);
 
-	  upf_debug ("IP hdr: %U", format_ip4_header,
+	  clib_warning ("IP hdr: %U", format_ip4_header,
 		     vlib_buffer_get_current (b), b->current_length);
-	  upf_debug ("Flow ORIGIN/REVERSE Pdr Id: %u/%u, FT Next %u/%u",
+	  clib_warning ("Flow ORIGIN/REVERSE Pdr Id: %u/%u, FT Next %u/%u",
 		     flow_pdr_id (flow, FT_ORIGIN), flow_pdr_id (flow,
 								 FT_REVERSE),
 		     flow_next (flow, FT_ORIGIN), flow_next (flow,

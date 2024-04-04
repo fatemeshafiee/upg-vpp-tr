@@ -252,7 +252,7 @@ handle_heartbeat_request (pfcp_msg_t * msg, pfcp_decoded_msg_t * dmsg)
   SET_BIT (resp->grp.fields, PFCP_RESPONSE_RECOVERY_TIME_STAMP);
   resp->response.recovery_time_stamp = psm->start_time;
 
-  upf_debug ("PFCP: start_time: %p, %d, %x.",
+  clib_warning ("PFCP: start_time: %p, %d, %x.",
 	     &psm, psm->start_time, psm->start_time);
 
   upf_pfcp_send_response (msg, &resp_dmsg);
@@ -290,7 +290,7 @@ handle_heartbeat_response (pfcp_msg_t * msg, pfcp_decoded_msg_t * dmsg)
     }
   else
     {
-      upf_debug ("restarting HB timer\n");
+      clib_warning ("restarting HB timer\n");
       n->heartbeat_handle = upf_pfcp_server_start_timer
 	(PFCP_SERVER_HB_TIMER, n - gtm->nodes, PFCP_HB_INTERVAL);
     }
@@ -969,7 +969,7 @@ handle_create_pdr (upf_session_t * sx, pfcp_create_pdr_t * create_pdr,
 	    create->pdi.fields |= F_PDI_SDF_FILTER;
 	    vec_add1 (create->pdi.acl, wildcard_acl);
 	  }
-	upf_debug ("app: %v, ADR DB id %u", app->name, create->pdi.adr.db_id);
+	clib_warning ("app: %v, ADR DB id %u", app->name, create->pdi.adr.db_id);
       }
 
     create->outer_header_removal = OPT (pdr, CREATE_PDR_OUTER_HEADER_REMOVAL,
@@ -1159,7 +1159,7 @@ handle_update_pdr (upf_session_t * sx, pfcp_update_pdr_t * update_pdr,
 	      }
 	  }
 
-	upf_debug ("app: %v, ADR DB id %u", app->name, update->pdi.adr.db_id);
+	clib_warning ("app: %v, ADR DB id %u", app->name, update->pdi.adr.db_id);
       }
 
     update->outer_header_removal = OPT (pdr, UPDATE_PDR_OUTER_HEADER_REMOVAL,
@@ -2381,7 +2381,7 @@ upf_usage_report_build (upf_session_t * sx,
 {
   u32 idx;
 
-  upf_debug ("Usage Report:\n  LIUSA %U\n",
+  clib_warning ("Usage Report:\n  LIUSA %U\n",
 	     format_bitmap_hex, report->liusa_bitmap);
 
   vec_foreach_index (idx, report->events)
@@ -2518,11 +2518,11 @@ handle_session_establishment_request (pfcp_msg_t * msg,
     goto out_send_resp;
 
   r = pfcp_update_apply (sess);
-  upf_debug ("Apply: %d\n", r);
+  clib_warning ("Apply: %d\n", r);
 
   pfcp_update_finish (sess);
 
-  upf_debug ("%U", format_pfcp_session, sess, PFCP_ACTIVE, /*debug */ 1);
+  clib_warning ("%U", format_pfcp_session, sess, PFCP_ACTIVE, /*debug */ 1);
 
 out_send_resp:
   if (r == 0)
@@ -2571,7 +2571,7 @@ handle_session_modification_request (pfcp_msg_t * msg,
 
   if (!(sess = pfcp_lookup (dmsg->seid)))
     {
-      upf_debug ("PFCP Session %" PRIu64 " not found.\n", dmsg->seid);
+      clib_warning ("PFCP Session %" PRIu64 " not found.\n", dmsg->seid);
       resp->cause = PFCP_CAUSE_SESSION_CONTEXT_NOT_FOUND;
 
       r = -1;
@@ -2696,7 +2696,7 @@ handle_session_modification_request (pfcp_msg_t * msg,
 out_update_finish:
   pfcp_update_finish (sess);
 
-  upf_debug ("%U", format_pfcp_session, sess, PFCP_ACTIVE, /*debug */ 1);
+  clib_warning ("%U", format_pfcp_session, sess, PFCP_ACTIVE, /*debug */ 1);
 
 out_send_resp:
   if (r == 0)
@@ -2734,7 +2734,7 @@ handle_session_deletion_request (pfcp_msg_t * msg, pfcp_decoded_msg_t * dmsg)
 
   if (!(sess = pfcp_lookup (dmsg->seid)))
     {
-      upf_debug ("PFCP Session %" PRIu64 " not found.\n", dmsg->seid);
+      clib_warning ("PFCP Session %" PRIu64 " not found.\n", dmsg->seid);
       resp->cause = PFCP_CAUSE_SESSION_CONTEXT_NOT_FOUND;
 
       r = -1;
@@ -2864,7 +2864,7 @@ upf_pfcp_handle_msg (pfcp_msg_t * msg)
   if (type >= ARRAY_LEN (msg_handlers) || !msg_handlers[type])
     {
       /* probably non-PFCP datagram, nothing to reply */
-      upf_debug ("PFCP: msg type invalid: %d.", type);
+      clib_warning ("PFCP: msg type invalid: %d.", type);
       return -1;
     }
 
@@ -2872,7 +2872,7 @@ upf_pfcp_handle_msg (pfcp_msg_t * msg)
   if (r < 0)
     {
       /* not enough info in the message to produce any meaningful reply */
-      upf_debug ("PFCP: broken message");
+      clib_warning ("PFCP: broken message");
       return -1;
     }
 
