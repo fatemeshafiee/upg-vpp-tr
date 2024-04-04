@@ -728,13 +728,14 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_
   if (send)
   {
     pfcp_decoded_msg_t *uev = NULL;
-    vec_add1_ha (uev, ev, sizeof (upf_event_urr_hdr_t), 0);
+
+    vec_add1_ha (uev, dmsg, sizeof (upf_event_urr_hdr_t), 0);
     vec_validate_ha (uev, 0, sizeof (upf_event_urr_hdr_t), 0);
     upf_event_urr_hdr_t * ueh =
             (upf_event_urr_hdr_t *) vec_header (uev,
                                                 sizeof (upf_event_urr_hdr_t));
     ueh->session_idx = sIdx; //(uword) (sess - gtm->sessions)
-    upf_pfcp_server_fatemeh_packet_report(&dmsg);
+    upf_pfcp_server_fatemeh_packet_report(uev);
   }
 
 //  pfcp_free_dmsg_contents (&dmsg);
@@ -1360,15 +1361,18 @@ static uword
 	  }
   case EVENT_PACK:
     {
-      upf_event_urr_hdr_t *ueh =(upf_event_urr_hdr_t *) vec_header (uev,sizeof(upf_event_urr_hdr_t));
-      upf_session_t *sx = 0;
-      if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
-        sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
       int n = vec_len (event_data);
       clib_warning("[FATEMEH] Event pack: N=%d", n);
       for (int i = 0; i < n; i++)
       {
         pfcp_decoded_msg_t *msg = (pfcp_decoded_msg_t *) event_data[i];
+
+        upf_event_urr_hdr_t *ueh =(upf_event_urr_hdr_t *) vec_header (msg,sizeof(upf_event_urr_hdr_t));
+        upf_session_t *sx = 0;
+
+        if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
+          sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
+
         upf_pfcp_server_send_session_request(sx, msg);
         clib_warning("[FATEMEH] Event sent: I=%d", i);
         pfcp_free_dmsg_contents (msg);
