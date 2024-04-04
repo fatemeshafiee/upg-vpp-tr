@@ -1366,6 +1366,7 @@ static uword
       clib_warning("[FATEMEH] Event pack: N=%d", n);
       for (int i = 0; i < n; i++)
       {
+        clib_warning("[FATEMEH] Event proc: I=%d", i);
         pfcp_decoded_msg_t *msg = (pfcp_decoded_msg_t *) event_data[i];
 
         upf_event_urr_hdr_t *ueh =(upf_event_urr_hdr_t *) vec_header (msg,sizeof(upf_event_urr_hdr_t));
@@ -1373,6 +1374,9 @@ static uword
 
         if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
           sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
+
+        clib_warning("[FATEMEH] Getting session: I=%d IDX=%d", i, ueh->session_idx);
+        clib_warning("[FATEMEH] Found session: S=%p", sx);
 
         upf_pfcp_server_send_session_request(sx, msg);
         clib_warning("[FATEMEH] Event sent: I=%d", i);

@@ -8290,6 +8290,7 @@ pfcp_decode_msg (u8 * p, int len,
 int
 pfcp_encode_msg (pfcp_decoded_msg_t * dmsg, u8 ** vec)
 {
+  clib_warning("[FATEMEH] enterred pfcp encode msg");
   int is_session_msg = pfcp_is_session_msg (dmsg->type);
   int r;
   uword hdr_len = is_session_msg ? SESSION_MSG_HDR_LEN : NODE_MSG_HDR_LEN;
@@ -8310,6 +8311,7 @@ pfcp_encode_msg (pfcp_decoded_msg_t * dmsg, u8 ** vec)
   else
     set_msg_hdr_seq (*vec, dmsg->seq_no);
 
+  clib_warning("[FATEMEH] encoding pfcp group %d", dmsg->type);
   if ((r = encode_group (&msg_specs[dmsg->type], &dmsg->grp, vec)) == 0)
     set_msg_hdr_length (*vec, _vec_len (*vec) - 4);
   else
