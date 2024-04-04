@@ -1351,7 +1351,8 @@ static uword
 	      }
 	    break;
 	  }
-    case EVENT_PACK:
+  case EVENT_PACK:
+    {
       upf_session_t *sx = 0;
       if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
         sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
@@ -1364,8 +1365,8 @@ static uword
         clib_warning("[FATEMEH] Event sent: I=%d", i);
         pfcp_free_dmsg_contents (msg);
       }
-
       break;
+    }
 	default:
 	  upf_debug ("event %ld, %p. ", event_type, event_data[0]);
 	  break;
