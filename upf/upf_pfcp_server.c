@@ -725,17 +725,12 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, flowtable_main_t * fm, u8 *
                                upf_buffer_opaque (b0)->gtpu.data_offset + 20; //considering the fact that it is
   clib_warning("upf_pfcp_fatemeh_traffic_report function! line 726");
 
-
-
-
-
-
   if (send)
   {
-    upf_pfcp_server_send_session_request (sx, &dmsg);
+    upf_pfcp_server_fatemeh_packet_report(&dmsg);
   }
 
-  pfcp_free_dmsg_contents (&dmsg);
+//  pfcp_free_dmsg_contents (&dmsg);
   clib_warning("upf_pfcp_fatemeh_traffic_report function! line 739");
 
 
@@ -1356,7 +1351,21 @@ static uword
 	      }
 	    break;
 	  }
+    case EVENT_PACK:
+      upf_session_t *sx = 0;
+      if (!pool_is_free_index (gtm->sessions, ueh->session_idx))
+        sx = pool_elt_at_index (gtm->sessions, ueh->session_idx);
+      int n = vec_len (event_data);
+      clib_warning("[FATEMEH] Event pack: N=%d", n);
+      for (int i = 0; i < n; i++)
+      {
+        pfcp_decoded_msg_t *msg = (pfcp_decoded_msg_t *) event_data[i];
+        upf_pfcp_server_send_session_request(sx, msg);
+        clib_warning("[FATEMEH] Event sent: I=%d", i);
+        pfcp_free_dmsg_contents (msg);
+      }
 
+      break;
 	default:
 	  upf_debug ("event %ld, %p. ", event_type, event_data[0]);
 	  break;
@@ -1460,6 +1469,7 @@ static uword
   return (0);
 }
 
+// [FATEMEH | GOAL 2'] Use signalling :: Entry point (Call this to send the signal)
 void upf_pfcp_server_session_usage_report (upf_event_urr_data_t * uev)
 {
   pfcp_server_main_t *psm = &pfcp_server_main;
@@ -1468,6 +1478,16 @@ void upf_pfcp_server_session_usage_report (upf_event_urr_data_t * uev)
   vlib_process_signal_event_mt (vm, pfcp_api_process_node.index, EVENT_URR,
 				(uword) uev);
 }
+
+void upf_pfcp_server_fatemeh_packet_report(void * uev)
+{
+  pfcp_server_main_t *psm = &pfcp_server_main;
+  vlib_main_t *vm = psm->vlib_main;
+
+  vlib_process_signal_event_mt (vm, pfcp_api_process_node.index, EVENT_PACK,
+                                (uword) uev);
+}
+
 
 /*********************************************************/
 
