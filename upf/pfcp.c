@@ -7021,7 +7021,7 @@ static struct pfcp_ie_def tgpp_specs[] =
     },
     SIMPLE_IE(PFCP_IE_IP_VERSION, ip_version, "IP Version"),
 
-    // [FATEMEH] TODO:This is volume measurement IE
+    // [FATEMEH]
     [PFCP_IE_PACKET_REPORT] =
     {
       .name = "Traffic Report Packet",
