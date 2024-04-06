@@ -7026,7 +7026,7 @@ static struct pfcp_ie_def tgpp_specs[] =
     {
       .name = "Traffic Report Packet",
       .length = sizeof(pfcp_fatemeh_packet_report_t),
-      .mandatory = BIT(PFCP_IE_TRAFFIC_REPORT_PACKET_TYPE),
+      .mandatory = BIT(TRAFFIC_REPORT_PACKET_TYPE), // this should change!!
       .size = ARRAY_LEN(pfcp_packet_report_group),
       .group = pfcp_packet_report_group,
     },
