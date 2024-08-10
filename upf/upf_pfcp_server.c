@@ -677,7 +677,7 @@ void
 // change to get the header and send that
 upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_t * fm, u8 * p0, vlib_buffer_t * b0)
 {
-
+  // [STEP 2]
   //defining the decode method of message, PFCP_SESSION_REPORT_REQUEST
   pfcp_decoded_msg_t dmsg = {
           .type = PFCP_SESSION_REPORT_REQUEST
@@ -728,6 +728,7 @@ upf_pfcp_fatemeh_traffic_report (upf_session_t * sx, uword sIdx, flowtable_main_
 
   if (send)
   {
+    // [STEP 4]
     pfcp_decoded_msg_t *uev = NULL;
 
     vec_add1_ha (uev, dmsg, sizeof (upf_event_urr_hdr_t), 0);

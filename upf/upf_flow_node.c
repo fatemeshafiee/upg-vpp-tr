@@ -103,6 +103,8 @@ load_gtpu_flow_info (flowtable_main_t * fm, vlib_buffer_t * b,
 	      (flow), (flow) - (fm)->flows,				\
 	      format_flow_key, &(flow)->key);
 
+
+        // [STEP 1]
 static uword
 upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 		  vlib_frame_t * frame, u8 is_ip4)
@@ -134,8 +136,9 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
       vlib_get_next_frame (vm, node, next_index, to_next, n_left_to_next);
 
       /* Dual loop */
+
       while (n_left_from >= 4 && n_left_to_next >= 2)
-	{
+	  {
 	  u32 bi0, bi1;
 	  vlib_buffer_t *b0, *b1;
 	  upf_session_t *sx0, *sx1;
@@ -220,6 +223,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 	  active0 = pfcp_get_rules (sx0, PFCP_ACTIVE);
 	  active1 = pfcp_get_rules (sx1, PFCP_ACTIVE);
+    // p0 and p1 are the headers
 
 	  flow_mk_key (sx0->cp_seid, p0, is_ip4, &is_reverse0, &kv0);
 	  flow_mk_key (sx1->cp_seid, p1, is_ip4, &is_reverse1, &kv1);

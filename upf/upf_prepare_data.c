@@ -1,0 +1,73 @@
+//
+// Created by Fatemeh Shafiei Ardestani on 2024-08-08.
+
+#include "flowtable.h"
+#include <vlib/vlib.h>
+#include <vlib/unix/unix.h>
+#include "upf-ee-types.h"
+
+
+#if CLIB_DEBUG > 1
+#define flow_debug clib_warning
+#else
+#define flow_debug(...)				\
+  do { } while (0)
+#endif
+
+
+void prepare_ee_data(){
+
+  flowtable_main_t *fm = &flowtable_main;
+  flow_entry_t *flow;
+  usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
+  pool_foreach(flow, fm->flows) {
+//    usage_report_per_flow_t new_data;
+//    flow_key_t key = flow->key;
+//    new_data.seid = key.inner.repr.seid;
+//    new_data.src_ip = key.inner.repr.ip[0];
+//    new_data.dst_ip = key.inner.repr.ip[1];
+//    new_data.src_port = key.inner.repr.port[0];
+//    new_data.dst_port = key.inner.repr.port[1];
+//    new_data.proto = key.inner.repr.proto;
+//    new_data.bytes = flow->stats.bytes;
+//    new_data.pkts = flow->stats.pkts;
+//    vecadd1(usage_report_per_flow_vectorl,new_data);
+    flow_key_t key = flow->key;
+    clib_warning("[1|flow info] ip[0].  %s", key.inner.repr.ip[0]);
+    clib_warning("[2| info] ip[1]  %s", key.inner.repr.ip[1]);
+    clib_warning("[3| info] port[0] %s", key.inner.repr.port[0]);
+    clib_warning("[4| info] port[1] %s", key.inner.repr.port[1]);
+    clib_warning("[5| info] portocol %s", key.inner.repr.proto);
+    clib_warning("[6| info] stst 0 pkts %d", flow->stats[0].pkts);
+    clib_warning("[7| info] stst 0 bytes %d", flow->stats[0].bytes);
+    clib_warning("[8| info] stst 1 pkts %d", flow->stats[1].pkts);
+    clib_warning("[9| info] stst 1 bytes %d", flow->stats[1].bytes);
+
+  }
+  return;
+}
+
+
+static uword process_send_data(vlib_main_t *vm, vlib_node_runtime_t *rt, vlib_frame_t *f) {
+  f64 interval = 1.0;
+
+  while (1) {
+    prepare_ee_data();
+    vlib_process_wait_for_event_or_clock(vm, interval);
+    vlib_process_get_events(vm, NULL);
+  }
+
+  return 0;
+}
+VLIB_REGISTER_NODE(my_process_node) = {
+        .function = process_send_data,
+        .type = VLIB_NODE_TYPE_PROCESS,
+        .name = "periodic-sending-process",
+};
+
+
+static clib_error_t *my_init_function(vlib_main_t *vm) {
+  return 0;
+}
+
+VLIB_INIT_FUNCTION(my_init_function);

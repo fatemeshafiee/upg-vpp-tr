@@ -2708,23 +2708,22 @@ typedef struct {
     u16  checksum;
     u32 src;
     u32 dst;
-
-}pfcp_fatemeh_packet_header_t;
+} pfcp_fatemeh_packet_header_t;
 
 typedef struct {
     u16 length;
     u8* data;
-}pfcp_fatemeh_packet_data_t;
+} pfcp_fatemeh_packet_data_t;
 
 
 // FATEMEH: added type for packet report
 //[FATEMEH]: TODO: define format, decode, encode for the following struct.
+// [STEP 3]
 typedef struct
 {
     struct pfcp_group grp;
 
     pfcp_fatemeh_packet_type_t packet_type;
-//    pfcp_fatemeh_packet_direction_t packet_direction;
     pfcp_fatemeh_packet_header_t packet_header;
     pfcp_fatemeh_packet_data_t packet_data;
 } pfcp_fatemeh_packet_report_t;
