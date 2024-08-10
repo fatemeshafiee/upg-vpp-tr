@@ -32,7 +32,7 @@ void prepare_ee_data(){
 //    new_data.bytes = flow->stats.bytes;
 //    new_data.pkts = flow->stats.pkts;
 //    vecadd1(usage_report_per_flow_vectorl,new_data);
-    flow_key_t key = flow.key;
+    flow_key_t key = flow->key;
     clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
     clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
     clib_warning("[3| flow_info] port[0] %s", key.port[0]);
