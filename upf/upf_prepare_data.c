@@ -67,6 +67,7 @@ VLIB_REGISTER_NODE(my_process_node) = {
 
 
 static clib_error_t *my_init_function(vlib_main_t *vm) {
+  clib_warning("[flow_FATEMEH]inside the my_init_function");
   return 0;
 }
 
