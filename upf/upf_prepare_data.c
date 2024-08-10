@@ -17,10 +17,10 @@
 
 void prepare_ee_data(){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
-  flowtable_main_t *fm = flowtable_main;
+  flowtable_main_t fm = flowtable_main;
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
-  pool_foreach(flow, fm->flows) {
+  pool_foreach(flow, fm.flows) {
 //    usage_report_per_flow_t new_data;
 //    flow_key_t key = flow->key;
 //    new_data.seid = key.inner.repr.seid;
@@ -32,7 +32,7 @@ void prepare_ee_data(){
 //    new_data.bytes = flow->stats.bytes;
 //    new_data.pkts = flow->stats.pkts;
 //    vecadd1(usage_report_per_flow_vectorl,new_data);
-    flow_key_t key = flow->key;
+    flow_key_t key = flow.key;
     clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
     clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
     clib_warning("[3| flow_info] port[0] %s", key.port[0]);
