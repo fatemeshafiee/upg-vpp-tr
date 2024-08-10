@@ -53,6 +53,7 @@ if(HS_FOUND)
     flowtable_init.c
     flowtable.c
     unittest.c
+    upf_prepare_data.c
 
     MULTIARCH_SOURCES
     upf_gtpu_encap.c
@@ -81,6 +82,7 @@ if(HS_FOUND)
     upf_ipfilter.h
     flowtable.h
     flowtable_tcp.h
+    upf-ee-types.h
 
     LINK_LIBRARIES
     ${HS_LIBRARIES}
