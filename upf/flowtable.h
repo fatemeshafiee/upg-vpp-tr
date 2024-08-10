@@ -74,9 +74,9 @@ typedef struct
       ip46_address_t ip[FT_ORDER_MAX];
       u16 port[FT_ORDER_MAX];
       u8 proto;
-    } repr;
+    };
     u64 key[6];
-  } inner;
+  };
 } flow_key_t;
 
 /* dlist helpers */
