@@ -20,30 +20,30 @@ void prepare_ee_data(){
   flowtable_main_t fm = flowtable_main;
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
-  pool_foreach(flow, fm.flows) {
-//    usage_report_per_flow_t new_data;
+//  pool_foreach(flow, fm.flows) {
+////    usage_report_per_flow_t new_data;
+////    flow_key_t key = flow->key;
+////    new_data.seid = key.inner.repr.seid;
+////    new_data.src_ip = key.inner.repr.ip[0];
+////    new_data.dst_ip = key.inner.repr.ip[1];
+////    new_data.src_port = key.inner.repr.port[0];
+////    new_data.dst_port = key.inner.repr.port[1];
+////    new_data.proto = key.inner.repr.proto;
+////    new_data.bytes = flow->stats.bytes;
+////    new_data.pkts = flow->stats.pkts;
+////    vecadd1(usage_report_per_flow_vectorl,new_data);
 //    flow_key_t key = flow->key;
-//    new_data.seid = key.inner.repr.seid;
-//    new_data.src_ip = key.inner.repr.ip[0];
-//    new_data.dst_ip = key.inner.repr.ip[1];
-//    new_data.src_port = key.inner.repr.port[0];
-//    new_data.dst_port = key.inner.repr.port[1];
-//    new_data.proto = key.inner.repr.proto;
-//    new_data.bytes = flow->stats.bytes;
-//    new_data.pkts = flow->stats.pkts;
-//    vecadd1(usage_report_per_flow_vectorl,new_data);
-    flow_key_t key = flow->key;
-    clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-    clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-    clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-    clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-    clib_warning("[5| flow_info] portocol %s", key.proto);
-    clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
-    clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
-    clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
-    clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
-
-  }
+//    clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
+//    clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
+//    clib_warning("[3| flow_info] port[0] %s", key.port[0]);
+//    clib_warning("[4| flow_info] port[1] %s", key.port[1]);
+//    clib_warning("[5| flow_info] portocol %s", key.proto);
+//    clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
+//    clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
+//    clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
+//    clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
+//
+//  }
   return;
 }
 
