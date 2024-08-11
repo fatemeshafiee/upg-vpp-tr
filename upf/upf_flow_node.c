@@ -26,6 +26,8 @@
 #include "flowtable.h"
 #include "flowtable_tcp.h"
 #include <stdio.h>
+#include "upf/upf_prepare_data.h"
+
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
@@ -292,7 +294,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
 
-
+    prepare_ee_data(fm);
 
 //    b0->flags |= VLIB_BUFFER_IS_TRACED;
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
@@ -435,6 +437,11 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  /* flow statistics */
 	  flow->stats[is_reverse].pkts++;
 	  flow->stats[is_reverse].bytes += b0->current_length;
+
+    // TODO: fatemeh
+    // check_and_send_stats();
+
+    // if last - now > interval => send
 
 	  /* fill opaque buffer with flow data */
 	  next0 =
