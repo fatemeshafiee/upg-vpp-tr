@@ -21,7 +21,7 @@ void prepare_ee_data(){
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
   if (pthread_spin_lock (&fm->flows_lock) == 0) {
-    pool_elt_at_index (fm->flows, 0){
+    flow = pool_elt_at_index (fm->flows, 0)
 //    usage_report_per_flow_t new_data;
 //    flow_key_t key = flow->key;
 //    new_data.seid = key.inner.repr.seid;
@@ -44,7 +44,7 @@ void prepare_ee_data(){
     clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
     clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
 
-  }
+
   pthread_spin_unlock (&fm->flows_lock);
   }
   return;
