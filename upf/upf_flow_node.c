@@ -296,7 +296,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 //    prepare_ee_data(fm);
         u32 num_flows = vec_len(fm->flows);
-        for(u32 i=0; i < num; i++){
+        for(u32 i=0; i < num_flows; i++){
           flow = pool_elt_at_index (fm->flows, i);
           if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
 
