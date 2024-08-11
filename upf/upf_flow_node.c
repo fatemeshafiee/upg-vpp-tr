@@ -27,7 +27,7 @@
 #include "flowtable_tcp.h"
 #include <stdio.h>
 #include "upf/upf_prepare_data.h"
-
+#include <arpa/inet.h>
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
@@ -301,8 +301,12 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
           flow = pool_elt_at_index (fm->flows, i);
           if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
 
-//            flow_key_t key = flow->key;
-//            clib_warning("[1|flow_info] ip[0].  %s", key);
+            flow_key_t key = flow->key;
+            char buffer[INET6_ADDRSTRLEN];
+            inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
+            clib_warning("[1|flow_info] ip[0].  %s", buffer);
+
+//            clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
 //            clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
 //            clib_warning("[3| flow_info] port[0] %s", key.port[0]);
 //            clib_warning("[4| flow_info] port[1] %s", key.port[1]);
