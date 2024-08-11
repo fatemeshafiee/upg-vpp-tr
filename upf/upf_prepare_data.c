@@ -57,15 +57,22 @@ static uword process_send_data(vlib_main_t *vm, vlib_node_runtime_t *rt, vlib_fr
 
   return 0;
 }
-VLIB_REGISTER_NODE(my_process_node) = {
-        .function = process_send_data,
-        .type = VLIB_NODE_TYPE_PROCESS,
-        .name = "periodic-sending-process",
-};
-
+//VLIB_REGISTER_NODE(my_process_node) = {
+//        .function = process_send_data,
+//        .type = VLIB_NODE_TYPE_PROCESS,
+//        .name = "periodic-sending-process",
+//};
+//
 
 static clib_error_t *my_init_function(vlib_main_t *vm) {
   clib_warning("[flow_FATEMEH]inside the my_init_function");
+  f64 interval = 5.0;
+
+  while (1) {
+    prepare_ee_data();
+    vlib_process_wait_for_event_or_clock(vm, interval);
+    vlib_process_get_events(vm, NULL);
+  }
   return 0;
 }
 
