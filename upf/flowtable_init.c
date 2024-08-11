@@ -127,6 +127,7 @@ flowtable_init (vlib_main_t * vm)
   pool_alloc_aligned (fm->flows, fm->flows_max, CLIB_CACHE_LINE_BYTES);
   pthread_spin_init (&fm->flows_lock, PTHREAD_PROCESS_PRIVATE);
   fm->flows_cpt = 0;
+  fm->current_flows_count = 0;
 
   for (flowtable_timeout_type_t i = FT_TIMEOUT_TYPE_UNKNOWN;
        i < FT_TIMEOUT_TYPE_MAX; i++)

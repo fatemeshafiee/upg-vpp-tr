@@ -21,7 +21,25 @@ void prepare_ee_data(){
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
   if (pthread_spin_lock (&fm->flows_lock) == 0) {
-    flow = pool_elt_at_index (fm->flows, 1);
+    u32 num_flows = vec_len(fm->flows);
+    clib_warning("number of flows is %d", num_flows);
+    u32 num = pool_len(fm->flows);
+    clib_warning("number of flows with pool is %d", num);
+    for(u32 i=0; i < num; i++){
+      flow_key_t key = flow->key;
+      flow = pool_elt_at_index (fm->flows, i);
+      clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
+      clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
+      clib_warning("[3| flow_info] port[0] %s", key.port[0]);
+      clib_warning("[4| flow_info] port[1] %s", key.port[1]);
+      clib_warning("[5| flow_info] portocol %s", key.proto);
+      clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
+      clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
+      clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
+      clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
+
+    }
+
 //    usage_report_per_flow_t new_data;
 //    flow_key_t key = flow->key;
 //    new_data.seid = key.inner.repr.seid;
@@ -33,29 +51,7 @@ void prepare_ee_data(){
 //    new_data.bytes = flow->stats.bytes;
 //    new_data.pkts = flow->stats.pkts;
 //    vecadd1(usage_report_per_flow_vectorl,new_data);
-    flow_key_t key = flow->key;
-    clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-    clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-    clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-    clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-    clib_warning("[5| flow_info] portocol %s", key.proto);
-    clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
-    clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
-    clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
-    clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
-//    pool_foreach(flow, fm->flows)
-//      { flow_key_t key = flow->key;
-//        clib_warning("in the pool for_each");
-//        clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-//        clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-//        clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-//        clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-//        clib_warning("[5| flow_info] portocol %s", key.proto);
-//        clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
-//        clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
-//        clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
-//        clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
-//    }
+
 
   pthread_spin_unlock (&fm->flows_lock);
   }
