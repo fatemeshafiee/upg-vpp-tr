@@ -25,18 +25,20 @@ void prepare_ee_data(flowtable_main_t *fm){
     u32 num = pool_len(fm->flows);
     clib_warning("number of flows with pool is %d", num);
     for(u32 i=0; i < num; i++){
-      flow = pool_elt_at_index (fm->flows, i);
-      flow_key_t key = flow->key;
-      clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-      clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-      clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-      clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-      clib_warning("[5| flow_info] portocol %s", key.proto);
-      clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
-      clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
-      clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
-      clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
+      if (flow->stats[0].pkts!=0 | flow->stats[1].pkts!=0){
+        flow = pool_elt_at_index (fm->flows, i);
+        flow_key_t key = flow->key;
+        clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
+        clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
+        clib_warning("[3| flow_info] port[0] %s", key.port[0]);
+        clib_warning("[4| flow_info] port[1] %s", key.port[1]);
+        clib_warning("[5| flow_info] portocol %s", key.proto);
+        clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
+        clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
+        clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
+        clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
 
+      }
     }
 
 //  pthread_spin_unlock (&fm->flows_lock);
