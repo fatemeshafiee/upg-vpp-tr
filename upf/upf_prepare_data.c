@@ -17,7 +17,7 @@
 
 void prepare_ee_data(){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
-  flowtable_main_t *fm = flowtable_main;
+  flowtable_main_t *fm = &flowtable_main;
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
   if (pthread_spin_lock (&fm->flows_lock) == 0) {
