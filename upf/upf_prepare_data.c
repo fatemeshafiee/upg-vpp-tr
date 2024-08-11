@@ -25,8 +25,9 @@ void prepare_ee_data(flowtable_main_t *fm){
     u32 num = pool_len(fm->flows);
     clib_warning("number of flows with pool is %d", num);
     for(u32 i=0; i < num; i++){
+      flow = pool_elt_at_index (fm->flows, i);
       if (flow->stats[0].pkts!=0 | flow->stats[1].pkts!=0){
-        flow = pool_elt_at_index (fm->flows, i);
+
         flow_key_t key = flow->key;
         clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
         clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
