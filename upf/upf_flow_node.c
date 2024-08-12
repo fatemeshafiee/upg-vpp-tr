@@ -294,30 +294,8 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
 
-//    prepare_ee_data(fm);
-        flow_entry_t *flow;
-        u32 num_flows = vec_len(fm->flows);
-        for(u32 i=0; i < num_flows; i++){
-          flow = pool_elt_at_index (fm->flows, i);
-          if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
+    prepare_ee_data(fm);
 
-            flow_key_t key = flow->key;
-            char buffer[INET6_ADDRSTRLEN];
-            inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
-            clib_warning("[1|flow_info] ip[0].  %s", buffer);
-
-//            clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-//            clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-//            clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-//            clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-//            clib_warning("[5| flow_info] portocol %s", key.proto);
-            clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
-            clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
-            clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
-            clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
-
-          }
-        }
 //    b0->flags |= VLIB_BUFFER_IS_TRACED;
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
 	    {

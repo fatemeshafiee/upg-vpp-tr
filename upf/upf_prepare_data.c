@@ -29,11 +29,15 @@ void prepare_ee_data(flowtable_main_t *fm){
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
 
         flow_key_t key = flow->key;
-        clib_warning("[1|flow_info] ip[0].  %s", key.ip[0]);
-        clib_warning("[2| flow_info] ip[1]  %s", key.ip[1]);
-        clib_warning("[3| flow_info] port[0] %s", key.port[0]);
-        clib_warning("[4| flow_info] port[1] %s", key.port[1]);
-        clib_warning("[5| flow_info] portocol %s", key.proto);
+        char buffer[INET6_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
+        clib_warning("[1|flow_info] ip[0].  %s", buffer);
+
+        inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
+        clib_warning("[1|flow_info] ip[1].  %s", buffer);
+        clib_warning("[3| flow_info] port[0] %u", key.port[0]);
+        clib_warning("[4| flow_info] port[1] %u", key.port[1]);
+        clib_warning("[5| flow_info] portocol %u", key.proto);
         clib_warning("[6| flow_info] stst 0 pkts %d", flow->stats[0].pkts);
         clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
         clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
