@@ -19,6 +19,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
   usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
+
 //  if (pthread_spin_lock (&fm->flows_lock) == 0) {
     u32 num_flows = vec_len(fm->flows);
     clib_warning("number of flows is %d", num_flows);
@@ -27,7 +28,7 @@ void prepare_ee_data(flowtable_main_t *fm){
     for(u32 i=0; i < num; i++){
       flow = pool_elt_at_index (fm->flows, i);
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
-
+        usage_report_per_flow_t new_data;
         flow_key_t key = flow->key;
         char buffer[INET6_ADDRSTRLEN];
         inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
@@ -42,6 +43,18 @@ void prepare_ee_data(flowtable_main_t *fm){
         clib_warning("[7| flow_info] stst 0 bytes %d", flow->stats[0].bytes);
         clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
         clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
+
+        new_data.seid = key.seid;
+        new_data.src_ip = key.ip[0];
+        new_data.dst_ip = key.ip[1];
+        new_data.src_port = key.port[0];
+        new_data.dst_port = key.port[1];
+        new_data.proto = key.proto;
+        new_data.src_pkts = flow->stats[0].pkts;
+        new_data.src_bytes = flow->stats[0].bytes;
+        new_data.dst_pkts = flow->stats[1].pkts;
+        new_data.dst_bytes = flow->stats[1].bytes;
+        vecadd1(usage_report_per_flow_vectorl,new_data);
 
       }
     }
@@ -77,16 +90,6 @@ void prepare_ee_data(flowtable_main_t *fm){
 //
 //VLIB_INIT_FUNCTION(my_init_function);
 //
-////    usage_report_per_flow_t new_data;
-////    flow_key_t key = flow->key;
-////    new_data.seid = key.inner.repr.seid;
-////    new_data.src_ip = key.inner.repr.ip[0];
-////    new_data.dst_ip = key.inner.repr.ip[1];
-////    new_data.src_port = key.inner.repr.port[0];
-////    new_data.dst_port = key.inner.repr.port[1];
-////    new_data.proto = key.inner.repr.proto;
-////    new_data.bytes = flow->stats.bytes;
-////    new_data.pkts = flow->stats.pkts;
-////    vecadd1(usage_report_per_flow_vectorl,new_data);
+
 //
 //

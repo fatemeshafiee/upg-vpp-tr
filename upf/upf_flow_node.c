@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "upf/upf_prepare_data.h"
 #include <arpa/inet.h>
+#include "time.h"
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
@@ -293,8 +294,14 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  to_next += 2;
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
+    time_t current_time = time(NULL);
 
-    prepare_ee_data(fm);
+    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == (time_t)-1){
+
+      prepare_ee_data(fm);
+      last_ee_report_time = current_time;
+    }
+
 
 //    b0->flags |= VLIB_BUFFER_IS_TRACED;
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
@@ -456,12 +463,19 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  CPT_CREATED += created;
 	  CPT_HIT += !created;
 
+
 	stats1:
 	  /* frame mgmt */
 	  from++;
 	  to_next++;
 	  n_left_from--;
 	  n_left_to_next--;
+
+    time_t current_time = time(NULL);
+    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == (time_t)-1){
+      prepare_ee_data(fm);
+      last_ee_report_time = current_time;
+    }
 
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
 	    {

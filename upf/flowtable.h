@@ -26,6 +26,7 @@
 #include <vppinfra/dlist.h>
 #include <vppinfra/pool.h>
 #include <vppinfra/vec.h>
+#include <time.h>
 
 #include "flowtable_tcp.h"
 
@@ -219,6 +220,8 @@ typedef struct
 } flowtable_main_t;
 
 extern flowtable_main_t flowtable_main;
+extern time_t last_ee_report_time;
+extern int ee_report_period;
 typedef int (*flow_expiration_hook_t) (flow_entry_t * flow);
 
 extern flow_expiration_hook_t flow_expiration_hook;

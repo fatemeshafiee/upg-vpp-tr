@@ -19,6 +19,7 @@
 #include <vppinfra/pool.h>
 #include <vppinfra/types.h>
 #include <vppinfra/vec.h>
+#include "time.h"
 
 #include "upf.h"
 
@@ -114,6 +115,7 @@ flowtable_init_cpu (flowtable_main_t * fm, u32 cpu_index)
 clib_error_t *
 flowtable_init (vlib_main_t * vm)
 {
+  last_ee_report_time = (time_t)-1;
   u32 cpu_index;
   clib_error_t *error = 0;
   flowtable_main_t *fm = &flowtable_main;

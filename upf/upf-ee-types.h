@@ -15,7 +15,9 @@ typedef struct
     u16 src_port;
     u16 dst_port;
     u8 proto;
-    u32 pkts;
-    u64 bytes;
+    u32 src_pkts;
+    u64 src_bytes;
+    u32 dst_pkts;
+    u64 dst_bytes;
 
 } usage_report_per_flow_t;
