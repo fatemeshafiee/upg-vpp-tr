@@ -33,6 +33,7 @@
 #include "flowtable.h"
 
 flowtable_main_t flowtable_main;
+time_t last_ee_report_time;
 
 clib_error_t *
 flowtable_lifetime_update (flowtable_timeout_type_t type, u16 value)
@@ -112,10 +113,12 @@ flowtable_init_cpu (flowtable_main_t * fm, u32 cpu_index)
   return error;
 }
 
+
+
 clib_error_t *
 flowtable_init (vlib_main_t * vm)
 {
-  last_ee_report_time = (time_t)-1;
+  last_ee_report_time = 0;
   u32 cpu_index;
   clib_error_t *error = 0;
   flowtable_main_t *fm = &flowtable_main;

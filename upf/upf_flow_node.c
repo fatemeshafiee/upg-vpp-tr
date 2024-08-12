@@ -296,7 +296,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_to_next -= 2;
     time_t current_time = time(NULL);
 
-    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == (time_t)-1){
+    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
 
       prepare_ee_data(fm);
       last_ee_report_time = current_time;
@@ -472,7 +472,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_to_next--;
 
     time_t current_time = time(NULL);
-    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == (time_t)-1){
+    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
       prepare_ee_data(fm);
       last_ee_report_time = current_time;
     }
