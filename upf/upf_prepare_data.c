@@ -32,6 +32,9 @@
 
 
 void prepare_ee_data(flowtable_main_t *fm){
+  if(1==1){
+    return;
+  }
 
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
