@@ -26,6 +26,7 @@ pkg_check_modules(MHD REQUIRED libmicrohttpd)
 
 if(HS_FOUND)
   include_directories (${HS_INCLUDE_DIRS})
+  include_directories (${MHD_INCLUDE_DIRS})
 
   add_vpp_plugin(upf
     SOURCES
