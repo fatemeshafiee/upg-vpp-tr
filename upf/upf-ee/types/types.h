@@ -12,8 +12,6 @@
 #include <time.h>
 #include <stdint.h>
 #include <pthread.h>
-#define INITIALIZER(...) = __VA_ARGS__
-
 
 typedef enum {
     ONE_TIME,
@@ -253,7 +251,6 @@ typedef struct
     u64 dst_bytes;
 
 } usage_report_per_flow_t;
-// TODO
 
 
 

@@ -61,10 +61,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     item->timeStamp = mktime(&tm);
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
-    cvector(UserDataUsageMeasurements) userDataUsageMeasurements;
+    cvector(UserDataUsageMeasurements) userDataMeasurements;
     pthread_mutex_lock(&lock);
     vec_foreach(rep, usage_report_per_flow_vector){
-      UserDataUsageMeasurements *usage = &item->userDataUsageMeasurements;
+      UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
       usage->volumeMeasurement.totalVolume = rep->src_bytes + rep->dst_bytes;
       // TODO: make sure the uplink and downlink are right.
@@ -82,9 +82,9 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
       usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
-      cvector_push_back(userDataUsageMeasurements, *usage);
+      cvector_push_back(userDataMeasurements, *usage);
     }
-
+    item->userDataUsageMeasurements = userDataMeasurements;
   }
   pthread_mutex_unlock(&lock);
 
