@@ -21,6 +21,8 @@
 message(STATUS "Looking for hyperscan")
 pkg_check_modules(HS libhs)
 
+message(STATUS "Looking for hyperscan")
+pkg_check_modules(HS libhs)
 if(HS_FOUND)
   include_directories (${HS_INCLUDE_DIRS})
 
@@ -54,6 +56,7 @@ if(HS_FOUND)
     flowtable.c
     unittest.c
     upf_prepare_data.c
+    upf-ee/send_data.c
 
     MULTIARCH_SOURCES
     upf_gtpu_encap.c
@@ -82,7 +85,22 @@ if(HS_FOUND)
     upf_ipfilter.h
     flowtable.h
     flowtable_tcp.h
-    upf-ee-types.h
+    upf-ee/lib/cvector.h
+    upf-ee/lib/cvector_utils.h
+    upf-ee/lib/stb_ds.h
+    upf-ee/storage/event.h
+    upf-ee/storage/shared_variables.h
+    upf-ee/types/decoder.h
+    upf-ee/types/encoder.h
+    upf-ee/types/types.h
+    upf-ee/EE-init.h
+    upf-ee/handler.h
+    upf-ee/response_builder.h
+    upf-ee/send_data.h
+    upf-ee/upf_interface.h
+    upf-ee/user_handler.h
+    upf-ee/utils.h
+
 
     LINK_LIBRARIES
     ${HS_LIBRARIES}
