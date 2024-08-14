@@ -24,7 +24,7 @@ pkg_check_modules(HS libhs)
 message(STATUS "Looking for Microhttpd")
 pkg_check_modules(MHD REQUIRED libmicrohttpd)
 
-if(HS_FOUND)
+if(MHD_FOUND)
   include_directories (${HS_INCLUDE_DIRS})
   include_directories (${MHD_INCLUDE_DIRS})
 
