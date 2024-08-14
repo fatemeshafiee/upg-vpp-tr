@@ -7,14 +7,14 @@
 #define UPG_VPP_SHARED_VARIABLES_H
 #ifdef DEFINE_UPF_SHARED
 #define EXTERN
-#define INITIALIZER pthread_mutex_init(&ee_lock, NULL);
+//#define INITIALIZER pthread_mutex_init(&ee_lock, NULL);
 #else
 #define EXTERN extern
-#define INITIALIZER
+//#define INITIALIZER
 #endif
 
 
 EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
 EXTERN pthread_mutex_t ee_lock;
-INITIALIZER
+//INITIALIZER
 #endif //UPG_VPP_SHARED_VARIABLES_H
