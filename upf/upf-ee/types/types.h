@@ -239,16 +239,16 @@ typedef struct {
 
 typedef struct
 {
-    u64 seid;
+    uint64_t seid;
     ip46_address_t src_ip;
     ip46_address_t dst_ip;
-    u16 src_port;
-    u16 dst_port;
-    u8 proto;
-    u32 src_pkts;
-    u64 src_bytes;
-    u32 dst_pkts;
-    u64 dst_bytes;
+    uint16_t src_port;
+    uint16_t dst_port;
+    uint8_t  proto;
+    uint32_t src_pkts;
+    uint64_t src_bytes;
+    uint32_t dst_pkts;
+    uint64_t dst_bytes;
 
 } usage_report_per_flow_t;
 
