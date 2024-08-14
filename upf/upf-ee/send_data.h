@@ -65,27 +65,27 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
 //    pthread_mutex_lock(&ee_lock);
-    vec_foreach(rep, usage_report_per_flow_vector){
-      UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
-      usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
-      usage->volumeMeasurement.totalVolume = rep->src_bytes + rep->dst_bytes;
-      // TODO: make sure the uplink and downlink are right.
-      usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
-      usage->volumeMeasurement.dlVolume = rep->src_bytes;
-      usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
-      usage->volumeMeasurement.ulVolume = rep->dst_bytes;
-      char buffer[INET6_ADDRSTRLEN];
-      json_t *obj = json_object();
-      json_object_set_new(obj,"SeId", json_integer(rep->seid));
-      inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
-      json_object_set_new(obj,"SrcIp", json_string(buffer));
-      inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
-      json_object_set_new(obj,"DstIp", json_string(buffer));
-      json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
-      json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
-      usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
-      cvector_push_back(userDataMeasurements, *usage);
-    }
+//    vec_foreach(rep, usage_report_per_flow_vector){
+//      UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
+//      usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
+//      usage->volumeMeasurement.totalVolume = rep->src_bytes + rep->dst_bytes;
+//      // TODO: make sure the uplink and downlink are right.
+//      usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
+//      usage->volumeMeasurement.dlVolume = rep->src_bytes;
+//      usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
+//      usage->volumeMeasurement.ulVolume = rep->dst_bytes;
+//      char buffer[INET6_ADDRSTRLEN];
+//      json_t *obj = json_object();
+//      json_object_set_new(obj,"SeId", json_integer(rep->seid));
+//      inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
+//      json_object_set_new(obj,"SrcIp", json_string(buffer));
+//      inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
+//      json_object_set_new(obj,"DstIp", json_string(buffer));
+//      json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
+//      json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
+//      usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
+//      cvector_push_back(userDataMeasurements, *usage);
+//    }
     item->userDataUsageMeasurements = userDataMeasurements;
   }
 //  pthread_mutex_unlock(&ee_lock);

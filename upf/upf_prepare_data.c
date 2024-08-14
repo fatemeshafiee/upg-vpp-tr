@@ -14,9 +14,9 @@
 #include "upf-ee/lib/stb_ds.h"
 #undef STB_DS_IMPLEMENTATION
 
-#define DEFINE_UPF_SHARED
-#include "upf-ee/storage/shared_variables.h"
-#undef DEFINE_UPF_SHARED
+//#define DEFINE_UPF_SHARED
+//#include "upf-ee/storage/shared_variables.h"
+//#undef DEFINE_UPF_SHARED
 
 #include "upf-ee/EE-init.h"
 
@@ -29,9 +29,9 @@
 #define flow_debug(...)				\
   do { } while (0)
 #endif
-void init_lock(){
-  pthread_mutex_init(&ee_lock, NULL);
-}
+//void init_lock(){
+//  pthread_mutex_init(&ee_lock, NULL);
+//}
 void prepare_ee_data(flowtable_main_t *fm){
   if(1==1){
     return;
