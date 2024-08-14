@@ -80,7 +80,7 @@ void prepare_ee_data(flowtable_main_t *fm){
 //        vec_add1(usage_report_per_flow_vector,new_data);
 //
 //      }
-    }
+//    }
 
 //  pthread_mutex_unlock(&ee_lock);
 
