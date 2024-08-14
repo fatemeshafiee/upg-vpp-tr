@@ -33,9 +33,9 @@ void init_lock(){
   pthread_mutex_init(&ee_lock, NULL);
 }
 void prepare_ee_data(flowtable_main_t *fm){
-//  if(1==1){
-//    return;
-//  }
+  if(1==1){
+    return;
+  }
 
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
@@ -86,7 +86,7 @@ void prepare_ee_data(flowtable_main_t *fm){
 
   return;
 }
-VLIB_INIT_FUNCTION(init_lock);
+//VLIB_INIT_FUNCTION(init_lock);
 //
 //static uword process_send_data(vlib_main_t *vm, vlib_node_runtime_t *rt, vlib_frame_t *f) {
 //  f64 interval = 5.0;
