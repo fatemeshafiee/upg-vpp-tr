@@ -6,10 +6,12 @@
 #define UPG_VPP_SHARED_VARIABLES_H
 #ifdef DEFINE_UPF_SHARED
 #define EXTERN
+#define INITIALIZER(...) = __VA_ARGS__
 #else
 #define EXTERN extern
+#define INITIALIZER(...)
 #endif
 #endif //UPG_VPP_SHARED_VARIABLES_H
 #include "../types/types.h"
 EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
-EXTERN pthread_mutex_t lock;
+EXTERN pthread_mutex_t lock INITIALIZER(PTHREAD_MUTEX_INITIALIZER);
