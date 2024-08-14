@@ -56,6 +56,9 @@
   do { } while (0)
 #endif
 
+static fib_source_t upf_fib_source;
+
+
 #define DEFINE_UPF_STORAGE
 #include "upf-ee/storage/event.h"
 #undef DEFINE_UPF_STORAGE
@@ -68,7 +71,6 @@
 #undef UPG_VPP_SHARED_VARIABLES_H
 
 #include "upf-ee/EE-init.h"
-static fib_source_t upf_fib_source;
 
 int
 vnet_upf_ue_ip_pool_add_del (u8 * identity, u8 * nwi_name, int is_add)
