@@ -1,6 +1,8 @@
 #include "response_builder.h"
 #include "user_handler.h"
 #include <setjmp.h>
+#include <microhttpd.h>
+
 
 jmp_buf exceptionBuffer;
 
