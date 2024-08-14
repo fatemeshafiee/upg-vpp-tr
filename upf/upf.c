@@ -60,7 +60,7 @@
 #include "upf-ee/storage/event.h"
 #undef DEFINE_UPF_STORAGE
 #define STB_DS_IMPLEMENTATION
-#include "lib/stb_ds.h"
+#include "upf-ee/lib/stb_ds.h"
 #undef STB_DS_IMPLEMENTATION
 
 #define UPG_VPP_SHARED_VARIABLES_H
