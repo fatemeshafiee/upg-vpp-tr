@@ -18,7 +18,7 @@
 #include "upf-ee/storage/shared_variables.h"
 #undef DEFINE_UPF_SHARED
 
-
+#include "upf-ee/EE-init.h"
 
 
 

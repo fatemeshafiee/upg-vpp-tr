@@ -6,7 +6,6 @@
 #include <jansson.h>
 #include "handler.h"
 #include "types/types.h"
-#include "storage/event.h"
 #include <pthread.h>
 #include "send_data.h"
 #define PORT 8080

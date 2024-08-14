@@ -60,7 +60,9 @@ static fib_source_t upf_fib_source;
 
 
 //#include "upf-ee/storage/shared_variables.h"
-#include "upf-ee/EE-init.h"
+//#include "upf-ee/EE-init.h"
+extern void send_report_client();
+extern void server_for_getting_requests();
 
 int
 vnet_upf_ue_ip_pool_add_del (u8 * identity, u8 * nwi_name, int is_add)
