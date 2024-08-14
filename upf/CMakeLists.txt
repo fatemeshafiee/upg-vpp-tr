@@ -21,8 +21,8 @@
 message(STATUS "Looking for hyperscan")
 pkg_check_modules(HS libhs)
 
-message(STATUS "Looking for hyperscan")
-pkg_check_modules(HS libhs)
+message(STATUS "Looking for Microhttpd")
+find_package(Microhttpd REQUIRED)
 if(HS_FOUND)
   include_directories (${HS_INCLUDE_DIRS})
 
@@ -104,6 +104,7 @@ if(HS_FOUND)
 
     LINK_LIBRARIES
     ${HS_LIBRARIES}
+    Microhttpd::Microhttpd
 
     LINK_FLAGS
     ${HS_LDFLAGS}
