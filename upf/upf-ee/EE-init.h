@@ -12,6 +12,7 @@
 #define PORT 8080
 
 void send_report_client(){
+  pthread_t thread;
   int result;
   printf("Starting server for sending reports on port %d\n", PORT);
   result = pthread_create(&thread, NULL, EventReport_UDUT, NULL);
