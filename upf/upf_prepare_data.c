@@ -5,7 +5,9 @@
 #include <vlib/vlib.h>
 #include <vlib/unix/unix.h>
 #include "upf-ee/types/types.h"
+#define DEFINE_UPF_SHARED
 #include "upf-ee/storage/shared_variables.h"
+#undef UPG_VPP_SHARED_VARIABLES_H
 
 
 #if CLIB_DEBUG > 1
@@ -17,9 +19,7 @@
 
 
 void prepare_ee_data(flowtable_main_t *fm){
-  if (1 == 1) {
-    return;
-  }
+
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
 //  pthread_mutex_lock(&lock);
