@@ -113,6 +113,7 @@ if(MHD_FOUND)
 
     LINK_FLAGS
     ${HS_LDFLAGS}
+    ${MHD_LDFLAGS}
 
     API_TEST_SOURCES
     upf_test.c
