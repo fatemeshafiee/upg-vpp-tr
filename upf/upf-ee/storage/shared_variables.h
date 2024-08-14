@@ -10,5 +10,6 @@
 #define EXTERN extern
 #endif
 #endif //UPG_VPP_SHARED_VARIABLES_H
+#include "../types/types.h"
 EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
 EXTERN pthread_mutex_t lock;

@@ -61,7 +61,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     item->timeStamp = mktime(&tm);
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
-    cvector(UserDataUsageMeasurements) userDataMeasurements;
+    cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
     pthread_mutex_lock(&lock);
     vec_foreach(rep, usage_report_per_flow_vector){
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
