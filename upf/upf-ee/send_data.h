@@ -74,8 +74,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
-      json_object_set_new(obj,"SrcIp", json_string(rep->src_ip));
-      json_object_set_new(obj,"DstIp", json_string(rep->dst_ip));
+      inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
+      json_object_set_new(obj,"SrcIp", json_string(buffer));
+      inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
+      json_object_set_new(obj,"DstIp", json_string(buffer));
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
       usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));

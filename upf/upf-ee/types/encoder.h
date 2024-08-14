@@ -222,7 +222,7 @@ json_t *serialize_Notification_Item(NotificationItem notificationItem) {
     json_object_set_new(obj,"startTime", time_to_json(notificationItem.startTime));
     json_t * userMeasurements = json_array();
     for (size_t i = 0; i < cvector_size(notificationItem.userDataUsageMeasurements); i++){
-      json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem.userDataUsageMeasurements));
+      json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem.userDataUsageMeasurements[i]));
     }
     json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
     return  obj;
