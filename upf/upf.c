@@ -59,18 +59,18 @@
 static fib_source_t upf_fib_source;
 
 
-#define DEFINE_UPF_STORAGE
-#include "upf-ee/storage/event.h"
-#undef DEFINE_UPF_STORAGE
-#define STB_DS_IMPLEMENTATION
-#include "upf-ee/lib/stb_ds.h"
-#undef STB_DS_IMPLEMENTATION
-
-#define UPG_VPP_SHARED_VARIABLES_H
-#include "upf-ee/storage/shared_variables.h"
-#undef UPG_VPP_SHARED_VARIABLES_H
-
-#include "upf-ee/EE-init.h"
+//#define DEFINE_UPF_STORAGE
+//#include "upf-ee/storage/event.h"
+//#undef DEFINE_UPF_STORAGE
+//#define STB_DS_IMPLEMENTATION
+//#include "upf-ee/lib/stb_ds.h"
+//#undef STB_DS_IMPLEMENTATION
+//
+//#define UPG_VPP_SHARED_VARIABLES_H
+//#include "upf-ee/storage/shared_variables.h"
+//#undef UPG_VPP_SHARED_VARIABLES_H
+//
+//#include "upf-ee/EE-init.h"
 
 int
 vnet_upf_ue_ip_pool_add_del (u8 * identity, u8 * nwi_name, int is_add)
