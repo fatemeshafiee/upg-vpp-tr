@@ -64,7 +64,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
-    pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&ee_lock);
     vec_foreach(rep, usage_report_per_flow_vector){
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
@@ -88,7 +88,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     }
     item->userDataUsageMeasurements = userDataMeasurements;
   }
-  pthread_mutex_unlock(&lock);
+  pthread_mutex_unlock(&ee_lock);
 
 }
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
