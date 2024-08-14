@@ -552,7 +552,7 @@ upf_init (vlib_main_t * vm)
   error = flowtable_init (vm);
   if (error)
     return error;
-  pthread_mutex_init(&lock, NULL);
+//  pthread_mutex_init(&lock, NULL);
   return pfcp_server_main_init (vm);
 }
 
