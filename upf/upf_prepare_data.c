@@ -5,6 +5,7 @@
 #include <vlib/vlib.h>
 #include <vlib/unix/unix.h>
 #include "upf-ee/types/types.h"
+#include "storage/shared_variables.h"
 
 
 #if CLIB_DEBUG > 1

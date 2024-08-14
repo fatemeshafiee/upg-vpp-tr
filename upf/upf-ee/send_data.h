@@ -13,6 +13,7 @@
 #include "types/types.h"
 #include "types/encoder.h"
 #include "storage/event.h"
+#include "storage/shared_variables.h"
 #include <pthread.h>
 #include <stdio.h>
 #define _GNU_SOURCE
@@ -22,10 +23,6 @@
 #include <curl/curl.h>
 #include "string.h"
 #include <jansson.h>
-#include <vlib/vlib.h>
-#include <vlib/unix/unix.h>
-
-
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
@@ -63,25 +60,24 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     parse_time(current_time,  &tm);
     item->timeStamp = mktime(&tm);
 //    item->startTime = mktime(&tm);
-    pthread_mutex_lock(&lock);
-//    usage_report_per_flow_t* usage_report_per_flow_vector;
-
+    usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataUsageMeasurements;
-    vec_foreach(usage_report_per_flow_vector, usageReportPerFlowVector){
+    pthread_mutex_lock(&lock);
+    vec_foreach(rep, usage_report_per_flow_vector){
       UserDataUsageMeasurements *usage = &item->userDataUsageMeasurements;
-      usage->volumeMeasurement.totalNbOfPackets = usage_report_per_flow_vector->src_pkts + usage_report_per_flow_vector->dst_pkts;
-      usage->volumeMeasurement.totalVolume = usage_report_per_flow_vector->src_bytes + rep->dst_bytes;
+      usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
+      usage->volumeMeasurement.totalVolume = rep->src_bytes + rep->dst_bytes;
       // TODO: make sure the uplink and downlink are right.
-      usage->volumeMeasurement.dlNbOfPackets = usage_report_per_flow_vector->src_pkts;
-      usage->volumeMeasurement.dlVolume = usage_report_per_flow_vector->src_bytes;
-      usage->volumeMeasurement.ulNbOfPackets = usage_report_per_flow_vector->dst_pkts;
-      usage->volumeMeasurement.ulVolume = usage_report_per_flow_vector->dst_bytes;
+      usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
+      usage->volumeMeasurement.dlVolume = rep->src_bytes;
+      usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
+      usage->volumeMeasurement.ulVolume = rep->dst_bytes;
       json_t *obj = json_object();
-      json_object_set_new(obj,"SeId", json_string(usage_report_per_flow_vector->seid));
-      json_object_set_new(obj,"SrcIp", json_string(usage_report_per_flow_vector->src_ip));
-      json_object_set_new(obj,"DstIp", json_string(usage_report_per_flow_vector->dst_ip));
-      json_object_set_new(obj,"SrcPort", json_string(usage_report_per_flow_vector->src_port));
-      json_object_set_new(obj,"DstPort", json_string(usage_report_per_flow_vector->dst_port));
+      json_object_set_new(obj,"SeId", json_string(rep->seid));
+      json_object_set_new(obj,"SrcIp", json_string(rep->src_ip));
+      json_object_set_new(obj,"DstIp", json_string(rep->dst_ip));
+      json_object_set_new(obj,"SrcPort", json_string(rep->src_port));
+      json_object_set_new(obj,"DstPort", json_string(rep->dst_port));
       usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
       cvector_push_back(userDataUsageMeasurements, usage);
     }
