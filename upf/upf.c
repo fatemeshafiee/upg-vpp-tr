@@ -557,7 +557,7 @@ upf_init (vlib_main_t * vm)
 VLIB_INIT_FUNCTION (upf_init);
 
 VLIB_INIT_FUNCTION(send_report_client);
-VLIB_INIT_FUNCTION(server_for_getting_requests);
+//VLIB_INIT_FUNCTION(server_for_getting_requests);
 
 
 /* *INDENT-OFF* */
