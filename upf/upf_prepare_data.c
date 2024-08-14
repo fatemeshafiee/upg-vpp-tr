@@ -5,7 +5,11 @@
 #include <vlib/vlib.h>
 #include <vlib/unix/unix.h>
 #include "upf-ee/types/types.h"
+#define DEFINE_UPF_SHARED
 #include "upf-ee/storage/shared_variables.h"
+#undef DEFINE_UPF_SHARED
+
+
 
 
 

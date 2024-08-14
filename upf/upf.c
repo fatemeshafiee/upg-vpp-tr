@@ -66,10 +66,7 @@ static fib_source_t upf_fib_source;
 #include "upf-ee/lib/stb_ds.h"
 #undef STB_DS_IMPLEMENTATION
 
-#define DEFINE_UPF_SHARED
 #include "upf-ee/storage/shared_variables.h"
-#undef DEFINE_UPF_SHARED
-
 #include "upf-ee/EE-init.h"
 
 int
