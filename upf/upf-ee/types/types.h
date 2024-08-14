@@ -11,6 +11,8 @@
 #include "../lib/stb_ds.h"
 #include <time.h>
 #include <stdint.h>
+#include <pthread.h>
+#define INITIALIZER(...) = __VA_ARGS__
 
 
 typedef enum {
@@ -251,6 +253,9 @@ typedef struct
     u64 dst_bytes;
 
 } usage_report_per_flow_t;
+// TODO
+
+
 
 UpfEventTrigger getUpfEventTrigger(const char *s);
 PartitioningCriteria getPartitioningCriteria(const char *s);

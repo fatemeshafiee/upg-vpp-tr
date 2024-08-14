@@ -56,6 +56,18 @@
   do { } while (0)
 #endif
 
+#define DEFINE_UPF_STORAGE
+#include "upf-ee/storage/event.h"
+#undef DEFINE_UPF_STORAGE
+#define STB_DS_IMPLEMENTATION
+#include "lib/stb_ds.h"
+#undef STB_DS_IMPLEMENTATION
+
+#define UPG_VPP_SHARED_VARIABLES_H
+#include "upf-ee/storage/shared_variables.h"
+#undef UPG_VPP_SHARED_VARIABLES_H
+
+#include "upf-ee/EE-init.h"
 static fib_source_t upf_fib_source;
 
 int
@@ -543,6 +555,10 @@ upf_init (vlib_main_t * vm)
 }
 
 VLIB_INIT_FUNCTION (upf_init);
+pthread_mutex_init(&lock, NULL);
+VLIB_INIT_FUNCTION(send_report_client);
+VLIB_INIT_FUNCTION(server_for_getting_requests);
+
 
 /* *INDENT-OFF* */
 VNET_FEATURE_INIT (upf, static) =

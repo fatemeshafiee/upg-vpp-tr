@@ -4,7 +4,7 @@
 #include "flowtable.h"
 #include <vlib/vlib.h>
 #include <vlib/unix/unix.h>
-#include "upf-ee-types.h"
+#include "upf-ee/types/types.h"
 
 
 #if CLIB_DEBUG > 1
@@ -18,7 +18,8 @@
 void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
-  usage_report_per_flow_t *usage_report_per_flow_vector = NULL;
+  pthread_mutex_lock(&lock);
+  *usage_report_per_flow_vector = NULL;
 
 //  if (pthread_spin_lock (&fm->flows_lock) == 0) {
     u32 num_flows = vec_len(fm->flows);
@@ -59,8 +60,8 @@ void prepare_ee_data(flowtable_main_t *fm){
       }
     }
 
-//  pthread_spin_unlock (&fm->flows_lock);
-//  }
+  pthread_mutex_unlock(&lock);
+
   return;
 }
 
