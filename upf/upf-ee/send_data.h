@@ -72,6 +72,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->volumeMeasurement.dlVolume = rep->src_bytes;
       usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
+      char buffer[INET6_ADDRSTRLEN];
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
       inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
