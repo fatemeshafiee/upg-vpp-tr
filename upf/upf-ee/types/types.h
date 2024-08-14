@@ -240,8 +240,8 @@ typedef struct {
 typedef struct
 {
     uint64_t seid;
-    ip46_address_t src_ip;
-    ip46_address_t dst_ip;
+    char* src_ip;
+    char* dst_ip;
     uint16_t src_port;
     uint16_t dst_port;
     uint8_t  proto;
