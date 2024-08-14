@@ -23,6 +23,8 @@
 #include <curl/curl.h>
 #include "string.h"
 #include <jansson.h>
+#include <vlib/vlib.h>
+#include <vlib/unix/unix.h>
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
