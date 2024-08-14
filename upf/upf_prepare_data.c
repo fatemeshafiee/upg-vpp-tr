@@ -20,7 +20,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
   pthread_mutex_lock(&lock);
-  *usage_report_per_flow_vector = NULL;
+  usage_report_per_flow_vector = NULL;
 
 //  if (pthread_spin_lock (&fm->flows_lock) == 0) {
     u32 num_flows = vec_len(fm->flows);
