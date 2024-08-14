@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 #include "upf-ee/storage/shared_variables.h"
-#include "upf-ee/EE-init.h"
+//#include "upf-ee/EE-init.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
