@@ -45,10 +45,13 @@ void prepare_ee_data(flowtable_main_t *fm){
         usage_report_per_flow_t new_data;
         flow_key_t key = flow->key;
         char buffer[INET6_ADDRSTRLEN];
+
+
         inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
         clib_warning("[1|flow_info] ip[0].  %s", buffer);
-
+        new_data.src_ip = buffer;
         inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
+        new_data.dst_ip = buffer;
         clib_warning("[1|flow_info] ip[1].  %s", buffer);
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
@@ -59,8 +62,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
 
         new_data.seid = key.seid;
-        new_data.src_ip = key.ip[0];
-        new_data.dst_ip = key.ip[1];
+
         new_data.src_port = key.port[0];
         new_data.dst_port = key.port[1];
         new_data.proto = key.proto;
