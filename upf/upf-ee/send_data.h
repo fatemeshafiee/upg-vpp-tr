@@ -27,3 +27,4 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type);
 void send_report(UpfEventSubscription upfSub,EventType type);
 void* EventReport_UDUT(void* args);
+#endif //REST_API_C_SEND_DATA_H
