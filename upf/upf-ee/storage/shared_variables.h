@@ -10,6 +10,6 @@
 #define EXTERN extern
 #endif
 EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
-EXTERN pthread_mutex_t lock;
+EXTERN pthread_mutex_t ee_lock;
 #endif //UPG_VPP_SHARED_VARIABLES_H
 
