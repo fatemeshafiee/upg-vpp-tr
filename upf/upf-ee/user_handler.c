@@ -2,6 +2,7 @@
 // Created by Fatemeh Shafiei Ardestani on 2024-08-18.
 //
 #include "user_handler.h"
+#include "utils.h"
 HTTP_response create_subscription(const char *body, bool *created, char **newSubId) {
   if (body == NULL) {
     return (HTTP_response) {
