@@ -3,12 +3,6 @@
 #include <setjmp.h>
 #include <microhttpd.h>
 
-
-jmp_buf exceptionBuffer;
-
-#define TRY if (setjmp(exceptionBuffer) == 0)
-#define CATCH else
-
 void log_api(const char *url, const char *method);
 struct PostData {
     char *data;
