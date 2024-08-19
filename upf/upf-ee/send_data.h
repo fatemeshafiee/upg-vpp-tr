@@ -6,7 +6,6 @@
 #define MAP_FULL -2
 #define MAP_OMEM -1
 #include "lib/stb_ds.h"
-#include "types/types.h"
 #include "types/encoder.h"
 #include "storage/event.h"
 #include "storage/shared_variables.h"
