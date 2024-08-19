@@ -1,31 +1,31 @@
 #include "EE-init.h"
 
 
-clib_error_t* init_send_report_client(vlib_main_t *vm) {
+void init_send_report_client() {
   pthread_t client_thread;
   int result;
 
   result = pthread_create(&client_thread, NULL, send_report_client, NULL);
   if (result != 0) {
-    return clib_error_return(0, "Error creating client thread");
+    return;
   }
   pthread_detach(client_thread);
 
-  return 0;
+  return;
 }
 
-clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
+void init_server_for_getting_requests() {
   pthread_t server_thread;
   int result;
 
   result = pthread_create(&server_thread, NULL, server_for_getting_requests, NULL);
   if (result != 0) {
-    return clib_error_return(0, "Error creating server thread");
+    return;
   }
 
   pthread_detach(server_thread);
 
-  return 0;
+  return;
 }
 
 void* send_report_client(void *arg) {
