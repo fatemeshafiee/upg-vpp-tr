@@ -1,5 +1,5 @@
 #include "EE-init.h"
-
+#include <stdio.h>
 void log(char* j) {
   char* f = "log_ee.txt"
   FILE *file = fopen(f, "a");
