@@ -20,7 +20,7 @@ clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
 }
 
 
-void* server_for_getting_requests(void *arg) {
+static void* server_for_getting_requests(void *arg) {
   struct MHD_Daemon *daemon;
 
   clib_warning("[server_info] Starting server to get requests on port %d\n", PORT);
@@ -38,9 +38,9 @@ void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
-
-VLIB_INIT_FUNCTION(server_for_getting_requests);
 VLIB_PLUGIN_REGISTER () = {
 .version = VPP_BUILD_VER,
 .description = "Event Exposure VPP Server Plugin",
 };
+
+VLIB_INIT_FUNCTION(server_for_getting_requests);

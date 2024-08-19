@@ -10,7 +10,7 @@
 #include <vnet/plugin/plugin.h>
 //Event Exposure VPP Server Plugin
 #define Event_Exposure_VPP_SERVER "event_exposure_plugin"
-void* server_for_getting_requests(void *arg);
+static void* server_for_getting_requests(void *arg);
 clib_error_t* init_server_for_getting_requests(vlib_main_t *vm);
 
 #endif //UPG_VPP_EE_SERVER_H
