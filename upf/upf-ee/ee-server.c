@@ -38,9 +38,9 @@ static void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
-VLIB_PLUGIN_REGISTER () = {
-.version = VPP_BUILD_VER,
-.description = "Event Exposure VPP Server Plugin",
-};
-
-VLIB_INIT_FUNCTION(server_for_getting_requests);
+//VLIB_PLUGIN_REGISTER () = {
+//.version = VPP_BUILD_VER,
+//.description = "Event Exposure VPP Server Plugin",
+//};
+//
+//VLIB_INIT_FUNCTION(server_for_getting_requests);
