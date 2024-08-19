@@ -9,7 +9,7 @@
 #include <pthread.h>
 #include "send_data.h"
 #define PORT 8080
-void VLIB_INIT_FUNCTION();
+void EE_INIT_FUNCTION();
 void* send_report_client();
 void* server_for_getting_requests();
 

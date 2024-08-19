@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include "upf/upf-ee/EE-init.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -55,7 +55,6 @@
 #define upf_debug(...)                          \
   do { } while (0)
 #endif
-
 static fib_source_t upf_fib_source;
 
 int
@@ -455,6 +454,7 @@ upf_init (vlib_main_t * vm)
 {
   upf_main_t *sm = &upf_main;
   clib_error_t *error;
+  EE_INIT_FUNCTION();
 
   sm->vnet_main = vnet_get_main ();
   sm->vlib_main = vm;

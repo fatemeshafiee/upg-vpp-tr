@@ -2,7 +2,7 @@
 // Created by Fatemeh Shafiei Ardestani on 2024-08-18.
 //
 #include "EE-init.h"
-void VLIB_INIT_FUNCTION() {
+void EE_INIT_FUNCTION() {
   pthread_t client_thread, server_thread;
   int result;
 
