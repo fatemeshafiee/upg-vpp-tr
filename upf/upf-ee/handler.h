@@ -2,6 +2,7 @@
 #include "user_handler.h"
 #include <setjmp.h>
 #include <microhttpd.h>
+#include "utils.h"
 
 void log_api(const char *url, const char *method);
 struct PostData {
