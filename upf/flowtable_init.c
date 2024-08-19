@@ -119,6 +119,7 @@ flowtable_init_cpu (flowtable_main_t * fm, u32 cpu_index)
 clib_error_t *
 flowtable_init (vlib_main_t * vm)
 {
+  clib_warning("[DDD]");
   last_ee_report_time = 0;
   u32 cpu_index;
   clib_error_t *error = 0;
