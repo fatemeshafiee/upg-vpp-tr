@@ -102,7 +102,6 @@ if(MHD_FOUND)
           upf-ee/handler.h
           upf-ee/response_builder.h
           upf-ee/send_data.h
-          upf-ee/upf_interface.h
           upf-ee/user_handler.h
           upf-ee/utils.h
 
