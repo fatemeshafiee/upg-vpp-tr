@@ -61,7 +61,6 @@ if(MHD_FOUND)
     flowtable.c
     unittest.c
     upf_prepare_data.c
-    upf-ee/send_data.c
 
     MULTIARCH_SOURCES
     upf_gtpu_encap.c
