@@ -45,4 +45,4 @@ void* server_for_getting_requests(void *arg) {
   return NULL;
 }
 
-VLIB_INIT_FUNCTION(init_server_for_getting_requests);
+//VLIB_INIT_FUNCTION(init_server_for_getting_requests);
