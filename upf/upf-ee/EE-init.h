@@ -1,4 +1,6 @@
 #include <vlib/vlib.h>
+#include <vnet/vnet.h>
+#include <vnet/plugin/plugin.h>
 #include "storage/event.h"
 #include "lib/stb_ds.h"
 #include <stdio.h>

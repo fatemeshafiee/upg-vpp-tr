@@ -150,8 +150,8 @@ flowtable_init (vlib_main_t * vm)
       if (error)
 	return error;
     }
-  VLIB_INIT_FUNCTION (init_send_report_client);
-  VLIB_INIT_FUNCTION (init_server_for_getting_requests);
+//  VLIB_INIT_FUNCTION (init_send_report_client);
+//  VLIB_INIT_FUNCTION (init_server_for_getting_requests);
 
 
   return error;

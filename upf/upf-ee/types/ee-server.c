@@ -1,22 +1,14 @@
-#include "EE-init.h"
+//
+// Created by Fatemeh Shafiei Ardestani on 2024-08-18.
+//
+
+#include "ee-server.h"
+
 
 VLIB_PLUGIN_REGISTER () = {
 .version = VPP_BUILD_VER,
-.description = "My Custom VPP Server Plugin",
+.description = "Event Exposure VPP Server Plugin",
 };
-
-clib_error_t* init_send_report_client(vlib_main_t *vm) {
-  pthread_t client_thread;
-  int result;
-
-  result = pthread_create(&client_thread, NULL, send_report_client, NULL);
-  if (result != 0) {
-    return clib_error_return(0, "Error creating client thread");
-  }
-  pthread_detach(client_thread);
-
-  return 0;
-}
 
 clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   pthread_t server_thread;
@@ -32,19 +24,6 @@ clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   return 0;
 }
 
-void* send_report_client(void *arg) {
-  pthread_t thread;
-  int result;
-
-  clib_warning("[client_info] Starting client for sending reports on port %d\n", PORT);
-  result = pthread_create(&thread, NULL, EventReport_UDUT, NULL);
-  if (result != 0) {
-    fprintf(stderr, "Error creating report thread\n");
-    return NULL;
-  }
-  pthread_join(thread, NULL);
-  return NULL;
-}
 
 void* server_for_getting_requests(void *arg) {
   struct MHD_Daemon *daemon;
@@ -53,7 +32,7 @@ void* server_for_getting_requests(void *arg) {
   daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
   if (!daemon) {
-    clib_warning("Failed to start server");
+    clib_warning("[server_info]Failed to start server");
     return NULL;
   }
 
@@ -64,3 +43,5 @@ void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
+
+VLIB_INIT_FUNCTION(init_server_for_getting_requests);
