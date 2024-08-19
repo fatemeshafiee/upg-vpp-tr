@@ -67,16 +67,16 @@ HTTP_response create_subscription(const char *body, bool *created, char **newSub
 
 HTTP_response subscription_router(const char *url, const char *method, const char *body, char *subscription_id, bool *created,
                                   char **newSubId) {
-//  if (*subscription_id == 0) {
-//    if (validate_method(method, "POST")) {
-//      return create_subscription(body, created, newSubId);
-//    }
-//  } else {
+  if (*subscription_id == 0) {
+    if (validate_method(method, "POST")) {
+      return create_subscription(body, created, newSubId);
+    }
+  } else {
     return (HTTP_response) {
             .body = simple_message("Not implemented 2"),
             .status = NOT_IMPLEMENTED
     };
-//  }
+  }
 
 }
 RSPX HTTP_build_response_JSON(const char *message) {
