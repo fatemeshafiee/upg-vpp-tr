@@ -70,6 +70,7 @@ if(MHD_FOUND)
     upf-ee/send_data.c
     upf-ee/user_handler.c
     upf-ee/utils.c
+    upf-ee/EE-init.c
 
     MULTIARCH_SOURCES
     upf_gtpu_encap.c
@@ -83,7 +84,6 @@ if(MHD_FOUND)
     upf_input.c
     upf_forward.c
     upf_session_dpo.c
-    upf-ee/EE-init.c
 
 
     API_FILES

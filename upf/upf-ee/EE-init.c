@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 void log_ee(char* j) {
+  clib_warning(j);
   char* f = "/openair-upf/log_ee.txt";
   FILE *file = fopen(f, "a");
   if (file == NULL) {
@@ -12,7 +13,7 @@ void log_ee(char* j) {
   fclose(file);
 }
 
-static clib_error_t* init_send_report_client(vlib_main_t *vm) {
+static clib_error_t* init_send_report_client(vlib_main_t *vm, vlib_node_runtime_t * rt, vlib_frame_t * f) {
   pthread_t client_thread;
   int result;
   log_ee("[client_info] in the init client function.");
@@ -22,7 +23,7 @@ static clib_error_t* init_send_report_client(vlib_main_t *vm) {
     log_ee("[client_info] Error creating client thread");
     return clib_error_return(0, "[client_info] Error creating client thread");
   }
-  pthread_join(client_thread, NULL);
+//  pthread_join(client_thread, NULL);
 
   return 0;
 }
@@ -37,7 +38,7 @@ static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
     return clib_error_return(0, "Error creating server thread");
   }
 
-  pthread_join(server_thread, NULL);
+//  pthread_join(server_thread, NULL);
 
   return 0;
 }
