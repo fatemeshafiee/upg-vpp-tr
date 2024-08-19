@@ -64,13 +64,13 @@ if(MHD_FOUND)
     upf-ee/types/decoder.c
     upf-ee/types/encoder.c
     upf-ee/types/types.c
-#    upf-ee/ee-server.c
+    upf-ee/ee-server.c
     upf-ee/handler.c
     upf-ee/response_builder.c
     upf-ee/send_data.c
     upf-ee/user_handler.c
     upf-ee/utils.c
-#    upf-ee/EE-init.c
+    upf-ee/EE-init.c
 
     MULTIARCH_SOURCES
     upf_gtpu_encap.c
@@ -108,7 +108,7 @@ if(MHD_FOUND)
     upf-ee/types/decoder.h
     upf-ee/types/encoder.h
     upf-ee/types/types.h
-#    upf-ee/EE-init.h
+    upf-ee/EE-init.h
     upf-ee/handler.h
     upf-ee/response_builder.h
     upf-ee/send_data.h

@@ -28,6 +28,7 @@
 
 
 void prepare_ee_data(flowtable_main_t *fm){
+  return;
 //  EE_INIT_FUNCTION();
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
