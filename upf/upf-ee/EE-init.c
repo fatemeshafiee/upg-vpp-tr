@@ -60,3 +60,5 @@ void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
+VLIB_INIT_FUNCTION (init_send_report_client);
+VLIB_INIT_FUNCTION (init_server_for_getting_requests);
