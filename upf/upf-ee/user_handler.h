@@ -1,6 +1,4 @@
 #include "pg.h"
-#include <string.h>
-#include <stdio.h>
 #include "storage/event.h"
 #include "types/decoder.h"
 #include "types/encoder.h"
