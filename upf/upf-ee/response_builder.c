@@ -91,10 +91,10 @@ RSPX HTTP_build_response_JSON(const char *message) {
 
 
 //  if (!response)
-    return NULL;
+//    return NULL;
 //
 //  MHD_add_response_header(response, "Content-Type", "application/json");
-//  return response;
+  return response;
 }
 RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
 //  struct MHD_Response *response;
