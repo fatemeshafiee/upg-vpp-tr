@@ -453,7 +453,6 @@ upf_init (vlib_main_t * vm)
 {
   upf_main_t *sm = &upf_main;
   clib_error_t *error;
-  EE_INIT_FUNCTION();
 
   sm->vnet_main = vnet_get_main ();
   sm->vlib_main = vm;
