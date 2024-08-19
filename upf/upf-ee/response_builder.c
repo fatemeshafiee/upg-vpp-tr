@@ -82,9 +82,12 @@ HTTP_response subscription_router(const char *url, const char *method, const cha
 RSPX HTTP_build_response_JSON(const char *message) {
   struct MHD_Response *response;
 //  clib_warning("the enum is %d\n",MHD_RESPMEM_PERSISTENT);
-  void * fa = (void *)message;
-  int x = strlen(message);
-  response = MHD_create_response_from_buffer_static(x, fa);
+//  void * fa = (void *)message;
+//  int x = strlen(message);
+  static const char *page =
+          "<html><body>Wrong username or password</body></html>";
+  response = MHD_create_response_from_buffer_static (strlen (page), page);
+//  response = MHD_create_response_from_buffer_static(x, fa);
 
 
 //  if (!response)
