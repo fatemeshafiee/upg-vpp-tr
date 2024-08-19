@@ -9,14 +9,14 @@ void EE_INIT_FUNCTION() {
   clib_warning("[clinent_info]Starting client thread for sending reports.\n");
   result = pthread_create(&client_thread, NULL, send_report_client, NULL);
   if (result != 0) {
-    fprintf(stderr, "Error creating client thread\n");
+    clib_warning(stderr, "Error creating client thread\n");
     return;
   }
 
   clib_warning("[server_info]Starting server to get requests on port %d\n", PORT);
   result = pthread_create(&server_thread, NULL, server_for_getting_requests, NULL);
   if (result != 0) {
-    fprintf(stderr, "Error creating server thread\n");
+    clib_warning(stderr, "Error creating server thread\n");
     return;
   }
 

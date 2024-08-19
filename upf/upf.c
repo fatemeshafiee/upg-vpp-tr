@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "upf/upf-ee/EE-init.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
