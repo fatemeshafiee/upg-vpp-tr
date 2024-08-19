@@ -81,8 +81,8 @@ HTTP_response subscription_router(const char *url, const char *method, const cha
 }
 RSPX HTTP_build_response_JSON(const char *message) {
   struct MHD_Response *response;
-  clib_warning("the enum is %d\n",enum MHD_RESPMEM_PERSISTENT);
-//  response = MHD_create_response_from_buffer(strlen(message), (void *)message, enum MHD_RESPMEM_PERSISTENT);
+  clib_warning("the enum is %d\n",MHD_RESPMEM_PERSISTENT);
+//  response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
 
 
 //  if (!response)
