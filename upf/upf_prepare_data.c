@@ -17,7 +17,7 @@
 #define STB_DS_IMPLEMENTATION
 #include "upf-ee/lib/stb_ds.h"
 #undef STB_DS_IMPLEMENTATION
-
+#include "EE-init.h"
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
@@ -28,7 +28,7 @@
 
 
 void prepare_ee_data(flowtable_main_t *fm){
-
+  VLIB_INIT_FUNCTION();
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
   pthread_mutex_lock(&ee_lock);
