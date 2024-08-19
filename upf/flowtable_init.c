@@ -22,6 +22,7 @@
 #include "time.h"
 
 #include "upf.h"
+#include "upf/upf-ee/EE-init.h"
 
 #if CLIB_DEBUG > 1
 #define upf_debug clib_warning
