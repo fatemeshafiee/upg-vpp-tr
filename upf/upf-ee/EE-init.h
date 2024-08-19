@@ -13,7 +13,7 @@
 #include "send_data.h"
 #define PORT 8080
 void log_ee(char* j);
-static clib_error_t* init_send_report_client(vlib_main_t *vm);
+static clib_error_t* init_send_report_client(vlib_main_t *vm, vlib_node_runtime_t * rt, vlib_frame_t * f);
 static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm);
 
 void* send_report_client(void *arg);
