@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 void log_ee(char* j) {
-  char* f = "log_ee.txt";
+  char* f = "/openair-upf/log_ee.txt";
   FILE *file = fopen(f, "a");
   if (file == NULL) {
     perror("Failed to open file");
