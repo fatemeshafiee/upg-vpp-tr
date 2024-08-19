@@ -62,6 +62,9 @@ if(MHD_FOUND)
           unittest.c
           upf_prepare_data.c
           upf-ee/send_data.c
+          upf-ee/types/types.c
+          upf-ee/types/encoder.c
+          upf-ee/types/decoder.c
 
           MULTIARCH_SOURCES
           upf_gtpu_encap.c
@@ -104,6 +107,9 @@ if(MHD_FOUND)
           upf-ee/send_data.h
           upf-ee/user_handler.h
           upf-ee/utils.h
+          upf-ee/types/types.h
+          upf-ee/types/encoder.h
+          upf-ee/types/decoder.h
 
 
           LINK_LIBRARIES
