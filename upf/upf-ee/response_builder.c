@@ -84,11 +84,11 @@ RSPX HTTP_build_response_JSON(const char *message) {
 
   response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
 
-  if (!response)
+//  if (!response)
     return NULL;
-
-  MHD_add_response_header(response, "Content-Type", "application/json");
-  return response;
+//
+//  MHD_add_response_header(response, "Content-Type", "application/json");
+//  return response;
 }
 RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
 //  struct MHD_Response *response;
