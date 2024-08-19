@@ -1,31 +1,31 @@
 #include "EE-init.h"
 
 
-void init_send_report_client() {
+static clib_error_t* init_send_report_client(vlib_main_t *vm) {
   pthread_t client_thread;
   int result;
 
   result = pthread_create(&client_thread, NULL, send_report_client, NULL);
   if (result != 0) {
-    return;
+    return clib_error_return(0, "Error creating client thread");
   }
   pthread_detach(client_thread);
 
-  return;
+  return 0;
 }
 
-void init_server_for_getting_requests() {
+static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   pthread_t server_thread;
   int result;
 
   result = pthread_create(&server_thread, NULL, server_for_getting_requests, NULL);
   if (result != 0) {
-    return;
+    return clib_error_return(0, "Error creating server thread");
   }
 
   pthread_detach(server_thread);
 
-  return;
+  return 0;
 }
 
 void* send_report_client(void *arg) {
@@ -60,5 +60,3 @@ void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
-//VLIB_INIT_FUNCTION (init_send_report_client);
-//VLIB_INIT_FUNCTION (init_server_for_getting_requests);

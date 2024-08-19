@@ -13,8 +13,8 @@
 #include "send_data.h"
 #define PORT 8080
 
-clib_error_t* init_send_report_client(vlib_main_t *vm);
-clib_error_t* init_server_for_getting_requests(vlib_main_t *vm);
+static clib_error_t* init_send_report_client(vlib_main_t *vm);
+static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm);
 
 void* send_report_client(void *arg);
 void* server_for_getting_requests(void *arg);
