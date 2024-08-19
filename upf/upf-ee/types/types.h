@@ -254,223 +254,27 @@ typedef struct
 
 
 
-static inline UpfEventTrigger getUpfEventTrigger(const char *s);
-static inline PartitioningCriteria getPartitioningCriteria(const char *s);
-static inline NotificationFlag getNotificationFlag(const char *s);
-static inline BufferedNotificationsAction getBufferedNotificationsAction(const char *s);
-static inline SubscriptionAction getSubscriptionAction(const char *s);
-static inline EventType getEventType(const char *s);
-static inline MeasurementType getMeasurementType(const char *s);
-static inline FlowDirection getFlowDirection(const char *s);
-static inline GranularityOfMeasurement getGranularityOfMeasurement(const char *s);
-static inline ReportingUrgency getReportingUrgency(const char *s);
-static inline UeIpAddressVersion getUeIpAddressVersion(const char *s);
-static inline DnProtocol getDnProtocol(const char *s);
-static inline const char* getUpfEventTriggerString(UpfEventTrigger trigger);
-static inline const char* getPartitioningCriteriaString(PartitioningCriteria criteria);
-static inline const char* getNotificationFlagString(NotificationFlag flag);
-static inline const char* getBufferedNotificationsActionString(BufferedNotificationsAction action);
-static inline const char* getSubscriptionActionString(SubscriptionAction action);
-static inline const char* getEventTypeString(EventType type);
-static inline const char* getMeasurementTypeString(MeasurementType type);
-static inline const char* getFlowDirectionString(FlowDirection direction);
-static inline const char* getGranularityOfMeasurementString(GranularityOfMeasurement granularity);
-static inline const char* getReportingUrgencyString(ReportingUrgency urgency);
-static inline const char* getDnProtocolString(DnProtocol protocol);
-
-static inline UeIpAddressVersion getUeIpAddressVersion(const char *s) {
-  if (strcmp(s, "V4") == 0) return V4;
-  if (strcmp(s, "V6") == 0) return V6;
-  if (strcmp(s, "V6Prefix") == 0) return V6Prefix;
-  return V4;
-}
-
-static inline UpfEventTrigger getUpfEventTrigger(const char *s) {
-  if (strcmp(s, "ONE_TIME") == 0) return ONE_TIME;
-  if (strcmp(s, "PERIODIC") == 0) return PERIODIC;
-  return ONE_TIME;
-}
-
-static inline PartitioningCriteria getPartitioningCriteria(const char *s) {
-  if (strcmp(s, "TAC") == 0) return TAC;
-  if (strcmp(s, "SUBPLMN") == 0) return SUBPLMN;
-  if (strcmp(s, "GEOAREA") == 0) return GEOAREA;
-  if (strcmp(s, "SNSSAI") == 0) return SNSSAI;
-  if (strcmp(s, "DNN") == 0) return DNN;
-  return TAC;
-}
-
-static inline NotificationFlag getNotificationFlag(const char *s) {
-  if (strcmp(s, "ACTIVATE") == 0) return ACTIVATE;
-  if (strcmp(s, "DEACTIVATE") == 0) return DEACTIVATE;
-  if (strcmp(s, "RETRIEVAL") == 0) return RETRIEVAL;
-  return ACTIVATE;
-}
-
-static inline BufferedNotificationsAction getBufferedNotificationsAction(const char *s) {
-  if (strcmp(s, "SEND_ALL") == 0) return SEND_ALL;
-  if (strcmp(s, "DISCARD_ALL") == 0) return DISCARD_ALL;
-  if (strcmp(s, "DROP_OLD") == 0) return DROP_OLD;
-  return SEND_ALL;
-}
-
-static inline SubscriptionAction getSubscriptionAction(const char *s) {
-  if (strcmp(s, "CLOSE") == 0) return CLOSE;
-  if (strcmp(s, "CONTINUE_WITH_MUTING") == 0) return CONTINUE_WITH_MUTING;
-  if (strcmp(s, "CONTINUE_WITHOUT_MUTING") == 0) return CONTINUE_WITHOUT_MUTING;
-  return CLOSE;
-}
-
-static inline EventType getEventType(const char *s) {
-  if (strcmp(s, "QOS_MONITORING") == 0) return QOS_MONITORING;
-  if (strcmp(s, "USER_DATA_USAGE_MEASURES") == 0) return USER_DATA_USAGE_MEASURES;
-  if (strcmp(s, "USER_DATA_USAGE_TRENDS") == 0) return USER_DATA_USAGE_TRENDS;
-  if (strcmp(s, "TSC_MNGT_INFO") == 0) return TSC_MNGT_INFO;
-  return QOS_MONITORING;
-}
-
-static inline MeasurementType getMeasurementType(const char *s) {
-  if (strcmp(s, "VOLUME_MEASUREMENT") == 0) return VOLUME_MEASUREMENT;
-  if (strcmp(s, "THROUGHPUT_MEASUREMENT") == 0) return THROUGHPUT_MEASUREMENT;
-  if (strcmp(s, "APPLICATION_RELATED_INFO") == 0) return APPLICATION_RELATED_INFO;
-  return VOLUME_MEASUREMENT;
-}
-
-static inline FlowDirection getFlowDirection(const char *s) {
-  if (strcmp(s, "DOWNLINK") == 0) return DOWNLINK;
-  if (strcmp(s, "UPLINK") == 0) return UPLINK;
-  if (strcmp(s, "BIDIRECTIONAL") == 0) return BIDIRECTIONAL;
-  if (strcmp(s, "UNSPECIFIED") == 0) return UNSPECIFIED;
-  return UNSPECIFIED;
-}
-
-static inline GranularityOfMeasurement getGranularityOfMeasurement(const char *s) {
-  if (strcmp(s, "PER_APPLICATION") == 0) return PER_APPLICATION;
-  if (strcmp(s, "PER_SESSION") == 0) return PER_SESSION;
-  if (strcmp(s, "PER_FLOW") == 0) return PER_FLOW;
-  return PER_APPLICATION;
-}
-
-static inline ReportingUrgency getReportingUrgency(const char *s) {
-  if (strcmp(s, "DELAY_TOLERANT") == 0) return DELAY_TOLERANT;
-  if (strcmp(s, "NON_DELAY_TOLERANT") == 0) return NON_DELAY_TOLERANT;
-  return DELAY_TOLERANT;
-}
-
-static inline const char* getUpfEventTriggerString(UpfEventTrigger trigger) {
-  switch (trigger) {
-    case ONE_TIME: return "ONE_TIME";
-    case PERIODIC: return "PERIODIC";
-    default: return "ONE_TIME";
-  }
-}
-
-static inline const char* getPartitioningCriteriaString(PartitioningCriteria criteria) {
-  switch (criteria) {
-    case TAC: return "TAC";
-    case SUBPLMN: return "SUBPLMN";
-    case GEOAREA: return "GEOAREA";
-    case SNSSAI: return "SNSSAI";
-    case DNN: return "DNN";
-    default: return "TAC";
-  }
-}
-
-static inline const char* getNotificationFlagString(NotificationFlag flag) {
-  switch (flag) {
-    case ACTIVATE: return "ACTIVATE";
-    case DEACTIVATE: return "DEACTIVATE";
-    case RETRIEVAL: return "RETRIEVAL";
-    default: return "ACTIVATE";
-  }
-}
-
-static inline const char* getBufferedNotificationsActionString(BufferedNotificationsAction action) {
-  switch (action) {
-    case SEND_ALL: return "SEND_ALL";
-    case DISCARD_ALL: return "DISCARD_ALL";
-    case DROP_OLD: return "DROP_OLD";
-    default: return "SEND_ALL";
-  }
-}
-
-static inline const char* getSubscriptionActionString(SubscriptionAction action) {
-  switch (action) {
-    case CLOSE: return "CLOSE";
-    case CONTINUE_WITH_MUTING: return "CONTINUE_WITH_MUTING";
-    case CONTINUE_WITHOUT_MUTING: return "CONTINUE_WITHOUT_MUTING";
-    default: return "CLOSE";
-  }
-}
-
-static inline const char* getEventTypeString(EventType type) {
-  switch (type) {
-    case QOS_MONITORING: return "QOS_MONITORING";
-    case USER_DATA_USAGE_MEASURES: return "USER_DATA_USAGE_MEASURES";
-    case USER_DATA_USAGE_TRENDS: return "USER_DATA_USAGE_TRENDS";
-    case TSC_MNGT_INFO: return "TSC_MNGT_INFO";
-    default: return "QOS_MONITORING";
-  }
-}
-
-static inline const char* getMeasurementTypeString(MeasurementType type) {
-  switch (type) {
-    case VOLUME_MEASUREMENT: return "VOLUME_MEASUREMENT";
-    case THROUGHPUT_MEASUREMENT: return "THROUGHPUT_MEASUREMENT";
-    case APPLICATION_RELATED_INFO: return "APPLICATION_RELATED_INFO";
-    default: return "VOLUME_MEASUREMENT";
-  }
-}
-
-static inline const char* getFlowDirectionString(FlowDirection direction) {
-  switch (direction) {
-    case DOWNLINK: return "DOWNLINK";
-    case UPLINK: return "UPLINK";
-    case BIDIRECTIONAL: return "BIDIRECTIONAL";
-    case UNSPECIFIED: return "UNSPECIFIED";
-    default: return "UNSPECIFIED";
-  }
-}
-
-static inline const char* getGranularityOfMeasurementString(GranularityOfMeasurement granularity) {
-  switch (granularity) {
-    case PER_APPLICATION: return "PER_APPLICATION";
-    case PER_SESSION: return "PER_SESSION";
-    case PER_FLOW: return "PER_FLOW";
-    default: return "PER_APPLICATION";
-  }
-}
-
-static inline const char* getReportingUrgencyString(ReportingUrgency urgency) {
-  switch (urgency) {
-    case DELAY_TOLERANT: return "DELAY_TOLERANT";
-    case NON_DELAY_TOLERANT: return "NON_DELAY_TOLERANT";
-    default: return "DELAY_TOLERANT";
-  }
-}
-
-
-static inline DnProtocol getDnProtocol(const char *s) {
-  if (strcmp(s, "DNS_QNAME") == 0) return DNS_QNAME;
-  if (strcmp(s, "TLS_SNI") == 0) return TLS_SNI;
-  if (strcmp(s, "TLS_SAN") == 0) return TLS_SAN;
-  if (strcmp(s, "TLS_SCN") == 0) return TLS_SCN;
-  return DNS_QNAME; // Default value if no match is found
-}
-
-static inline const char* getDnProtocolString(DnProtocol protocol) {
-  switch (protocol) {
-      case DNS_QNAME:
-          return "DNS_QNAME";
-      case TLS_SNI:
-          return "TLS_SNI";
-      case TLS_SAN:
-          return "TLS_SAN";
-      case TLS_SCN:
-          return "TLS_SCN";
-      default:
-          return "DNS_QNAME"; // Default string if no match is found
-  }
-}
-
+UpfEventTrigger getUpfEventTrigger(const char *s);
+PartitioningCriteria getPartitioningCriteria(const char *s);
+NotificationFlag getNotificationFlag(const char *s);
+BufferedNotificationsAction getBufferedNotificationsAction(const char *s);
+SubscriptionAction getSubscriptionAction(const char *s);
+EventType getEventType(const char *s);
+MeasurementType getMeasurementType(const char *s);
+FlowDirection getFlowDirection(const char *s);
+GranularityOfMeasurement getGranularityOfMeasurement(const char *s);
+ReportingUrgency getReportingUrgency(const char *s);
+UeIpAddressVersion getUeIpAddressVersion(const char *s);
+DnProtocol getDnProtocol(const char *s);
+const char* getUpfEventTriggerString(UpfEventTrigger trigger);
+const char* getPartitioningCriteriaString(PartitioningCriteria criteria);
+const char* getNotificationFlagString(NotificationFlag flag);
+const char* getBufferedNotificationsActionString(BufferedNotificationsAction action);
+const char* getSubscriptionActionString(SubscriptionAction action);
+const char* getEventTypeString(EventType type);
+const char* getMeasurementTypeString(MeasurementType type);
+const char* getFlowDirectionString(FlowDirection direction);
+const char* getGranularityOfMeasurementString(GranularityOfMeasurement granularity);
+const char* getReportingUrgencyString(ReportingUrgency urgency);
+const char* getDnProtocolString(DnProtocol protocol);
 #endif
