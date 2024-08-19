@@ -4,12 +4,13 @@
 static clib_error_t* init_send_report_client(vlib_main_t *vm) {
   pthread_t client_thread;
   int result;
+  clib_warning("[client_info] in the init client function.");
 
   result = pthread_create(&client_thread, NULL, send_report_client, NULL);
   if (result != 0) {
-    return clib_error_return(0, "Error creating client thread");
+    return clib_error_return(0, "[client_info] Error creating client thread");
   }
-  pthread_detach(client_thread);
+  pthread_join(client_thread, NULL);
 
   return 0;
 }
@@ -17,13 +18,13 @@ static clib_error_t* init_send_report_client(vlib_main_t *vm) {
 static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   pthread_t server_thread;
   int result;
-
+  clib_warning("[server_info] in the init server function.");
   result = pthread_create(&server_thread, NULL, server_for_getting_requests, NULL);
   if (result != 0) {
     return clib_error_return(0, "Error creating server thread");
   }
 
-  pthread_detach(server_thread);
+  pthread_join(server_thread, NULL);
 
   return 0;
 }
@@ -49,7 +50,7 @@ void* server_for_getting_requests(void *arg) {
   daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
   if (!daemon) {
-    clib_warning("Failed to start server");
+    clib_warning("[server_info] Failed to start server");
     return NULL;
   }
 
