@@ -64,7 +64,6 @@ if(MHD_FOUND)
     upf-ee/types/decoder.c
     upf-ee/types/encoder.c
     upf-ee/types/types.c
-    upf-ee/EE-init.c
     upf-ee/ee-server.c
     upf-ee/handler.c
     upf-ee/response_builder.c
@@ -84,6 +83,7 @@ if(MHD_FOUND)
     upf_input.c
     upf_forward.c
     upf_session_dpo.c
+    upf-ee/EE-init.c
 
 
     API_FILES
