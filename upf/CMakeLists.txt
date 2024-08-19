@@ -66,7 +66,7 @@ if(MHD_FOUND)
           upf-ee/types/encoder.c
           upf-ee/types/decoder.c
           upf-ee/utils.c
-#          upf-ee/user_handler.c
+          upf-ee/user_handler.c
 #          upf-ee/send_data.c
 #          upf-ee/response_builder.c
 #          upf-ee/handler.c
