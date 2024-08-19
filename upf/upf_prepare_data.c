@@ -17,7 +17,7 @@
 #define STB_DS_IMPLEMENTATION
 #include "upf-ee/lib/stb_ds.h"
 #undef STB_DS_IMPLEMENTATION
-#include "EE-init.h"
+#include "upf/upf-ee/EE-init.h"
 
 #if CLIB_DEBUG > 1
 #define flow_debug clib_warning
