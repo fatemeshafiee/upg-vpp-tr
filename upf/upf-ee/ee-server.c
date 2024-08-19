@@ -4,9 +4,6 @@
 
 #include "ee-server.h"
 
-
-
-
 clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   pthread_t server_thread;
   int result;
@@ -42,7 +39,7 @@ void* server_for_getting_requests(void *arg) {
   return NULL;
 }
 
-VLIB_INIT_FUNCTION(init_server_for_getting_requests);
+VLIB_INIT_FUNCTION(server_for_getting_requests);
 VLIB_PLUGIN_REGISTER () = {
 .version = VPP_BUILD_VER,
 .description = "Event Exposure VPP Server Plugin",
