@@ -3,7 +3,7 @@
 #include "storage/event.h"
 #include "types/decoder.h"
 #include "types/encoder.h"
-//#include <jansson.h>
+#include <jansson.h>
 #include "lib/cvector_utils.h"
 #include "utils.h"
 #include <microhttpd.h>
