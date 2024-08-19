@@ -108,14 +108,13 @@ if(MHD_FOUND)
           upf-ee/types/encoder.h
           upf-ee/types/types.h
           upf-ee/EE-init.h
-          upf-ee/handler.h
           upf-ee/response_builder.h
           upf-ee/send_data.h
-          upf-ee/user_handler.h
           upf-ee/utils.h
           upf-ee/types/types.h
           upf-ee/types/encoder.h
           upf-ee/types/decoder.h
+#          upf-ee/handler.h
 
 
           LINK_LIBRARIES
