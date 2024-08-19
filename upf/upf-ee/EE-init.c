@@ -1,9 +1,5 @@
 #include "EE-init.h"
 
-VLIB_PLUGIN_REGISTER () = {
-.version = VPP_BUILD_VER,
-.description = "My Custom VPP Server Plugin",
-};
 
 clib_error_t* init_send_report_client(vlib_main_t *vm) {
   pthread_t client_thread;
