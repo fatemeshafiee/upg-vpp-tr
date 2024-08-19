@@ -10,7 +10,7 @@ clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
   clib_warning("[server_info] trying to create a server");
   result = pthread_create(&server_thread, NULL, server_for_getting_requests, NULL);
   if (result != 0) {
-    lib_warning("[server_info] Error creating server thread");
+    clib_warning("[server_info] Error creating server thread");
     return clib_error_return(0, "Error creating server thread");
   }
 

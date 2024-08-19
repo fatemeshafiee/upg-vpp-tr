@@ -8,6 +8,13 @@
 #include <vlib/vlib.h>
 #include <vnet/vnet.h>
 #include <vnet/plugin/plugin.h>
+#include <vlib/unix/plugin.h>
+#include <vpp/app/version.h>
+#include <vnet/dpo/lookup_dpo.h>
+#include <vnet/fib/ip4_fib.h>
+#include <vnet/fib/ip6_fib.h>
+#include <vnet/ip/ip6_hop_by_hop.h>
+#include <microhttpd.h>
 //Event Exposure VPP Server Plugin
 #define Event_Exposure_VPP_SERVER "event_exposure_plugin"
 static void* server_for_getting_requests(void *arg);
