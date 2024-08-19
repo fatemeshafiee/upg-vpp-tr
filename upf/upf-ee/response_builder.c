@@ -3,7 +3,7 @@
 //
 #include "response_builder.h"
 
-struct MHD_Response *HTTP_build_response_JSON(const char *message) {
+RSPX HTTP_build_response_JSON(const char *message) {
   struct MHD_Response *response;
 
   response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
@@ -14,7 +14,7 @@ struct MHD_Response *HTTP_build_response_JSON(const char *message) {
   MHD_add_response_header(response, "Content-Type", "application/json");
   return response;
 }
-struct MHD_Response *HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
+RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
   struct MHD_Response *response;
 
   response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
