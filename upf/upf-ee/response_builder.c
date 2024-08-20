@@ -88,7 +88,7 @@ RSPX HTTP_build_response_JSON(const char *message) {
 //  static const char *page =
 //          "<html><body>Wrong username or password</body></html>";
 //  response =  (strlen (page), page);
-  response = MHD_create_response_from_buffer_static(x, fa);
+//  response = MHD_create_response_from_buffer_static(x, fa);
 
 
 //  if (!response)
