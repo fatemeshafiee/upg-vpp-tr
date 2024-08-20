@@ -60,7 +60,7 @@ static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
 }
 
 void* send_report_client(void *arg) {
-//  pthread_t thread;
+  pthread_t thread;
   int result;
 
   log_ee("[client_info] Starting client for sending reports on port\n");
