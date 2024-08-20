@@ -68,7 +68,7 @@ if(MHD_FOUND)
           upf-ee/utils.c
           upf-ee/send_data.c
           upf-ee/response_builder.c
-#          upf-ee/handler.c
+          upf-ee/handler.c
 
 
 
@@ -114,7 +114,7 @@ if(MHD_FOUND)
           upf-ee/types/types.h
           upf-ee/types/encoder.h
           upf-ee/types/decoder.h
-#          upf-ee/handler.h
+          upf-ee/handler.h
 
 
           LINK_LIBRARIES
