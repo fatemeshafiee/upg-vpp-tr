@@ -122,7 +122,7 @@ void send_report(UpfEventSubscription upfSub,EventType type){
 
 }
 //UpfEventSubscription*
-void* EventReport_UDUT(void* args) {
+void* EventReport_UDUT() {
   while (true){
     time_t current_time;
     time(&current_time);
