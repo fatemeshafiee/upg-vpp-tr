@@ -23,5 +23,5 @@
 #include "storage/event.h"
 #include "lib/stb_ds.h"
 
-void send_report_node();
+void send_report();
 #endif //UPG_VPP_EE_SERVER_H

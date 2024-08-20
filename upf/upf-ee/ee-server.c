@@ -1,5 +1,5 @@
 #include "ee-server.h"
-void send_report_node(){
+void send_report(){
   vlib_main_t *vm = &vlib_global_main;
 
   while (1)
@@ -9,7 +9,7 @@ void send_report_node(){
   }
 }
 VLIB_REGISTER_NODE(send_report_node) = {
-        .function = send_report_node,
+        .function = send_report,
         .type = VLIB_NODE_TYPE_PROCESS,
         .name = "periodic-sending-process",
 };
