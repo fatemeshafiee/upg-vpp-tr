@@ -23,7 +23,7 @@ static clib_error_t* init_send_report_client(vlib_main_t *vm, vlib_node_runtime_
     log_ee("[client_info] Error creating client thread");
     return clib_error_return(0, "[client_info] Error creating client thread");
   }
-//  pthread_join(client_thread, NULL);
+  pthread_join(client_thread, NULL);
 
   return 0;
 }
@@ -38,7 +38,7 @@ static clib_error_t* init_server_for_getting_requests(vlib_main_t *vm) {
     return clib_error_return(0, "Error creating server thread");
   }
 
-//  pthread_join(server_thread, NULL);
+  pthread_join(server_thread, NULL);
 
   return 0;
 }
@@ -80,5 +80,5 @@ void* server_for_getting_requests(void *arg) {
 //        .type = VLIB_NODE_TYPE_PROCESS,
 //        .name = "periodic-sending-process",
 //};
-//VLIB_INIT_FUNCTION (init_send_report_client);
-//VLIB_INIT_FUNCTION (init_server_for_getting_requests);
+VLIB_INIT_FUNCTION (init_send_report_client);
+VLIB_INIT_FUNCTION (init_server_for_getting_requests);
