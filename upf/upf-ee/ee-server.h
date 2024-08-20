@@ -23,5 +23,5 @@
 #include "storage/event.h"
 #include "lib/stb_ds.h"
 
-void send_report();
+void periodic_sending();
 #endif //UPG_VPP_EE_SERVER_H
