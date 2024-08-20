@@ -47,7 +47,7 @@ void* send_report_client(void *arg) {
   pthread_t thread;
   int result;
 
-  log_ee("[client_info] Starting client for sending reports on port %d\n");
+  log_ee("[client_info] Starting client for sending reports on port\n");
   result = pthread_create(&thread, NULL, EventReport_UDUT, NULL);
   if (result != 0) {
     fprintf(stderr, "Error creating report thread\n");
@@ -60,7 +60,7 @@ void* send_report_client(void *arg) {
 void* server_for_getting_requests(void *arg) {
   struct MHD_Daemon *daemon;
 
-  log_ee("[server_info] Starting server to get requests on port %d\n");
+  log_ee("[server_info] Starting server to get requests on port\n");
   daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
   if (!daemon) {
