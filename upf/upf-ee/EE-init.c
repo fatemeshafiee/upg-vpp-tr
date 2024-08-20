@@ -75,10 +75,10 @@ void* server_for_getting_requests(void *arg) {
   MHD_stop_daemon(daemon);
   return NULL;
 }
-VLIB_REGISTER_NODE(send_report_node) = {
-        .function = init_send_report_client,
-        .type = VLIB_NODE_TYPE_PROCESS,
-        .name = "periodic-sending-process",
-};
-//VLIB_INIT_FUNCTION (init_send_report_client);
-//VLIB_INIT_FUNCTION (init_server_for_getting_requests);
+//VLIB_REGISTER_NODE(send_report_node) = {
+//        .function = init_send_report_client,
+//        .type = VLIB_NODE_TYPE_PROCESS,
+//        .name = "periodic-sending-process",
+//};
+VLIB_INIT_FUNCTION (init_send_report_client);
+VLIB_INIT_FUNCTION (init_server_for_getting_requests);
