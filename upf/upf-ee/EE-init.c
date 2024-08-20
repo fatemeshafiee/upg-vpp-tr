@@ -80,5 +80,5 @@ void* server_for_getting_requests(void *arg) {
 //        .type = VLIB_NODE_TYPE_PROCESS,
 //        .name = "periodic-sending-process",
 //};
-VLIB_INIT_FUNCTION (init_send_report_client);
+//VLIB_INIT_FUNCTION (init_send_report_client);
 VLIB_INIT_FUNCTION (init_server_for_getting_requests);
