@@ -25,5 +25,5 @@ void parse_time(const char* date_time, struct  tm* tm);
 void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type);
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type);
 void send_report(UpfEventSubscription upfSub,EventType type);
-void* EventReport_UDUT(void* args);
+void* EventReport_UDUT();
 #endif //REST_API_C_SEND_DATA_H
