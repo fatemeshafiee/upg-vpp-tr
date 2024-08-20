@@ -84,17 +84,18 @@ RSPX HTTP_build_response_JSON(const char *message) {
 //  clib_warning("the enum is %d\n",MHD_RESPMEM_PERSISTENT);
 //  void * fa = (void *)message;
 //  int x = strlen(message);
-  static const char *page =
-          "<html><body>Wrong username or password</body></html>";
-  response = MHD_create_response_from_buffer_static (strlen (page), page);
+  void* x = (void*) MHD_create_response_from_buffer_static;
+//  static const char *page =
+//          "<html><body>Wrong username or password</body></html>";
+//  response =  (strlen (page), page);
 //  response = MHD_create_response_from_buffer_static(x, fa);
 
 
 //  if (!response)
-//    return NULL;
+    return NULL;
 //
 //  MHD_add_response_header(response, "Content-Type", "application/json");
-  return response;
+//  return response;
 }
 RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
 //  struct MHD_Response *response;
