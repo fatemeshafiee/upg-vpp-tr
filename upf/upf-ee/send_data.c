@@ -123,15 +123,17 @@ void send_report(UpfEventSubscription upfSub,EventType type){
 }
 //UpfEventSubscription*
 void* EventReport_UDUT() {
-  while (true){
+//  while (true){
     time_t current_time;
     time(&current_time);
     uint32_t eventType = (uint32_t) USER_DATA_USAGE_TRENDS;
 //    void*  element = hashmap_get(&hashmap,"USER_DATA_USAGE_TRENDS" , strlen("USER_DATA_USAGE_TRENDS"));
 //    void*  element = hashmap_get(&hashmap,&eventType , sizeof(uint32_t));
+    clib_warning("[EventReport_UDUT] in the Event report.");
     cvector_vector_type(UpfEventSubscription*) retrieved_vec = hmget(subHash, USER_DATA_USAGE_TRENDS);
     if (retrieved_vec!=NULL) {
 //      retrieved_vec = (cvector_vector_type(UpfEventSubscription*))element;
+      clib_warning("[EventReport_UDUT] retrived vector was != NULL");
       for (int i = 0; i < cvector_size(retrieved_vec); i++) {
         if(retrieved_vec[i]->eventReportingMode.trigger == PERIODIC){
           if(retrieved_vec[i]->eventReportingMode.TimeOfLastReport == ((time_t)-1)){
@@ -156,11 +158,11 @@ void* EventReport_UDUT() {
 
       }
     }
-    struct timespec req = {0};
-    req.tv_sec = 0;
-    req.tv_nsec = 500000000L; // 500 million nanoseconds (0.5 seconds)
-    nanosleep(&req, NULL);
-  }
+//    struct timespec req = {0};
+//    req.tv_sec = 0;
+//    req.tv_nsec = 500000000L; // 500 million nanoseconds (0.5 seconds)
+//    nanosleep(&req, NULL);
+//  }
   return NULL;
 }
 
