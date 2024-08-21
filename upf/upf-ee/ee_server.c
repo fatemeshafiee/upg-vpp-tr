@@ -10,7 +10,7 @@
 #include <vlib/unix/unix.h>
 #include <time.h>
 
-#define SERVER_PORT 8080
+#define SERVER_PORT 80
 
 struct MHD_Daemon *ee_daemon = NULL;
 
