@@ -80,7 +80,7 @@ void* server_for_getting_requests(void *arg) {
   daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
   if (!daemon) {
-    log_ee("[server_info] Failed to start server");
+
     return NULL;
   }
 

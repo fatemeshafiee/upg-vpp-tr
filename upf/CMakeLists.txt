@@ -70,7 +70,8 @@ if(MHD_FOUND)
           upf-ee/response_builder.c
           upf-ee/handler.c
           upf-ee/EE-init.c
-          upf-ee/ee-server.c
+          upf-ee/ee_client.c
+          upf-ee/ee_server.c
 
 
 
@@ -118,7 +119,8 @@ if(MHD_FOUND)
           upf-ee/types/encoder.h
           upf-ee/types/decoder.h
           upf-ee/handler.h
-          upf-ee/ee-server.h
+          upf-ee/ee_client.h
+          upf-ee/ee_server.h
 
 
 
