@@ -25,7 +25,7 @@ void* ee_http_server(void *arg) {
   vlib_main_t *vm = &vlib_global_main;
 
   clib_warning("[server_info] Starting server to get requests \n");
-  ee_daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
+  ee_daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, SERVER_PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
   if (!ee_daemon) {
     clib_warning("[server_info] Starting server failed. \n");
