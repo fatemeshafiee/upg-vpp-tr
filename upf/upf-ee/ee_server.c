@@ -12,12 +12,12 @@
 
 #define SERVER_PORT 8080
 
-struct MHD_Daemon *daemon = NULL;
+struct MHD_Daemon *ee_daemon = NULL;
 
 
 static void poll_http_server() {
-  if (daemon != NULL) {
-    MHD_run(daemon);
+  if (ee_daemon != NULL) {
+    MHD_run(ee_daemon);
   }
 }
 
@@ -25,9 +25,9 @@ void* ee_http_server(void *arg) {
   vlib_main_t *vm = &vlib_global_main;
 
   clib_warning("[server_info] Starting server to get requests \n");
-  daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
+  ee_daemon = MHD_start_daemon(MHD_USE_INTERNAL_POLLING_THREAD, PORT, NULL, NULL,
                             &default_handler, NULL, MHD_OPTION_END);
-  if (!daemon) {
+  if (!ee_daemon) {
     clib_warning("[server_info] Starting server failed. \n");
     return NULL;
   }
@@ -37,9 +37,9 @@ void* ee_http_server(void *arg) {
     poll_http_server();
   }
 
-  if (daemon != NULL) {
-    MHD_stop_daemon(daemon);
-    daemon = NULL;
+  if (ee_daemon != NULL) {
+    MHD_stop_daemon(ee_daemon);
+    ee_daemon = NULL;
   }
   return NULL;
 }
