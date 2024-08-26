@@ -79,6 +79,8 @@ json_t *serialize_upf_event(const UpfEvent *event) {
 
   json_t *TrafficFilters = json_null();
   if(event->TrafficFilters){
+    clib_warning("[encoder] in serialize_upf_event after in the if of event->TrafficFilters");
+
     TrafficFilters = json_array();
     for (size_t i = 0; i < cvector_size(event->TrafficFilters); i++) {
       json_array_append_new(TrafficFilters, serialize_flow_information(&(event->TrafficFilters[i])));
