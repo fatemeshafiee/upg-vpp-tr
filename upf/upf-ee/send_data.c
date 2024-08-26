@@ -50,12 +50,14 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //
 //    parse_time(current_time, tm);
     item->timeStamp = current_time;
+    item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
 //    item->timeStamp = mktime(tm);
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     extern usage_report_per_flow_t *usage_report_per_flow_vector;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
+    clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
     vec_foreach(rep, usage_report_per_flow_vector){
