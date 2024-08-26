@@ -160,14 +160,16 @@ void* EventReport_UDUT() {
       clib_warning("[EventReport_UDUT] retrived vector was != NULL");
       for (int i = 0; i < cvector_size(retrieved_vec); i++) {
         if(retrieved_vec[i]->eventReportingMode.trigger == PERIODIC){
-          if(retrieved_vec[i]->eventReportingMode.TimeOfLastReport == ((time_t)-1)){
+          if(retrieved_vec[i]->eventReportingMode.TimeOfLastReport == 0){
             if (current_time - retrieved_vec[i]->eventReportingMode.TimeOfSubscription >=retrieved_vec[i]->eventReportingMode.repPeriod){
+              clib_warning("[EventReport_UDUT] CALLING SEND report function");
               send_report(*retrieved_vec[i], USER_DATA_USAGE_TRENDS); // dummy
               retrieved_vec[i]->eventReportingMode.TimeOfLastReport = current_time;
               retrieved_vec[i]->eventReportingMode.sent_reports += 1;
             }
           }
           else if (current_time - retrieved_vec[i]->eventReportingMode.TimeOfLastReport >=retrieved_vec[i]->eventReportingMode.repPeriod){
+            clib_warning("[EventReport_UDUT] CALLING SEND report function");
             send_report(*retrieved_vec[i], USER_DATA_USAGE_TRENDS); // dummy
             retrieved_vec[i]->eventReportingMode.TimeOfLastReport = current_time;
             retrieved_vec[i]->eventReportingMode.sent_reports += 1;

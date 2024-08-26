@@ -126,7 +126,7 @@ UpfEventSubscription *parse_subscription_request(const char *body){
       eventReportingMode.expiry = json_string_value(json_object_get(reportingMode_json, "expiry"));
       eventReportingMode.repPeriod = json_integer_value(json_object_get(reportingMode_json, "repPeriod"));
       eventReportingMode.sampRatio = json_integer_value(json_object_get(reportingMode_json, "sampRatio"));
-      eventReportingMode.TimeOfLastReport = ((time_t)-1);
+      eventReportingMode.TimeOfLastReport = 0;
       time(&eventReportingMode.TimeOfSubscription );
       json_t * partitioningCriteria_json = json_object_get(reportingMode_json, "partitioningCriteria");
       eventReportingMode.partitioningCriteria = NULL;
