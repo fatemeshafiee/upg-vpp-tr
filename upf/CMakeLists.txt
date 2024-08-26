@@ -24,6 +24,7 @@ pkg_check_modules(HS libhs)
 message(STATUS "Looking for Microhttpd")
 pkg_check_modules(MHD REQUIRED libmicrohttpd)
 pkg_check_modules(JN REQUIRED jansson)
+pkg_check_modules(CURL REQUIRED libcurl)
 
 message(MHD_INCLUDE_DIRS="${MHD_INCLUDE_DIRS}")
 message(MHD_LIBRARIES="${MHD_LIBRARIES}")
@@ -33,10 +34,15 @@ message(JN_INCLUDE_DIRS="${JN_INCLUDE_DIRS}")
 message(JN_LIBRARIES="${JN_LIBRARIES}")
 message(JN_LDFLAGS="${JN_LDFLAGS}")
 
+message(CURL_INCLUDE_DIRS="${CURL_INCLUDE_DIRS}")
+message(CURL_LIBRARIES="${CURL_LIBRARIES}")
+message(CURL_LDFLAGS="${CURL_LDFLAGS}")
+
 if(MHD_FOUND)
   include_directories (${HS_INCLUDE_DIRS})
   include_directories (${MHD_INCLUDE_DIRS})
   include_directories (${JN_INCLUDE_DIRS})
+  include_directories (${CURL_INCLUDE_DIRS})
 
   add_vpp_plugin(upf
           SOURCES
@@ -135,11 +141,13 @@ if(MHD_FOUND)
           ${HS_LIBRARIES}
           ${MHD_LIBRARIES}
           ${JN_LIBRARIES}
+          ${CURL_LIBRARIES}
 
           LINK_FLAGS
           ${HS_LDFLAGS}
           ${MHD_LDFLAGS}
           ${JN_LDFLAGS}
+          ${CURL_LDFLAGS}
 
           API_TEST_SOURCES
           upf_test.c
