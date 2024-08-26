@@ -40,6 +40,7 @@ void parse_time(const char* date_time, struct  tm* tm){
 
 void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
+    cli_warning("[send_data] fillNotificationItem, in the if");
     item->type = USER_DATA_USAGE_TRENDS;
     struct tm tm;
     time_t current_time;
@@ -98,6 +99,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 }
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
   if(type == USER_DATA_USAGE_TRENDS){
+    clib_warning("[EventReport_UDUT] in create_custom_report");
+
     NotificationItem *notificationItem = malloc(sizeof (NotificationItem));
     fillNotificationItem(upfSub, notificationItem, type);
     json_t* callBack_Report= serialize_callBack(*notificationItem, upfSub.notifyCorrelationId, 0);
@@ -110,7 +113,8 @@ const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
 }
 void send_report(UpfEventSubscription upfSub,EventType type){
   // we Assume that we have the upf raw data hare
-  // we call the function that can customized the needed measurement
+  // we call the function that can customized the needed measuremen
+  clib_warning("[EventReport_UDUT] in send_report");
   const char *json_data = create_custom_report(upfSub, type);
 
   CURL *curl;
