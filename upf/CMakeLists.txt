@@ -23,7 +23,7 @@ pkg_check_modules(HS libhs)
 
 message(STATUS "Looking for Microhttpd")
 pkg_check_modules(MHD REQUIRED libmicrohttpd)
-pkg_check_modules(JN REQUIRED libjansson)
+pkg_check_modules(JN REQUIRED jansson)
 
 message(MHD_INCLUDE_DIRS="${MHD_INCLUDE_DIRS}")
 message(MHD_LIBRARIES="${MHD_LIBRARIES}")
