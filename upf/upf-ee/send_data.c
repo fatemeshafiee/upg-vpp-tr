@@ -42,11 +42,11 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
   if(type==USER_DATA_USAGE_TRENDS){
     clib_warning("[send_data] fillNotificationItem, in the if");
     item->type = USER_DATA_USAGE_TRENDS;
-    struct tm tm;
+    struct tm* tm = malloc(sizeof(struct tm));
     time_t current_time;
     time(&current_time);
-    parse_time(current_time,  &tm);
-    item->timeStamp = mktime(&tm);
+    parse_time(current_time, tm);
+    item->timeStamp = mktime(tm);
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
