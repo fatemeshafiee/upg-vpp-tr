@@ -10,13 +10,14 @@
 #include <vlib/unix/unix.h>
 #include <time.h>
 
-#define SERVER_PORT 80
+#define SERVER_PORT 4355
 
 struct MHD_Daemon *ee_daemon = NULL;
 
 
 static void poll_http_server() {
   if (ee_daemon != NULL) {
+    clib_warning("[server_info] got request. \n");
     MHD_run(ee_daemon);
   }
 }
@@ -33,7 +34,7 @@ void* ee_http_server(void *arg) {
   }
 
   while (1) {
-    vlib_process_wait_for_event_or_clock(vm, 0.1 /* seconds */);
+    vlib_process_wait_for_event_or_clock(vm, 0.0001 /* seconds */);
     poll_http_server();
   }
 
