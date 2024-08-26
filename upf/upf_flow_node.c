@@ -294,12 +294,13 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  to_next += 2;
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
-    time_t current_time = time(NULL);
+    time_t ee_time;
+    time(&ee_time);
 
-    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
+    if (ee_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
 
       prepare_ee_data(fm);
-      last_ee_report_time = current_time;
+      last_ee_report_time = ee_time;
     }
 
 
@@ -471,10 +472,12 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_from--;
 	  n_left_to_next--;
 
-    time_t current_time = time(NULL);
-    if (current_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
+    time_t ee_time;
+    time(&ee_time);
+
+    if (ee_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
       prepare_ee_data(fm);
-      last_ee_report_time = current_time;
+      last_ee_report_time = ee_time;
     }
 
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
