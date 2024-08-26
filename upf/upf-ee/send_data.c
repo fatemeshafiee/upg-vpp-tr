@@ -47,9 +47,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     time_t current_time;
     time(&current_time);
     clib_warning("[send_data] fillNotificationItem, getting crrent time");
-
-    parse_time(current_time, tm);
-    item->timeStamp = mktime(tm);
+//
+//    parse_time(current_time, tm);
+    item->timeStamp = current_time;
+//    item->timeStamp = mktime(tm);
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
