@@ -75,6 +75,8 @@ json_t *serialize_upf_event(const UpfEvent *event) {
   }
 
   json_object_set_new(obj, "measurementTypes", measurementTypes);
+  clib_warning("[encoder] in serialize_upf_event after measurementTypes");
+
   json_t *TrafficFilters = json_null();
   if(event->TrafficFilters){
     TrafficFilters = json_array();
@@ -84,6 +86,8 @@ json_t *serialize_upf_event(const UpfEvent *event) {
   }
 
   json_object_set_new(obj, "TrafficFilters", TrafficFilters);
+  clib_warning("[encoder] in serialize_upf_event after TrafficFilters");
+
 
   json_t *appIds = json_null();
   if (event->appIds) {
@@ -93,6 +97,7 @@ json_t *serialize_upf_event(const UpfEvent *event) {
     }
   }
   json_object_set_new(obj, "appIds", appIds);
+  clib_warning("[encoder] in serialize_upf_event after appIds");
 
   json_object_set_new(obj, "granularityOfMeasurement", json_string(getGranularityOfMeasurementString(event->granularityOfMeasurement)));
   json_object_set_new(obj, "reportingSuggestionInfo", serialize_suggestion_information(event->reportingSuggestionInfo));
