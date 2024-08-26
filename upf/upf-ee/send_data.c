@@ -40,7 +40,7 @@ void parse_time(const char* date_time, struct  tm* tm){
 
 void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
-    cli_warning("[send_data] fillNotificationItem, in the if");
+    clib_warning("[send_data] fillNotificationItem, in the if");
     item->type = USER_DATA_USAGE_TRENDS;
     struct tm tm;
     time_t current_time;
