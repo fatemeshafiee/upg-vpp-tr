@@ -296,6 +296,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_to_next -= 2;
     time_t ee_time;
     time(&ee_time);
+    clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
     if (ee_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
 
