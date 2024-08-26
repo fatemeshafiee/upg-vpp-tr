@@ -33,7 +33,7 @@ void parse_time(const char* date_time, struct  tm* tm){
   tm->tm_min = minute;
   tm->tm_sec = second;
   tm->tm_isdst = -1;
-
+  clib_warning("[parse_time] succeed to parse date-time string\n");
 
   return;
 }
@@ -42,11 +42,15 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
   if(type==USER_DATA_USAGE_TRENDS){
     clib_warning("[send_data] fillNotificationItem, in the if");
     item->type = USER_DATA_USAGE_TRENDS;
+    clib_warning("[send_data] fillNotificationItem, setting type");
     struct tm* tm = malloc(sizeof(struct tm));
     time_t current_time;
     time(&current_time);
+    clib_warning("[send_data] fillNotificationItem, getting crrent time");
+
     parse_time(current_time, tm);
     item->timeStamp = mktime(tm);
+    clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
