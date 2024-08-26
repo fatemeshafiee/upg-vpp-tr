@@ -2,6 +2,10 @@
 // Created by Fatemeh Shafiei Ardestani on 2024-08-18.
 //
 #include "handler.h"
+#include <vlib/vlib.h>
+#include <vlibapi/api.h>
+#include <vlibmemory/api.h>
+#include <vlib/unix/unix.h>
 jmp_buf exceptionBuffer;
 
 #define TRY if (setjmp(exceptionBuffer) == 0)
