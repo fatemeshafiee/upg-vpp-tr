@@ -55,10 +55,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
-    cli_warning("[send_data] fillNotificationItem, before locking the ee_lock");
+    clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
     vec_foreach(rep, usage_report_per_flow_vector){
-      cli_warning("[send_data] fillNotificationItem, in the loop");
+      clib_warning("[send_data] fillNotificationItem, in the loop");
 //      int subId = 1000000 + cvector_size(subscriptionList) - 1;
 //      *newSubId = malloc(7 + 1);
 //      sprintf(*newSubId, "%d", subId);
@@ -96,10 +96,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       cvector_push_back(userDataMeasurements, *usage);
     }
     item->userDataUsageMeasurements = userDataMeasurements;
-    cli_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
+    clib_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
   }
   pthread_mutex_unlock(&ee_lock);
-  cli_warning("[send_data] fillNotificationItem, end of function");
+  clib_warning("[send_data] fillNotificationItem, end of function");
 
 }
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
