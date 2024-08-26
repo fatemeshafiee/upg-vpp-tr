@@ -8,12 +8,13 @@ jmp_buf exceptionBuffer;
 #define CATCH else
 
 void log_api(const char *url, const char *method) {
-  printf("[%s] %s\n", method, url);
+  clib_warning("[server_info] We got request[%s] %s\n", method, url);
 }
 
 enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, const char *url,
                                 const char *method, const char *version, const char *upload_data,
                                 size_t *upload_data_size, void **con_cls) {
+
   if (NULL == *con_cls) {
     struct PostData *post_data = malloc(sizeof(struct PostData));
     post_data->data = NULL;
@@ -61,9 +62,9 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
     if (subscription_id != NULL) {
 
       subscription_id += strlen("/nupf-ee/v1/ee-subscriptions");
-      printf("\nAAAAH %s %p\n", subscription_id, subscription_id);
-      printf("\nAAAAH %s\n", upload_data);
-      printf("\nAAAAH %d\n", *upload_data_size);
+      clib_warning("\nAAAAH %s %p\n", subscription_id, subscription_id);
+      clib_warning("\nAAAAH %s\n", upload_data);
+      clib_warning("\nAAAAH %d\n", *upload_data_size);
       log_api(url_str, method_str);
       response_api = subscription_router(url_str,method_str,post_data->data, subscription_id, &created, &subId);
     }

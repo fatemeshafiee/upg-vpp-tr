@@ -17,7 +17,7 @@ struct MHD_Daemon *ee_daemon = NULL;
 
 static void poll_http_server() {
   if (ee_daemon != NULL) {
-    clib_warning("[server_info] got request. \n");
+//    clib_warning("[server_info] got request. \n");
     MHD_run(ee_daemon);
   }
 }
