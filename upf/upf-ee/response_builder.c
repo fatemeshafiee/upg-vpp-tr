@@ -3,8 +3,12 @@
 //
 #include "response_builder.h"
 
-
+#include <vlib/vlib.h>
+#include <vlibapi/api.h>
+#include <vlibmemory/api.h>
+#include <vlib/unix/unix.h>
 HTTP_response create_subscription(const char *body, bool *created, char **newSubId) {
+
   if (body == NULL) {
     return (HTTP_response) {
             .body = simple_message("No body provided."),
@@ -12,6 +16,7 @@ HTTP_response create_subscription(const char *body, bool *created, char **newSub
     };
 
   }
+  clib_warning("[server_info] creating subscription");
   UpfEventSubscription *new_subscription = NULL;
   new_subscription = parse_subscription_request(body);
   size_t sub_len = cvector_size(new_subscription->EventList);
@@ -22,6 +27,8 @@ HTTP_response create_subscription(const char *body, bool *created, char **newSub
 
     bool isAvailable = false;
     for (int j = 0; j < length; ++j) {
+      clib_warning("[server_info] creating subscription %d %d\n", new_subscription->EventList[i].type, supported_events[j]);
+
       printf("\nCHECKING %d %d\n", new_subscription->EventList[i].type, supported_events[j]);
       if (new_subscription->EventList[i].type == supported_events[j]) {
         isAvailable = true;

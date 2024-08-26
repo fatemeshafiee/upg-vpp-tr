@@ -66,7 +66,7 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
     if (subscription_id != NULL) {
 
       subscription_id += strlen("/nupf-ee/v1/ee-subscriptions");
-      clib_warning("\nAAAAH %s %p\n", subscription_id, subscription_id);
+      clib_warning("\nAAAAH %s %p\n", *subscription_id, subscription_id);
       clib_warning("\nAAAAH %s\n", upload_data);
       clib_warning("\nAAAAH %d\n", *upload_data_size);
       log_api(url_str, method_str);
