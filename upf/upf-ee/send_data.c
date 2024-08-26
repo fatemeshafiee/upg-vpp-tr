@@ -10,7 +10,7 @@
 #include <vlibapi/api.h>
 #include <vlibmemory/api.h>
 #include <vlib/unix/unix.h>
-
+extern usage_report_per_flow_t *usage_report_per_flow_vector;
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
   printf("%.*s", (int)realsize, (char *)contents); // Print the response data
@@ -55,7 +55,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
-    extern usage_report_per_flow_t *usage_report_per_flow_vector;
+
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
