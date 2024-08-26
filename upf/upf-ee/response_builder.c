@@ -62,8 +62,9 @@ HTTP_response create_subscription(const char *body, bool *created, char **newSub
   *(newSubId + 7) = 0;
   *created = true;
   clib_warning("\nthe length of subscribers  %d\n",cvector_size(subscriptionList));
+
   return (HTTP_response) {
-          .body = json_dumps(serialize_created_response(new_subscription, *newSubId), JSON_ENCODE_ANY),
+          .body = simple_message(json_dumps(serialize_created_response(new_subscription, *newSubId), JSON_ENCODE_ANY)),
           .status = CREATED
   };
   return (HTTP_response) {
