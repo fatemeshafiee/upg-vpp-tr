@@ -21,9 +21,13 @@ json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
   json_object_set_new(obj, "fDesc", json_string(eth->fDesc));
   json_object_set_new(obj, "fDir", json_string(getFlowDirectionString(eth->fDir)));
   json_object_set_new(obj, "sourceMacAddr", json_string(eth->sourceMacAddr));
-  json_t * Vlan_array = json_array();
-  for (size_t i = 0; i < cvector_size(eth->vlanTags); i++){
-    json_array_append_new(Vlan_array, json_string(eth->vlanTags[i]));
+  json_t * Vlan_array = json_null();
+  if(eth->vlanTags){
+    Vlan_array = json_array();
+    for (size_t i = 0; i < cvector_size(eth->vlanTags); i++){
+      json_array_append_new(Vlan_array, json_string(eth->vlanTags[i]));
+    }
+
   }
   json_object_set_new(obj, "vlanTags", Vlan_array);
   json_object_set_new(obj, "srcMacAddrEnd", json_string(eth->srcMacAddrEnd));
@@ -54,20 +58,31 @@ json_t *serialize_upf_event(const UpfEvent *event) {
   json_t *obj = json_object();
   json_object_set_new(obj, "type", json_string(getEventTypeString(event->type)));
   json_object_set_new(obj, "immediateFlag", json_boolean(event->immediateFlag));
+  json_t *measurementTypes = json_null();
+  if (event->measurementTypes){
+    measurementTypes = json_array();
+    for (size_t i = 0; i < cvector_size(event->measurementTypes); i++) {
+      json_array_append_new(measurementTypes, json_string(getMeasurementTypeString(event->measurementTypes[i])));
+    }
+  }
 
-  json_t *measurementTypes = json_array();
-  for (size_t i = 0; i < cvector_size(event->measurementTypes); i++) {
-    json_array_append_new(measurementTypes, json_string(getMeasurementTypeString(event->measurementTypes[i])));
-  }
   json_object_set_new(obj, "measurementTypes", measurementTypes);
-  json_t *TrafficFilters = json_array();
-  for (size_t i = 0; i < cvector_size(event->TrafficFilters); i++) {
-    json_array_append_new(TrafficFilters, serialize_flow_information(&(event->TrafficFilters[i])));
+  json_t *TrafficFilters = json_null();
+  if(event->TrafficFilters){
+    TrafficFilters = json_array();
+    for (size_t i = 0; i < cvector_size(event->TrafficFilters); i++) {
+      json_array_append_new(TrafficFilters, serialize_flow_information(&(event->TrafficFilters[i])));
+    }
   }
+
   json_object_set_new(obj, "TrafficFilters", TrafficFilters);
-  json_t *appIds = json_array();
-  for (size_t i = 0; i < cvector_size(event->appIds); i++){
-    json_array_append_new(appIds,json_string(event->appIds[i]));
+
+  json_t *appIds = json_null();
+  if (event->appIds) {
+    appIds = json_array();
+    for (size_t i = 0; i < cvector_size(event->appIds); i++){
+      json_array_append_new(appIds,json_string(event->appIds[i]));
+    }
   }
   json_object_set_new(obj, "appIds", appIds);
 
@@ -85,10 +100,15 @@ json_t *serialize_event_reporting_mode(const EventReportingMode *mode) {
   json_object_set_new(obj, "sampRatio", json_integer(mode->sampRatio));
   json_object_set_new(obj, "notifFlag", json_string(getNotificationFlagString(mode->notifFlag)));
 
-  json_t *partitioningCriteria = json_array();
-  for (size_t i = 0; i < cvector_size(mode->partitioningCriteria); i++) {
-    json_array_append_new(partitioningCriteria, json_string(getPartitioningCriteriaString(mode->partitioningCriteria[i])));
+  json_t *partitioningCriteria = json_null();
+  if(mode->partitioningCriteria){
+    partitioningCriteria = json_array();
+    for (size_t i = 0; i < cvector_size(mode->partitioningCriteria); i++) {
+      json_array_append_new(partitioningCriteria, json_string(getPartitioningCriteriaString(mode->partitioningCriteria[i])));
+    }
+
   }
+
 
   json_object_set_new(obj, "partitioningCriteria", partitioningCriteria);
   json_t *mutingExcInstructions_json = json_object();
@@ -168,15 +188,24 @@ json_t *serialize_ThroughputMeasurement(ThroughputMeasurement throughputMeasurem
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation applicationRelatedInformation) {
   json_t *obj = json_object();
-  json_t * urls = json_array();
-  for (size_t i = 0; i < cvector_size(applicationRelatedInformation.urls); i++){
-    json_array_append_new(urls, json_string(applicationRelatedInformation.urls[i]));
+  json_t * urls =json_null();
+  if(applicationRelatedInformation.urls)
+  {
+    urls = json_array();
+    for (size_t i = 0; i < cvector_size(applicationRelatedInformation.urls); i++){
+      json_array_append_new(urls, json_string(applicationRelatedInformation.urls[i]));
+    }
   }
+
   json_object_set_new(obj, "urls", urls);
-  json_t * domainInfoList = json_array();
-  for (size_t i = 0; i < cvector_size(applicationRelatedInformation.domainInfoList); i++){
-    json_array_append_new(domainInfoList, serialize_DomainInformation(applicationRelatedInformation.domainInfoList[i]));
+  json_t * domainInfoList = json_null();
+  if(applicationRelatedInformation.domainInfoList){
+    domainInfoList = json_array();
+    for (size_t i = 0; i < cvector_size(applicationRelatedInformation.domainInfoList); i++){
+      json_array_append_new(domainInfoList, serialize_DomainInformation(applicationRelatedInformation.domainInfoList[i]));
+    }
   }
+
 //    json_object_set_new(obj, "urls", urls);
   json_object_set_new(obj, "domainInfoList", domainInfoList);
   return  obj;
@@ -218,10 +247,15 @@ json_t *serialize_Notification_Item(NotificationItem notificationItem) {
   json_object_set_new(obj,"supi", json_string(notificationItem.supi));
   json_object_set_new(obj,"timeStamp",time_to_json(notificationItem.timeStamp));
   json_object_set_new(obj,"startTime", time_to_json(notificationItem.startTime));
-  json_t * userMeasurements = json_array();
-  for (size_t i = 0; i < cvector_size(notificationItem.userDataUsageMeasurements); i++){
-    json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem.userDataUsageMeasurements[i]));
+  json_t * userMeasurements = json_null();
+  if(notificationItem.userDataUsageMeasurements){
+    userMeasurements = json_array();
+    for (size_t i = 0; i < cvector_size(notificationItem.userDataUsageMeasurements); i++){
+      json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem.userDataUsageMeasurements[i]));
+    }
+
   }
+
   json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
   return  obj;
 }
