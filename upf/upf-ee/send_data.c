@@ -35,8 +35,8 @@ void parse_time(const char* date_time, struct  tm* tm){
 }
 
 void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type ) {
-  if(type==USER_DATA_USAGE_MEASURES){
-    item->type = USER_DATA_USAGE_MEASURES;
+  if(type==USER_DATA_USAGE_TRENDS){
+    item->type = USER_DATA_USAGE_TRENDS;
     struct tm tm;
     time_t current_time;
     time(&current_time);
