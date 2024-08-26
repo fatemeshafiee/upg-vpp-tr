@@ -6,6 +6,10 @@
 //
 
 #include "send_data.h"
+#include <vlib/vlib.h>
+#include <vlibapi/api.h>
+#include <vlibmemory/api.h>
+#include <vlib/unix/unix.h>
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
@@ -34,7 +38,7 @@ void parse_time(const char* date_time, struct  tm* tm){
   return;
 }
 
-void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type ) {
+void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
     item->type = USER_DATA_USAGE_TRENDS;
     struct tm tm;
@@ -45,16 +49,34 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
+    cli_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
     vec_foreach(rep, usage_report_per_flow_vector){
+      cli_warning("[send_data] fillNotificationItem, in the loop");
+//      int subId = 1000000 + cvector_size(subscriptionList) - 1;
+//      *newSubId = malloc(7 + 1);
+//      sprintf(*newSubId, "%d", subId);
+      // TODO: make sure the uplink and downlink are right.
+
+      int volume = rep->src_bytes + rep->dst_bytes;
+      char *strVolume = malloc(20 + 1);
+      sprintf(*strVolume, "%d", volume);
+      sprintf(*strVolume, "%s", "B");
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
-      usage->volumeMeasurement.totalVolume = rep->src_bytes + rep->dst_bytes;
-      // TODO: make sure the uplink and downlink are right.
       usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
-      usage->volumeMeasurement.dlVolume = rep->src_bytes;
       usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
+
+      usage->volumeMeasurement.totalVolume = strVolume;
+      volume = rep->src_bytes;
+      sprintf(*strVolume, "%d", volume);
+      sprintf(*strVolume, "%s", "B");
+      usage->volumeMeasurement.dlVolume = strVolume;
+      volume = rep->dst_bytes;
+      sprintf(*strVolume, "%d", volume);
+      sprintf(*strVolume, "%s", "B");
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
+
       char buffer[INET6_ADDRSTRLEN];
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
@@ -68,8 +90,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       cvector_push_back(userDataMeasurements, *usage);
     }
     item->userDataUsageMeasurements = userDataMeasurements;
+    cli_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
   }
   pthread_mutex_unlock(&ee_lock);
+  cli_warning("[send_data] fillNotificationItem, end of function");
 
 }
 const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
