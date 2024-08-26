@@ -22,7 +22,7 @@ void parse_time(const char* date_time, struct  tm* tm){
   memset(tm, 0, sizeof(struct tm));
 
   if (sscanf(date_time, "%d-%d-%dT%d:%d:%dZ", &year, &month, &day, &hour, &minute, &second) != 6) {
-    fprintf(stderr, "Failed to parse date-time string\n");
+    clib_warning(stderr, "Failed to parse date-time string\n");
     return;
   }
 
