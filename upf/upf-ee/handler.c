@@ -86,8 +86,8 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
 
     printf("Internal server error");
   }
-  clib_warning("the created is%d", *created);
-  if(*created) response = HTTP_build_created_response_JSON(response_api.body, subId, url_str);
+  clib_warning("the created is%d", created);
+  if(created) response = HTTP_build_created_response_JSON(response_api.body, subId, url_str);
   else response = HTTP_build_response_JSON(response_api.body);
 
   if (!response)
