@@ -6,6 +6,10 @@
 //
 
 #include "encoder.h"
+#include <vlib/vlib.h>
+#include <vlibapi/api.h>
+#include <vlibmemory/api.h>
+#include <vlib/unix/unix.h>
 
 json_t *time_to_json(time_t timestamp){
   char date_time[30];
@@ -15,6 +19,7 @@ json_t *time_to_json(time_t timestamp){
   return json_string(date_time);
 }
 json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
+  clib_warning("[encoder] in serialize_eth_flow_description");
   json_t *obj = json_object();
   json_object_set_new(obj, "destMacAddr", json_string(eth->destMacAddr));
   json_object_set_new(obj, "ethType", json_string(eth->ethType));
@@ -36,6 +41,7 @@ json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
 }
 
 json_t *serialize_flow_information(const FlowInformation *flow) {
+  clib_warning("[encoder] in serialize_flow_information");
   json_t *obj = json_object();
   json_object_set_new(obj, "flowDescription", json_string(flow->flowDescription));
   json_object_set_new(obj, "ethFlowDescription", serialize_eth_flow_description(flow->ethFlowDescription));
@@ -48,6 +54,7 @@ json_t *serialize_flow_information(const FlowInformation *flow) {
   return obj;
 }
 json_t *serialize_suggestion_information(ReportingSuggestionInformation Sinfo){
+  clib_warning("[encoder] in serialize_suggestion_information");
   json_t *obj = json_object();
   json_object_set_new(obj, "reportingUrgency", json_string(getReportingUrgencyString(Sinfo.reportingUrgency)));
   json_object_set_new(obj, "reportingTimeInfo", json_integer(Sinfo.reportingTimeInfo));
@@ -55,6 +62,7 @@ json_t *serialize_suggestion_information(ReportingSuggestionInformation Sinfo){
 }
 
 json_t *serialize_upf_event(const UpfEvent *event) {
+  clib_warning("[encoder] in serialize_upf_event");
   json_t *obj = json_object();
   json_object_set_new(obj, "type", json_string(getEventTypeString(event->type)));
   json_object_set_new(obj, "immediateFlag", json_boolean(event->immediateFlag));
@@ -93,6 +101,7 @@ json_t *serialize_upf_event(const UpfEvent *event) {
 
 json_t *serialize_event_reporting_mode(const EventReportingMode *mode) {
   json_t *obj = json_object();
+  clib_warning("[encoder] in serialize_event_reporting_mode");
   json_object_set_new(obj, "trigger", json_string(getUpfEventTriggerString(mode->trigger)));
   json_object_set_new(obj, "maxReports", json_integer(mode->maxReports));
   json_object_set_new(obj, "expiry", json_string(mode->expiry));
@@ -121,12 +130,14 @@ json_t *serialize_event_reporting_mode(const EventReportingMode *mode) {
 
 }
 json_t *serialize_snssai(const Snssai snssai){
+  clib_warning("[encoder] in serialize_snssai");
   json_t * Snssai_json = json_object();
   json_object_set_new(Snssai_json, "sst", json_integer(snssai.sst));
   json_object_set_new(Snssai_json, "sd", json_string(snssai.sd));
   return Snssai_json;
 }
 json_t *serialize_UeIpAddress(const UeIpAddressVersion ueIpAddressVersion, const char* ueIpAddress ){
+  clib_warning("[encoder] in serialize_UeIpAddress");
   json_t *ue_json = json_object();
   if(ueIpAddressVersion == V4) json_object_set_new(ue_json, "ipv4Addr",json_string(ueIpAddress));
   else if(ueIpAddressVersion == V6) json_object_set_new(ue_json, "ipv6Addr",json_string(ueIpAddress));
@@ -134,6 +145,7 @@ json_t *serialize_UeIpAddress(const UeIpAddressVersion ueIpAddressVersion, const
   return ue_json;
 }
 json_t *serialize_upf_event_subscription(const UpfEventSubscription *subscription) {
+  clib_warning("[encoder] in serialize_upf_event_subscription");
   json_t *obj = json_object();
   json_object_set_new(obj, "eventNotifyUri", json_string(subscription->eventNotifyUri));
   json_object_set_new(obj, "notifyCorrelationId", json_string(subscription->notifyCorrelationId));
