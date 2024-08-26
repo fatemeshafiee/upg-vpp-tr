@@ -40,7 +40,7 @@ UpfEventSubscription *parse_subscription_request(const char *body){
         }
 
         // Making the trafficFilters
-        upfEvent.trafficFilters = NULL;
+        upfEvent.TrafficFilters = NULL;
         json_t* trafficFilters = json_object_get(upf_event, "trafficFilters");
         if(json_is_array(trafficFilters)){
 
