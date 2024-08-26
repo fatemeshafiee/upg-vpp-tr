@@ -54,14 +54,13 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
+    extern usage_report_per_flow_t *usage_report_per_flow_vector;
     cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
     vec_foreach(rep, usage_report_per_flow_vector){
       clib_warning("[send_data] fillNotificationItem, in the loop");
-//      int subId = 1000000 + cvector_size(subscriptionList) - 1;
-//      *newSubId = malloc(7 + 1);
-//      sprintf(*newSubId, "%d", subId);
+
       // TODO: make sure the uplink and downlink are right.
 
       int volume = rep->src_bytes + rep->dst_bytes;
