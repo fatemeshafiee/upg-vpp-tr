@@ -64,6 +64,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       clib_warning("[send_data] fillNotificationItem, in the loop");
 
       // TODO: make sure the uplink and downlink are right.
+      clib_warning("[send_data] fillNotificationItem, in the loop 67");
 
       int volume = rep->src_bytes + rep->dst_bytes;
       char *strVolume = malloc(20 + 1);
@@ -83,7 +84,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       sprintf(*strVolume, "%d", volume);
       sprintf(*strVolume, "%s", "B");
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
-
+      clib_warning("[send_data] fillNotificationItem, in the loop 87");
       char buffer[INET6_ADDRSTRLEN];
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
