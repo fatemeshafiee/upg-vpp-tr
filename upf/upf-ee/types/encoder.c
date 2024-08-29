@@ -11,6 +11,12 @@
 #include <vlibmemory/api.h>
 #include <vlib/unix/unix.h>
 
+json_t * json_string_or_null(char* str){
+  if(str == NULL) return json_null();
+  return json_string(str);
+
+}
+
 json_t *time_to_json(time_t timestamp){
   char date_time[30];
   struct tm td_info;
@@ -46,14 +52,14 @@ json_t *serialize_flow_information(const FlowInformation *flow) {
   clib_warning("[encoder] in serialize_flow_information");
   if (flow == NULL) return json_null();
   json_t *obj = json_object();
-  json_object_set_new(obj, "flowDescription", json_string(flow->flowDescription));
+  json_object_set_new(obj, "flowDescription", json_string_or_null(flow->flowDescription));
   json_object_set_new(obj, "ethFlowDescription", serialize_eth_flow_description(flow->ethFlowDescription));
-  json_object_set_new(obj, "packFiltId", json_string(flow->packFiltId));
+  json_object_set_new(obj, "packFiltId", json_string_or_null(flow->packFiltId));
   json_object_set_new(obj, "packetFilterUsage", json_boolean(flow->packetFilterUsage));
-  json_object_set_new(obj, "tosTrafficClass", json_string(flow->tosTrafficClass));
-  json_object_set_new(obj, "spi", json_string(flow->spi));
-  json_object_set_new(obj, "flowLabel", json_string(flow->flowLabel));
-  json_object_set_new(obj, "fDir", json_string(getFlowDirectionString(flow->fDir)));
+  json_object_set_new(obj, "tosTrafficClass", json_string_or_null(flow->tosTrafficClass));
+  json_object_set_new(obj, "spi", json_string_or_null(flow->spi));
+  json_object_set_new(obj, "flowLabel", json_string_or_null(flow->flowLabel));
+  json_object_set_new(obj, "fDir", json_string_or_null(getFlowDirectionString(flow->fDir)));
   return obj;
 }
 json_t *serialize_suggestion_information(ReportingSuggestionInformation Sinfo){
