@@ -1,7 +1,7 @@
 //
 // Created by Fatemeh Shafiei Ardestani on 2024-07-13.
 //
-//
+//userDataMeasurements
 // Created by Fatemeh Shafiei Ardestani on 2024-07-13.
 //
 
@@ -58,7 +58,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //    item->startTime = mktime(&tm);
     usage_report_per_flow_t* rep;
 
-    cvector(UserDataUsageMeasurements) userDataMeasurements = NULL;
+    cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
