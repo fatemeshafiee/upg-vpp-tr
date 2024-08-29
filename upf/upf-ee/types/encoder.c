@@ -189,39 +189,39 @@ json_t *serialize_DomainInformation(DomainInformation domainInfo) {
 
 json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement.totalVolume));
-  json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement.ulVolume));
-  json_object_set_new(obj, "dlVolume",json_string(volumeMeasurement.dlVolume));
-  json_object_set_new(obj, "totalNbOfPackets", json_integer(volumeMeasurement.totalNbOfPackets));
-  json_object_set_new(obj, "ulNbOfPackets", json_integer(volumeMeasurement.ulNbOfPackets));
-  json_object_set_new(obj, "dlNbOfPackets", json_integer(volumeMeasurement.dlNbOfPackets));
+  json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
+  json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement->ulVolume));
+  json_object_set_new(obj, "dlVolume",json_string(volumeMeasurement->dlVolume));
+  json_object_set_new(obj, "totalNbOfPackets", json_integer(volumeMeasurement->totalNbOfPackets));
+  json_object_set_new(obj, "ulNbOfPackets", json_integer(volumeMeasurement->ulNbOfPackets));
+  json_object_set_new(obj, "dlNbOfPackets", json_integer(volumeMeasurement->dlNbOfPackets));
   return  obj;
 }
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "ulThroughput",json_string(throughputMeasurement.ulThroughput));
-  json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement.dlThroughput));
-  json_object_set_new(obj, "ulPacketThroughput",json_string(throughputMeasurement.ulPacketThroughput));
-  json_object_set_new(obj, "dlPacketThroughput",json_string(throughputMeasurement.dlPacketThroughput));
+  json_object_set_new(obj, "ulThroughput",json_string(throughputMeasurement->ulThroughput));
+  json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement->dlThroughput));
+  json_object_set_new(obj, "ulPacketThroughput",json_string(throughputMeasurement->ulPacketThroughput));
+  json_object_set_new(obj, "dlPacketThroughput",json_string(throughputMeasurement->dlPacketThroughput));
   return  obj;
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
   json_t *obj = json_object();
   json_t * urls =json_null();
-  if(applicationRelatedInformation.urls)
+  if(applicationRelatedInformation->urls)
   {
     urls = json_array();
-    for (size_t i = 0; i < cvector_size(applicationRelatedInformation.urls); i++){
-      json_array_append_new(urls, json_string(applicationRelatedInformation.urls[i]));
+    for (size_t i = 0; i < cvector_size(applicationRelatedInformation->urls); i++){
+      json_array_append_new(urls, json_string(applicationRelatedInformation->urls[i]));
     }
   }
 
   json_object_set_new(obj, "urls", urls);
   json_t * domainInfoList = json_null();
-  if(applicationRelatedInformation.domainInfoList){
+  if(applicationRelatedInformation->domainInfoList){
     domainInfoList = json_array();
-    for (size_t i = 0; i < cvector_size(applicationRelatedInformation.domainInfoList); i++){
-      json_array_append_new(domainInfoList, serialize_DomainInformation(applicationRelatedInformation.domainInfoList[i]));
+    for (size_t i = 0; i < cvector_size(applicationRelatedInformation->domainInfoList); i++){
+      json_array_append_new(domainInfoList, serialize_DomainInformation(applicationRelatedInformation->domainInfoList[i]));
     }
   }
 
@@ -231,14 +231,14 @@ json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *a
 }
 json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "ulAverageThroughput",json_string(throughputStatisticsMeasurement.ulAverageThroughput));
-  json_object_set_new(obj, "dlAverageThroughput",json_string(throughputStatisticsMeasurement.dlAverageThroughput));
-  json_object_set_new(obj, "ulPeakThroughput",json_string(throughputStatisticsMeasurement.ulPeakThroughput));
-  json_object_set_new(obj, "dlPeakThroughPut",json_string(throughputStatisticsMeasurement.dlPeakThroughput));
-  json_object_set_new(obj, "ulAveragePacketThroughput",json_string(throughputStatisticsMeasurement.ulAveragePacketThroughput));
-  json_object_set_new(obj, "dlAveragePacketThroughput",json_string(throughputStatisticsMeasurement.dlAveragePacketThroughput));
-  json_object_set_new(obj, "ulPeakPacketThroughput",json_string(throughputStatisticsMeasurement.ulPeakPacketThroughput));
-  json_object_set_new(obj, "dlPeakPacketThroughput",json_string(throughputStatisticsMeasurement.dlPeakPacketThroughput));
+  json_object_set_new(obj, "ulAverageThroughput",json_string(throughputStatisticsMeasurement->ulAverageThroughput));
+  json_object_set_new(obj, "dlAverageThroughput",json_string(throughputStatisticsMeasurement->dlAverageThroughput));
+  json_object_set_new(obj, "ulPeakThroughput",json_string(throughputStatisticsMeasurement->ulPeakThroughput));
+  json_object_set_new(obj, "dlPeakThroughPut",json_string(throughputStatisticsMeasurement->dlPeakThroughput));
+  json_object_set_new(obj, "ulAveragePacketThroughput",json_string(throughputStatisticsMeasurement->ulAveragePacketThroughput));
+  json_object_set_new(obj, "dlAveragePacketThroughput",json_string(throughputStatisticsMeasurement->dlAveragePacketThroughput));
+  json_object_set_new(obj, "ulPeakPacketThroughput",json_string(throughputStatisticsMeasurement->ulPeakPacketThroughput));
+  json_object_set_new(obj, "dlPeakPacketThroughput",json_string(throughputStatisticsMeasurement->dlPeakPacketThroughput));
 
   return  obj;
 }
