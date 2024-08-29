@@ -191,7 +191,7 @@ json_t *serialize_DomainInformation(DomainInformation domainInfo) {
 }
 
 json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
-  if (volumeMeasurement == NULL) retun json_null();
+  if (volumeMeasurement == NULL) return json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
   json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement->ulVolume));
