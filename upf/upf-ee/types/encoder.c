@@ -20,6 +20,8 @@ json_t *time_to_json(time_t timestamp){
 }
 json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
   clib_warning("[encoder] in serialize_eth_flow_description");
+  if (eth == NULL)
+    return json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "destMacAddr", json_string(eth->destMacAddr));
   json_object_set_new(obj, "ethType", json_string(eth->ethType));
@@ -42,6 +44,7 @@ json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
 
 json_t *serialize_flow_information(const FlowInformation *flow) {
   clib_warning("[encoder] in serialize_flow_information");
+  if (flow == NULL) return json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "flowDescription", json_string(flow->flowDescription));
   json_object_set_new(obj, "ethFlowDescription", serialize_eth_flow_description(flow->ethFlowDescription));
@@ -188,6 +191,7 @@ json_t *serialize_DomainInformation(DomainInformation domainInfo) {
 }
 
 json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
+  if (volumeMeasurement == NULL) retun json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
   json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement->ulVolume));
@@ -198,6 +202,7 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   return  obj;
 }
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
+  if (throughputMeasurement == NULL) return json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "ulThroughput",json_string(throughputMeasurement->ulThroughput));
   json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement->dlThroughput));
@@ -206,6 +211,7 @@ json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasure
   return  obj;
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
+  if (applicationRelatedInformation == NULL) return json_null();
   json_t *obj = json_object();
   json_t * urls =json_null();
   if(applicationRelatedInformation->urls)
@@ -230,6 +236,7 @@ json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *a
   return  obj;
 }
 json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement) {
+  if (throughputStatisticsMeasurement == NULL) return json_null();
   json_t *obj = json_object();
   json_object_set_new(obj, "ulAverageThroughput",json_string(throughputStatisticsMeasurement->ulAverageThroughput));
   json_object_set_new(obj, "dlAverageThroughput",json_string(throughputStatisticsMeasurement->dlAverageThroughput));
