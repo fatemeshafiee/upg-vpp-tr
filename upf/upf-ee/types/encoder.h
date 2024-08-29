@@ -20,7 +20,7 @@ json_t *serialize_snssai(const Snssai snssai);
 json_t *serialize_UeIpAddress(const UeIpAddressVersion ueIpAddressVersion, const char* ueIpAddress );
 json_t *serialize_upf_event_subscription(const UpfEventSubscription *subscription);
 json_t *serialize_created_response(const UpfEventSubscription *subscription,char * subscriptionId );
-json_t *serialize_DomainInformation(DomainInformation domainInfo);
+json_t *serialize_DomainInformation(DomainInformation *domainInfo);
 json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement);
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement);
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation);
