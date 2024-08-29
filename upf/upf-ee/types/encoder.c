@@ -211,10 +211,10 @@ json_t *serialize_created_response(const UpfEventSubscription *subscription,char
   json_object_set_new(obj, "subscriptionId", json_string(subscriptionId));
   return  obj;
 }
-json_t *serialize_DomainInformation(DomainInformation domainInfo) {
+json_t *serialize_DomainInformation(DomainInformation *domainInfo) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "domainName",json_string(domainInfo.domainName));
-  json_object_set_new(obj, "domainNameProtocol",json_string(getDnProtocolString(domainInfo.domainNameProtocol)));
+  json_object_set_new(obj, "domainName",json_string(domainInfo->domainName));
+  json_object_set_new(obj, "domainNameProtocol",json_string(getDnProtocolString(domainInfo->domainNameProtocol)));
 
   return  obj;
 }
