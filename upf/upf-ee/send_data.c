@@ -107,13 +107,13 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->throughputMeasurement = NULL;
       usage->applicationRelatedInformation = NULL;
       usage->throughputStatisticsMeasurement = NULL;
-      usage->flowInfo.ethFlowDescription = NULL;
+      usage->flowInfo->ethFlowDescription = NULL;
       usage->flowInfo.fDir = BIDIRECTIONAL;
-      usage->flowInfo.flowLabel = NULL;
-      usage->flowInfo.packFiltId = NULL;
-      usage->flowInfo.packetFilterUsage = false;
-      usage->flowInfo.spi = NULL;
-      usage->flowInfo.tosTrafficClass = NULL;
+      usage->flowInfo->flowLabel = NULL;
+      usage->flowInfo->packFiltId = NULL;
+      usage->flowInfo->packetFilterUsage = false;
+      usage->flowInfo->spi = NULL;
+      usage->flowInfo->tosTrafficClass = NULL;
       cvector_push_back(userDataMeasurements, *usage);
       clib_warning("[send_data] fillNotificationItem, in the loop 113");
 
