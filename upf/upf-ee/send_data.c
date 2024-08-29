@@ -71,7 +71,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
-
+      usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement))
       clib_warning("[send_data] fillNotificationItem, in the loop 75");
       usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
       clib_warning("[send_data] fillNotificationItem, in the loop 77");
@@ -102,6 +102,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       json_object_set_new(obj,"DstIp", json_string(buffer));
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
+      usage->flowInfo = malloc(sizeof (FlowInformation));
       usage->flowInfo->flowDescription = json_dumps(obj, JSON_INDENT(2));
       usage->throughputMeasurement = NULL;
       usage->applicationRelatedInformation = NULL;
