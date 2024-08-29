@@ -73,7 +73,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       clib_warning("[send_data] fillNotificationItem, in the loop 74");
 
-//      usage = NULL;
+      usage = NULL;
       clib_warning("[send_data] fillNotificationItem, in the loop 77");
 
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
@@ -103,16 +103,15 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       json_object_set_new(obj,"DstIp", json_string(buffer));
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
-//      usage->flowInfo = NULL;
       usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
       usage->throughputMeasurement = NULL;
       usage->applicationRelatedInformation = NULL;
       usage->throughputStatisticsMeasurement = NULL;
       usage->flowInfo.ethFlowDescription = NULL;
-      usage->flowInfo.fDir = NULL;
+      usage->flowInfo.fDir = BIDIRECTIONAL;
       usage->flowInfo.flowLabel = NULL;
       usage->flowInfo.packFiltId = NULL;
-      usage->flowInfo.packetFilterUsage = NULL;
+      usage->flowInfo.packetFilterUsage = false;
       usage->flowInfo.spi = NULL;
       usage->flowInfo.tosTrafficClass = NULL;
       cvector_push_back(userDataMeasurements, *usage);

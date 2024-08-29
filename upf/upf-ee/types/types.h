@@ -112,7 +112,7 @@ typedef struct {
     const char* flowDescription;
     EthFlowDescription* ethFlowDescription; // Done
     const char* packFiltId;
-    bool packetFilterUsage;
+    bool packetFilterUsage; // should be bool* ? default:false
     const char* tosTrafficClass;
     const char* spi;
     const char* flowLabel;
@@ -214,11 +214,11 @@ typedef struct {
 
 typedef struct {
     char *appID;
-    FlowInformation flowInfo;
-    VolumeMeasurement volumeMeasurement;
-    ThroughputMeasurement throughputMeasurement;
-    ApplicationRelatedInformation applicationRelatedInformation;
-    ThroughputStatisticsMeasurement throughputStatisticsMeasurement;
+    FlowInformation *flowInfo;
+    VolumeMeasurement *volumeMeasurement;
+    ThroughputMeasurement *throughputMeasurement;
+    ApplicationRelatedInformation *applicationRelatedInformation;
+    ThroughputStatisticsMeasurement *throughputStatisticsMeasurement;
 } UserDataUsageMeasurements;
 
 typedef struct {
