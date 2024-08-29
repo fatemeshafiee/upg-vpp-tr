@@ -67,22 +67,14 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       clib_warning("[send_data] fillNotificationItem, in the loop 67");
 
       int volume = rep->src_bytes + rep->dst_bytes;
-      clib_warning("[send_data] fillNotificationItem, in the loop 70");
       char *strVolume = malloc(20 + 1);
-      clib_warning("[send_data] fillNotificationItem, in the loop 72");
       sprintf(strVolume, "%d", volume);
-      clib_warning("[send_data] fillNotificationItem, in the loop 74");
-
       sprintf(strVolume, "%s", "B");
-      clib_warning("[send_data] fillNotificationItem, in the loop 77");
-
-      clib_warning("[send_data] fillNotificationItem, in the loop 74");
-
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
+      usage = NULL;
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
       usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
       usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
-      clib_warning("[send_data] fillNotificationItem, in the loop 80");
 
       usage->volumeMeasurement.totalVolume = strVolume;
       volume = rep->src_bytes;
@@ -93,7 +85,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
-      clib_warning("[send_data] fillNotificationItem, in the loop 87");
       char buffer[INET6_ADDRSTRLEN];
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
@@ -103,7 +94,13 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       json_object_set_new(obj,"DstIp", json_string(buffer));
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
+//      usage->flowInfo = NULL;
       usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
+//      usage->throughputMeasurement = NULL;
+//      usage->applicationRelatedInformation = NULL;
+//      usage->throughputStatisticsMeasurement = NULL;
+//      usage->flowInfo = NULL;
+
       cvector_push_back(userDataMeasurements, *usage);
     }
     item->userDataUsageMeasurements = userDataMeasurements;
