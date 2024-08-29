@@ -26,24 +26,43 @@ json_t *time_to_json(time_t timestamp){
 }
 json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
   clib_warning("[encoder] in serialize_eth_flow_description");
-  if (eth == NULL)
+  if (eth == NULL){
+    clib_warning("[encoder] in serialize_eth_flow_description in the if");
     return json_null();
+
+  }
   json_t *obj = json_object();
   json_object_set_new(obj, "destMacAddr", json_string(eth->destMacAddr));
+  clib_warning("[encoder] in serialize_eth_flow_description in the if 36");
+
   json_object_set_new(obj, "ethType", json_string(eth->ethType));
+  clib_warning("[encoder] in serialize_eth_flow_description in the if 39");
+
   json_object_set_new(obj, "fDesc", json_string(eth->fDesc));
+  clib_warning("[encoder] in serialize_eth_flow_description in the if 42");
+
   json_object_set_new(obj, "fDir", json_string(getFlowDirectionString(eth->fDir)));
+  clib_warning("[encoder] in serialize_eth_flow_description in the if 45");
+
   json_object_set_new(obj, "sourceMacAddr", json_string(eth->sourceMacAddr));
   json_t * Vlan_array = json_null();
   if(eth->vlanTags){
     Vlan_array = json_array();
+    clib_warning("[encoder] in serialize_eth_flow_description in the 2nd if");
+
     for (size_t i = 0; i < cvector_size(eth->vlanTags); i++){
+      clib_warning("[encoder] in serialize_eth_flow_description in the for");
+
       json_array_append_new(Vlan_array, json_string(eth->vlanTags[i]));
     }
 
   }
   json_object_set_new(obj, "vlanTags", Vlan_array);
+  clib_warning("[encoder] in serialize_eth_flow_description 61");
+
   json_object_set_new(obj, "srcMacAddrEnd", json_string(eth->srcMacAddrEnd));
+  clib_warning("[encoder] in serialize_eth_flow_description 64");
+
   json_object_set_new(obj, "destMacAddrEnd", json_string(eth->destMacAddrEnd));
   clib_warning("[encoder] end of serialize_eth_flow_description");
 
