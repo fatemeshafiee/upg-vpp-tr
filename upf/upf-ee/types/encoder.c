@@ -25,7 +25,7 @@ json_t *time_to_json(time_t timestamp){
   return json_string(date_time);
 }
 json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
-  clib_warning("[encoder] in serialize_eth_flow_description the eth is%p\n", void *(eth));
+  clib_warning("[encoder] in serialize_eth_flow_description the eth is%p\n", (void *)eth);
   if (eth == NULL){
     clib_warning("[encoder] in serialize_eth_flow_description in the if");
     return json_null();
