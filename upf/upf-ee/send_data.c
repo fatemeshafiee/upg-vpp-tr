@@ -52,7 +52,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
     item->timeStamp = current_time;
     item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
     item->snssai.sst = 0;
-    item->snssai.sd = "";
+    item->snssai.sd = "0";
 //    item->timeStamp = mktime(tm);
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
