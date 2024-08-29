@@ -51,6 +51,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //    parse_time(current_time, tm);
     item->timeStamp = current_time;
     item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
+    item->snssai.sst = 0;
+    item->snssai.sd = "";
 //    item->timeStamp = mktime(tm);
     clib_warning("[send_data] fillNotificationItem, mktime");
 //    item->startTime = mktime(&tm);
@@ -114,7 +116,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->flowInfo->packetFilterUsage = false;
       usage->flowInfo->spi = NULL;
       usage->flowInfo->tosTrafficClass = NULL;
-      cvector_push_back(userDataMeasurements, *usage);
+      cvector_push_back(userDataMeasurements, usage);
       clib_warning("[send_data] fillNotificationItem, in the loop 113");
 
     }
