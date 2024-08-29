@@ -25,7 +25,7 @@ json_t *time_to_json(time_t timestamp){
   return json_string(date_time);
 }
 json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
-  clib_warning("[encoder] in serialize_eth_flow_description the eth is%p\n", (void *)eth);
+  clib_warning("[encoder] in serialize_eth_flow_description the eth is %p\n", (void *)eth);
   if (eth == NULL){
     clib_warning("[encoder] in serialize_eth_flow_description in the if");
     return json_null();
@@ -279,34 +279,34 @@ json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasuremen
   return  obj;
 }
 
-json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements userDataUsageMeasurements) {
+json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataUsageMeasurements) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "appId",json_string(userDataUsageMeasurements.appID));
-  json_object_set_new(obj, "flowInfo", serialize_flow_information(&(userDataUsageMeasurements.flowInfo)));
-  json_object_set_new(obj, "volumeMeasurement",serialize_VolumeMeasurement(userDataUsageMeasurements.volumeMeasurement));
-  json_object_set_new(obj, "throughputMeasurement", serialize_ThroughputMeasurement(userDataUsageMeasurements.throughputMeasurement));
-  json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements.applicationRelatedInformation));
-  json_object_set_new(obj, "throughputStatisticsMeasurement",serialize_ThroughputStatisticsMeasurement(userDataUsageMeasurements.throughputStatisticsMeasurement));
+  json_object_set_new(obj, "appId",json_string(userDataUsageMeasurements->appID));
+  json_object_set_new(obj, "flowInfo", serialize_flow_information(&(userDataUsageMeasurements->flowInfo)));
+  json_object_set_new(obj, "volumeMeasurement",serialize_VolumeMeasurement(userDataUsageMeasurements->volumeMeasurement));
+  json_object_set_new(obj, "throughputMeasurement", serialize_ThroughputMeasurement(userDataUsageMeasurements->throughputMeasurement));
+  json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements->applicationRelatedInformation));
+  json_object_set_new(obj, "throughputStatisticsMeasurement",serialize_ThroughputStatisticsMeasurement(userDataUsageMeasurements->throughputStatisticsMeasurement));
   return  obj;
 }
 
-json_t *serialize_Notification_Item(NotificationItem notificationItem) {
+json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   json_t *obj = json_object();
-  json_object_set_new(obj, "eventType", json_string(getEventTypeString(notificationItem.type)));
-  json_object_set_new(obj,"ueIpv4Addr", json_string(notificationItem.ueIpv4Addr));
-  json_object_set_new(obj,"ueIpv6Prefix", json_string(notificationItem.ueIpv6Prefix));
-  json_object_set_new(obj,"ueMacAddr", json_string(notificationItem.ueMacAddr));
-  json_object_set_new(obj,"dnn", json_string(notificationItem.dnn));
-  json_object_set_new(obj,"snssai", serialize_snssai(notificationItem.snssai));
-  json_object_set_new(obj,"gpsi", json_string(notificationItem.gpsi));
-  json_object_set_new(obj,"supi", json_string(notificationItem.supi));
-  json_object_set_new(obj,"timeStamp",time_to_json(notificationItem.timeStamp));
-  json_object_set_new(obj,"startTime", time_to_json(notificationItem.startTime));
+  json_object_set_new(obj, "eventType", json_string(getEventTypeString(notificationItem->type)));
+  json_object_set_new(obj,"ueIpv4Addr", json_string(notificationItem->ueIpv4Addr));
+  json_object_set_new(obj,"ueIpv6Prefix", json_string(notificationItem->ueIpv6Prefix));
+  json_object_set_new(obj,"ueMacAddr", json_string(notificationItem->ueMacAddr));
+  json_object_set_new(obj,"dnn", json_string(notificationItem->dnn));
+  json_object_set_new(obj,"snssai", serialize_snssai(notificationItem->snssai));
+  json_object_set_new(obj,"gpsi", json_string(notificationItem->gpsi));
+  json_object_set_new(obj,"supi", json_string(notificationItem->supi));
+  json_object_set_new(obj,"timeStamp",time_to_json(notificationItem->timeStamp));
+  json_object_set_new(obj,"startTime", time_to_json(notificationItem->startTime));
   json_t * userMeasurements = json_null();
-  if(notificationItem.userDataUsageMeasurements){
+  if(notificationItem->userDataUsageMeasurements){
     userMeasurements = json_array();
-    for (size_t i = 0; i < cvector_size(notificationItem.userDataUsageMeasurements); i++){
-      json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem.userDataUsageMeasurements[i]));
+    for (size_t i = 0; i < cvector_size(notificationItem->userDataUsageMeasurements); i++){
+      json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem->userDataUsageMeasurements[i]));
     }
 
   }
@@ -314,7 +314,7 @@ json_t *serialize_Notification_Item(NotificationItem notificationItem) {
   json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
   return  obj;
 }
-json_t *serialize_callBack(NotificationItem notificationItem, char *correlationId, int achievedSampRatio) {
+json_t *serialize_callBack(NotificationItem *notificationItem, char *correlationId, int achievedSampRatio) {
   json_t *obj = json_object();
   json_t * notificationItems = json_array();
   json_array_append_new(notificationItems, serialize_Notification_Item(notificationItem));

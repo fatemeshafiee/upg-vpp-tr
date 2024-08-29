@@ -199,7 +199,7 @@ typedef struct {
 
 typedef struct {
     cvector(char *) urls;
-    cvector(DomainInformation) domainInfoList;
+    cvector(DomainInformation *) domainInfoList;
 
 }ApplicationRelatedInformation;
 
@@ -234,7 +234,7 @@ typedef struct {
     time_t startTime;
     //qosMonitoringMeasurement
     //tscMngtInfo
-    cvector(UserDataUsageMeasurements) userDataUsageMeasurements;
+    cvector(UserDataUsageMeasurements *) userDataUsageMeasurements;
 }NotificationItem;
 
 typedef struct
