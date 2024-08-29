@@ -25,10 +25,10 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement);
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement);
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation);
 json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement);
-json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements userDataUsageMeasurements);
+json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataUsageMeasurements);
 
-json_t *serialize_Notification_Item(NotificationItem notificationItem);
-json_t *serialize_callBack(NotificationItem notificationItem, char *correlationId, int achievedSampRatio);
+json_t *serialize_Notification_Item(NotificationItem *notificationItem)
+json_t *serialize_callBack(NotificationItem *notificationItem, char *correlationId, int achievedSampRatio);
 
 
 
