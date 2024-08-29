@@ -45,6 +45,8 @@ json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
   json_object_set_new(obj, "vlanTags", Vlan_array);
   json_object_set_new(obj, "srcMacAddrEnd", json_string(eth->srcMacAddrEnd));
   json_object_set_new(obj, "destMacAddrEnd", json_string(eth->destMacAddrEnd));
+  clib_warning("[encoder] end of serialize_eth_flow_description");
+
   return obj;
 }
 
@@ -60,6 +62,8 @@ json_t *serialize_flow_information(const FlowInformation *flow) {
   json_object_set_new(obj, "spi", json_string_or_null(flow->spi));
   json_object_set_new(obj, "flowLabel", json_string_or_null(flow->flowLabel));
   json_object_set_new(obj, "fDir", json_string_or_null(getFlowDirectionString(flow->fDir)));
+  clib_warning("[encoder] end of serialize_flow_information");
+
   return obj;
 }
 json_t *serialize_suggestion_information(ReportingSuggestionInformation Sinfo){
