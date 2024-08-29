@@ -187,7 +187,7 @@ json_t *serialize_DomainInformation(DomainInformation domainInfo) {
   return  obj;
 }
 
-json_t *serialize_VolumeMeasurement(VolumeMeasurement volumeMeasurement) {
+json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   json_t *obj = json_object();
   json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement.totalVolume));
   json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement.ulVolume));
@@ -197,7 +197,7 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement volumeMeasurement) {
   json_object_set_new(obj, "dlNbOfPackets", json_integer(volumeMeasurement.dlNbOfPackets));
   return  obj;
 }
-json_t *serialize_ThroughputMeasurement(ThroughputMeasurement throughputMeasurement) {
+json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
   json_t *obj = json_object();
   json_object_set_new(obj, "ulThroughput",json_string(throughputMeasurement.ulThroughput));
   json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement.dlThroughput));
@@ -205,7 +205,7 @@ json_t *serialize_ThroughputMeasurement(ThroughputMeasurement throughputMeasurem
   json_object_set_new(obj, "dlPacketThroughput",json_string(throughputMeasurement.dlPacketThroughput));
   return  obj;
 }
-json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation applicationRelatedInformation) {
+json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
   json_t *obj = json_object();
   json_t * urls =json_null();
   if(applicationRelatedInformation.urls)
@@ -229,7 +229,7 @@ json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation ap
   json_object_set_new(obj, "domainInfoList", domainInfoList);
   return  obj;
 }
-json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement throughputStatisticsMeasurement) {
+json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement) {
   json_t *obj = json_object();
   json_object_set_new(obj, "ulAverageThroughput",json_string(throughputStatisticsMeasurement.ulAverageThroughput));
   json_object_set_new(obj, "dlAverageThroughput",json_string(throughputStatisticsMeasurement.dlAverageThroughput));
