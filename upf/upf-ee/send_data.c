@@ -76,22 +76,22 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage = NULL;
       clib_warning("[send_data] fillNotificationItem, in the loop 77");
 
-      usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
-      usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
-      usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
+      usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
+      usage->volumeMeasurement->dlNbOfPackets = rep->src_pkts;
+      usage->volumeMeasurement->ulNbOfPackets = rep->dst_pkts;
       clib_warning("[send_data] fillNotificationItem, in the loop 82");
 
-      usage->volumeMeasurement.totalVolume = strVolume;
+      usage->volumeMeasurement->totalVolume = strVolume;
       volume = rep->src_bytes;
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
       clib_warning("[send_data] fillNotificationItem, in the loop 88");
 
-      usage->volumeMeasurement.dlVolume = strVolume;
+      usage->volumeMeasurement->dlVolume = strVolume;
       volume = rep->dst_bytes;
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
-      usage->volumeMeasurement.ulVolume = rep->dst_bytes;
+      usage->volumeMeasurement->ulVolume = rep->dst_bytes;
       clib_warning("[send_data] fillNotificationItem, in the loop 95");
 
       char buffer[INET6_ADDRSTRLEN];
@@ -103,12 +103,12 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       json_object_set_new(obj,"DstIp", json_string(buffer));
       json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
       json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
-      usage->flowInfo.flowDescription = json_dumps(obj, JSON_INDENT(2));
+      usage->flowInfo->flowDescription = json_dumps(obj, JSON_INDENT(2));
       usage->throughputMeasurement = NULL;
       usage->applicationRelatedInformation = NULL;
       usage->throughputStatisticsMeasurement = NULL;
       usage->flowInfo->ethFlowDescription = NULL;
-      usage->flowInfo.fDir = BIDIRECTIONAL;
+      usage->flowInfo->fDir = BIDIRECTIONAL;
       usage->flowInfo->flowLabel = NULL;
       usage->flowInfo->packFiltId = NULL;
       usage->flowInfo->packetFilterUsage = false;
