@@ -71,20 +71,29 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
+      clib_warning("[send_data] fillNotificationItem, in the loop 74");
+
       usage = NULL;
+      clib_warning("[send_data] fillNotificationItem, in the loop 77");
+
       usage->volumeMeasurement.totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
       usage->volumeMeasurement.dlNbOfPackets = rep->src_pkts;
       usage->volumeMeasurement.ulNbOfPackets = rep->dst_pkts;
+      clib_warning("[send_data] fillNotificationItem, in the loop 82");
 
       usage->volumeMeasurement.totalVolume = strVolume;
       volume = rep->src_bytes;
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
+      clib_warning("[send_data] fillNotificationItem, in the loop 88");
+
       usage->volumeMeasurement.dlVolume = strVolume;
       volume = rep->dst_bytes;
       sprintf(strVolume, "%d", volume);
       sprintf(strVolume, "%s", "B");
       usage->volumeMeasurement.ulVolume = rep->dst_bytes;
+      clib_warning("[send_data] fillNotificationItem, in the loop 95");
+
       char buffer[INET6_ADDRSTRLEN];
       json_t *obj = json_object();
       json_object_set_new(obj,"SeId", json_integer(rep->seid));
@@ -100,8 +109,9 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 //      usage->applicationRelatedInformation = NULL;
 //      usage->throughputStatisticsMeasurement = NULL;
 //      usage->flowInfo = NULL;
-
       cvector_push_back(userDataMeasurements, *usage);
+      clib_warning("[send_data] fillNotificationItem, in the loop 113");
+
     }
     item->userDataUsageMeasurements = userDataMeasurements;
     clib_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
