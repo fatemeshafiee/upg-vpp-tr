@@ -72,8 +72,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       sprintf(strVolume, "%s", "B");
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       clib_warning("[send_data] fillNotificationItem, in the loop 74");
-
-      usage = NULL;
       clib_warning("[send_data] fillNotificationItem, in the loop 77");
 
       usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
