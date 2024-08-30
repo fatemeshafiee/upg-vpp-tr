@@ -133,7 +133,7 @@ const char * create_custom_report(UpfEventSubscription upfSub,EventType type){
 
     NotificationItem *notificationItem = malloc(sizeof (NotificationItem));
     fillNotificationItem(upfSub, notificationItem, type);
-    json_t* callBack_Report= serialize_callBack(notificationItem, upfSub.notifyCorrelationId, 0);
+    json_t* callBack_Report = serialize_callBack(notificationItem, upfSub.notifyCorrelationId, 0);
     if (!callBack_Report) {
       fprintf(stdout, "The json_t object is NULL.\n");
     }

@@ -282,7 +282,7 @@ json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasuremen
 json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataUsageMeasurements) {
   json_t *obj = json_object();
   json_object_set_new(obj, "appId",json_string(userDataUsageMeasurements->appID));
-  json_object_set_new(obj, "flowInfo", serialize_flow_information(&(userDataUsageMeasurements->flowInfo)));
+  json_object_set_new(obj, "flowInfo", serialize_flow_information(userDataUsageMeasurements->flowInfo));
   json_object_set_new(obj, "volumeMeasurement",serialize_VolumeMeasurement(userDataUsageMeasurements->volumeMeasurement));
   json_object_set_new(obj, "throughputMeasurement", serialize_ThroughputMeasurement(userDataUsageMeasurements->throughputMeasurement));
   json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements->applicationRelatedInformation));
