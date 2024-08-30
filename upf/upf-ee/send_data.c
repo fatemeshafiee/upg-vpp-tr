@@ -117,7 +117,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->flowInfo->spi = NULL;
       usage->flowInfo->tosTrafficClass = NULL;
       cvector_push_back(userDataMeasurements, usage);
-      clib_warning("[send_data] fillNotificationItem, in the loop 113. ٪p\n", usage->flowInfo->ethFlowDescription);
+      clib_warning("[send_data] fillNotificationItem, in the loop 113. %p\n", usage->flowInfo->ethFlowDescription);
 
     }
     item->userDataUsageMeasurements = userDataMeasurements;
