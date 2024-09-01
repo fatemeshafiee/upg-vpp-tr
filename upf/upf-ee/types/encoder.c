@@ -207,23 +207,25 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   if (volumeMeasurement == NULL) return json_null();
   clib_warning("[encoder] start of serialize_VolumeMeasurement");
   json_t *obj = json_object();
-  json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
+
   clib_warning("[encoder] totalVolume serialize_VolumeMeasurement");
+  json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
 
+
+  clib_warning("[encoder] sulVolume serialize_VolumeMeasurement %s", volumeMeasurement->ulVolume);
   json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement->ulVolume));
-  clib_warning("[encoder] sulVolume serialize_VolumeMeasurement");
 
+  clib_warning("[encoder] dlVolume serialize_VolumeMeasurement %s", volumeMeasurement->dlVolume);
   json_object_set_new(obj, "dlVolume",json_string(volumeMeasurement->dlVolume));
-  clib_warning("[encoder] dlVolume serialize_VolumeMeasurement");
 
+  clib_warning("[encoder] totalNbOfPackets serialize_VolumeMeasurement %s", volumeMeasurement->totalNbOfPackets);
   json_object_set_new(obj, "totalNbOfPackets", json_integer(volumeMeasurement->totalNbOfPackets));
-  clib_warning("[encoder] totalNbOfPackets serialize_VolumeMeasurement");
 
+  clib_warning("[encoder] ulNbOfPackets serialize_VolumeMeasurement %s", volumeMeasurement->ulNbOfPackets);
   json_object_set_new(obj, "ulNbOfPackets", json_integer(volumeMeasurement->ulNbOfPackets));
-  clib_warning("[encoder] ulNbOfPackets serialize_VolumeMeasurement");
 
+  clib_warning("[encoder] dlNbOfPackets serialize_VolumeMeasurement %s", volumeMeasurement->dlNbOfPackets);
   json_object_set_new(obj, "dlNbOfPackets", json_integer(volumeMeasurement->dlNbOfPackets));
-  clib_warning("[encoder] dlNbOfPackets serialize_VolumeMeasurement");
   return  obj;
 }
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
