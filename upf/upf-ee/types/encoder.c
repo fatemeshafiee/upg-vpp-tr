@@ -33,39 +33,23 @@ json_t *serialize_eth_flow_description(const EthFlowDescription *eth) {
   }
   json_t *obj = json_object();
   json_object_set_new(obj, "destMacAddr", json_string(eth->destMacAddr));
-  clib_warning("[encoder] in serialize_eth_flow_description in the if 36");
-
   json_object_set_new(obj, "ethType", json_string(eth->ethType));
-  clib_warning("[encoder] in serialize_eth_flow_description in the if 39");
-
   json_object_set_new(obj, "fDesc", json_string(eth->fDesc));
-  clib_warning("[encoder] in serialize_eth_flow_description in the if 42");
-
   json_object_set_new(obj, "fDir", json_string(getFlowDirectionString(eth->fDir)));
-  clib_warning("[encoder] in serialize_eth_flow_description in the if 45");
-
   json_object_set_new(obj, "sourceMacAddr", json_string(eth->sourceMacAddr));
   json_t * Vlan_array = json_null();
   if(eth->vlanTags){
     Vlan_array = json_array();
     clib_warning("[encoder] in serialize_eth_flow_description in the 2nd if");
-
     for (size_t i = 0; i < cvector_size(eth->vlanTags); i++){
       clib_warning("[encoder] in serialize_eth_flow_description in the for");
-
       json_array_append_new(Vlan_array, json_string(eth->vlanTags[i]));
     }
 
   }
   json_object_set_new(obj, "vlanTags", Vlan_array);
-  clib_warning("[encoder] in serialize_eth_flow_description 61");
-
   json_object_set_new(obj, "srcMacAddrEnd", json_string(eth->srcMacAddrEnd));
-  clib_warning("[encoder] in serialize_eth_flow_description 64");
-
   json_object_set_new(obj, "destMacAddrEnd", json_string(eth->destMacAddrEnd));
-  clib_warning("[encoder] end of serialize_eth_flow_description");
-
   return obj;
 }
 
@@ -221,6 +205,7 @@ json_t *serialize_DomainInformation(DomainInformation *domainInfo) {
 
 json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   if (volumeMeasurement == NULL) return json_null();
+  clib_warning("[encoder] start of serialize_VolumeMeasurement");
   json_t *obj = json_object();
   json_object_set_new(obj, "totalVolume",json_string(volumeMeasurement->totalVolume));
   json_object_set_new(obj, "ulVolume",json_string(volumeMeasurement->ulVolume));
@@ -228,19 +213,25 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   json_object_set_new(obj, "totalNbOfPackets", json_integer(volumeMeasurement->totalNbOfPackets));
   json_object_set_new(obj, "ulNbOfPackets", json_integer(volumeMeasurement->ulNbOfPackets));
   json_object_set_new(obj, "dlNbOfPackets", json_integer(volumeMeasurement->dlNbOfPackets));
+  clib_warning("[encoder] end of serialize_VolumeMeasurement");
   return  obj;
 }
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
   if (throughputMeasurement == NULL) return json_null();
+  clib_warning("[encoder] start of serialize_ThroughputMeasurement");
+
   json_t *obj = json_object();
   json_object_set_new(obj, "ulThroughput",json_string(throughputMeasurement->ulThroughput));
   json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement->dlThroughput));
   json_object_set_new(obj, "ulPacketThroughput",json_string(throughputMeasurement->ulPacketThroughput));
   json_object_set_new(obj, "dlPacketThroughput",json_string(throughputMeasurement->dlPacketThroughput));
+  lib_warning("[encoder] end of serialize_ThroughputMeasurement");
   return  obj;
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
   if (applicationRelatedInformation == NULL) return json_null();
+  clib_warning("[encoder] start of serialize_ApplicationRelatedInformation");
+
   json_t *obj = json_object();
   json_t * urls =json_null();
   if(applicationRelatedInformation->urls)
@@ -262,6 +253,7 @@ json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *a
 
 //    json_object_set_new(obj, "urls", urls);
   json_object_set_new(obj, "domainInfoList", domainInfoList);
+  clib_warning("[encoder] end of serialize_ApplicationRelatedInformation");
   return  obj;
 }
 json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement) {
