@@ -22,8 +22,7 @@
 #include <vlib/unix/unix.h>
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
 void parse_time(const char* date_time, struct  tm* tm);
-void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,EventType type);
-const char * create_custom_report(UpfEventSubscription upfSub,EventType type);
-void send_report(UpfEventSubscription upfSub,EventType type);
-void* EventReport_UDUT();
+void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem *) Notifvec,EventType type);
+void create_send_report(UpfEventSubscription upfSub,EventType type);
+void send_report(char *json_data,UpfEventSubscription upfSub,EventType type)void* EventReport_UDUT();
 #endif //REST_API_C_SEND_DATA_H
