@@ -237,7 +237,7 @@ json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasure
   json_object_set_new(obj, "dlThroughput",json_string(throughputMeasurement->dlThroughput));
   json_object_set_new(obj, "ulPacketThroughput",json_string(throughputMeasurement->ulPacketThroughput));
   json_object_set_new(obj, "dlPacketThroughput",json_string(throughputMeasurement->dlPacketThroughput));
-  lib_warning("[encoder] end of serialize_ThroughputMeasurement");
+  clib_warning("[encoder] end of serialize_ThroughputMeasurement");
   return  obj;
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
