@@ -85,7 +85,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 
       volume = rep->dst_bytes;
       sprintf(strVolume, "%dB", volume);
-      usage->volumeMeasurement->ulVolume = strVolume
+      usage->volumeMeasurement->ulVolume = strVolume;
       clib_warning("[send_data] fillNotificationItem, in the loop 95");
 
       char buffer[INET6_ADDRSTRLEN];
