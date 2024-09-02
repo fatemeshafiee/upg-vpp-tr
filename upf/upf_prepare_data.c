@@ -28,32 +28,26 @@
 
 
 void prepare_ee_data(flowtable_main_t *fm){
-//  EE_INIT_FUNCTION()
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
   pthread_mutex_lock(&ee_lock);
-  extern usage_report_per_flow_t *usage_report_per_flow_vector;
-  usage_report_per_flow_vector = NULL;
-
-//  if (pthread_spin_lock (&fm->flows_lock) == 0) {
-    u32 num_flows = vec_len(fm->flows);
-    clib_warning("number of flows is %d", num_flows);
-    u32 num = pool_len(fm->flows);
-    clib_warning("number of flows with pool is %d", num);
+  u32 num_flows = vec_len(fm->flows);
+  clib_warning("number of flows is %d", num_flows);
+  u32 num = pool_len(fm->flows);
+  clib_warning("number of flows with pool is %d", num);
+  usage_hash = NULL;
     for(u32 i=0; i < num; i++){
       flow = pool_elt_at_index (fm->flows, i);
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
         usage_report_per_flow_t new_data;
         flow_key_t key = flow->key;
         char buffer[INET6_ADDRSTRLEN];
-
-
-        inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
-        clib_warning("[1|flow_info] ip[0].  %s", buffer);
-        new_data.src_ip = buffer;
         inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
         new_data.dst_ip = buffer;
         clib_warning("[1|flow_info] ip[1].  %s", buffer);
+        inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
+        clib_warning("[1|flow_info] ip[0].  %s", buffer);
+        new_data.src_ip = buffer;
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
         clib_warning("[5| flow_info] portocol %u", key.proto);
@@ -71,7 +65,10 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data.src_bytes = flow->stats[0].bytes;
         new_data.dst_pkts = flow->stats[1].pkts;
         new_data.dst_bytes = flow->stats[1].bytes;
+        usage_report_per_flow_t* usage_report_per_flow_vector = NULL;
+        usage_report_per_flow_vector = hmget(usage_hash, new_data.src_ip);
         vec_add1(usage_report_per_flow_vector,new_data);
+        hmput(usage_hash,new_data.src_ip,usage_report_per_flow_vector);
 
       }
     }
@@ -80,33 +77,3 @@ void prepare_ee_data(flowtable_main_t *fm){
 
   return;
 }
-
-//
-//static uword process_send_data(vlib_main_t *vm, vlib_node_runtime_t *rt, vlib_frame_t *f) {
-//  f64 interval = 5.0;
-//
-//  while (1) {
-//    prepare_ee_data();
-//    vlib_process_wait_for_event_or_clock(vm, interval);
-//    vlib_process_get_events(vm, NULL);
-//  }
-//
-//  return 0;
-//}
-//VLIB_REGISTER_NODE(my_process_node) = {
-//        .function = process_send_data,
-//        .type = VLIB_NODE_TYPE_PROCESS,
-//        .name = "periodic-sending-process",
-//};
-//
-//
-//static clib_error_t *my_init_function(vlib_main_t *vm) {
-//  clib_warning("[flow_FATEMEH]inside the my_init_function");
-//  return 0;
-//}
-//
-//VLIB_INIT_FUNCTION(my_init_function);
-//
-
-//
-//

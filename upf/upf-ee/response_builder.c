@@ -53,7 +53,7 @@ HTTP_response create_subscription(const char *body, bool *created, char **newSub
     cvector_vector_type(UpfEventSubscription *) v = NULL;
     v = hmget(subHash,new_subscription->EventList[i].type);
     cvector_push_back(v,new_subscription);
-            hmput(subHash,new_subscription->EventList[i].type, v);
+    hmput(subHash,new_subscription->EventList[i].type, v);
   }
 
   int subId = 1000000 + cvector_size(subscriptionList) - 1;

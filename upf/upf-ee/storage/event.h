@@ -19,7 +19,7 @@
 
 EXTERN cvector_vector_type(UpfEventSubscription) subscriptionList INITIALIZER(NULL);
 EXTERN EventType supported_events[1] INITIALIZER({USER_DATA_USAGE_TRENDS});
-EXTERN struct {EventType key; cvector_vector_type(UpfEventSubscription*) value; } *subHash INITIALIZER(NULL);
+EXTERN struct {EventType key; cvector_vector_type(UpfEventSubscription*) value;} *subHash INITIALIZER(NULL);
 
 
 //int initialize_hashmap(const unsigned initial_size){
