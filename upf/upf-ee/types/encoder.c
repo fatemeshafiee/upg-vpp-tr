@@ -212,7 +212,7 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   json_object_set_new(obj, "totalVolume",json_sprintf("%s",volumeMeasurement->totalVolume));
 
 
-  clib_warning("[encoder] sulVolume serialize_VolumeMeasurement");
+  clib_warning("[encoder] ulVolume serialize_VolumeMeasurement");
   json_object_set_new(obj, "ulVolume",json_sprintf("%s",volumeMeasurement->ulVolume));
 
   clib_warning("[encoder] dlVolume serialize_VolumeMeasurement %s", volumeMeasurement->dlVolume);
