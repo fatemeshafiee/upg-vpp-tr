@@ -229,7 +229,10 @@ json_t *serialize_VolumeMeasurement(VolumeMeasurement *volumeMeasurement) {
   return  obj;
 }
 json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasurement) {
-  if (throughputMeasurement == NULL) return json_null();
+  if (throughputMeasurement == NULL){
+    clib_warning("[encoder] returning null of serialize_ThroughputMeasurement");
+    return json_null();
+  }
   clib_warning("[encoder] start of serialize_ThroughputMeasurement");
 
   json_t *obj = json_object();
@@ -241,7 +244,10 @@ json_t *serialize_ThroughputMeasurement(ThroughputMeasurement *throughputMeasure
   return  obj;
 }
 json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *applicationRelatedInformation) {
-  if (applicationRelatedInformation == NULL) return json_null();
+  if (applicationRelatedInformation == NULL){
+    clib_warning("[encoder] returning null of serialize_ApplicationRelatedInformation");
+    return json_null();
+  }
   clib_warning("[encoder] start of serialize_ApplicationRelatedInformation");
 
   json_t *obj = json_object();
@@ -269,7 +275,10 @@ json_t *serialize_ApplicationRelatedInformation(ApplicationRelatedInformation *a
   return  obj;
 }
 json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasurement *throughputStatisticsMeasurement) {
-  if (throughputStatisticsMeasurement == NULL) return json_null();
+  if (throughputStatisticsMeasurement == NULL){
+    clib_warning("[encoder] returning null of serialize_ThroughputStatisticsMeasurement");
+    return json_null();
+  }
   json_t *obj = json_object();
   json_object_set_new(obj, "ulAverageThroughput",json_string(throughputStatisticsMeasurement->ulAverageThroughput));
   json_object_set_new(obj, "dlAverageThroughput",json_string(throughputStatisticsMeasurement->dlAverageThroughput));
