@@ -84,7 +84,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->volumeMeasurement->dlVolume = strVolume;
 
       volume = rep->dst_bytes;
-      sprintf(snew_len, "%dB", volume);
+      sprintf(strVolume, "%dB", volume);
       usage->volumeMeasurement->ulVolume = rep->dst_bytes;
       clib_warning("[send_data] fillNotificationItem, in the loop 95");
 
