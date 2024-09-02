@@ -70,7 +70,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
 
       int volume = rep->src_bytes + rep->dst_bytes;
       char *strVolume = malloc(20 + 1);
-      sprintf(strVolume, "%d", volume);
+      sprintf(strVolume, "%dB", volume);
 //      sprintf(strVolume, "%s", "B");
       UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
       usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
@@ -80,12 +80,11 @@ void fillNotificationItem(UpfEventSubscription upfSub,NotificationItem *item,Eve
       usage->volumeMeasurement->ulNbOfPackets = rep->dst_pkts;
 
       volume = rep->src_bytes;
-      sprintf(strVolume, "%d", volume);
+      sprintf(strVolume, "%dB", volume);
       usage->volumeMeasurement->dlVolume = strVolume;
 
       volume = rep->dst_bytes;
-      sprintf(strVolume, "%d", volume);
-//      sprintf(strVolume, "%s", "B");
+      sprintf(snew_len, "%dB", volume);
       usage->volumeMeasurement->ulVolume = rep->dst_bytes;
       clib_warning("[send_data] fillNotificationItem, in the loop 95");
 
