@@ -61,7 +61,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->ueIpv4Addr = usage_hash[i].key;
 
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
-      usage_report_per_flow_t *usage_report_per_flow_vector = usage_hash[i].value;
+      usage_report_per_flow_t* usage_report_per_flow_vector = usage_hash[i].value;
       clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
 //      for (int j = 0; j < vec_len(usage_report_per_flow_vector); j++)
       usage_report_per_flow_t* rep;
