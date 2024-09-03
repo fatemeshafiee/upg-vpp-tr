@@ -64,7 +64,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
 
       for (int j = 0; j < cvector_size(usage_report_per_flow_vector); j++){
         clib_warning("[send_data] fillNotificationItem, in the loop");
-        usage_report_per_flow_t* rep = usage_report_per_flow_vector[i];
+        usage_report_per_flow_t* rep = usage_report_per_flow_vector[j];
         // TODO: make sure the uplink and downlink are right.
         clib_warning("[send_data] fillNotificationItem, in the loop #1");
         int volume = rep->src_bytes + rep->dst_bytes;
