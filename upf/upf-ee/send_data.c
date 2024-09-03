@@ -118,9 +118,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->userDataUsageMeasurements = userDataMeasurements;
       clib_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
       cvector_push_back(Notifvec, item);
+      pthread_mutex_unlock(&ee_lock);
     }
   }
-  pthread_mutex_unlock(&ee_lock);
+
   clib_warning("[send_data] fillNotificationItem, end of function");
 }
 void create_send_report(UpfEventSubscription upfSub,EventType type){
