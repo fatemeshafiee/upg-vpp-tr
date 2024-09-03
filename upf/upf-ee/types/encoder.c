@@ -293,6 +293,10 @@ json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasuremen
 }
 
 json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataUsageMeasurements) {
+  if(userDataUsageMeasurements == NULL){
+    clib_warning("[encoder] returning NULL in serialize_UserDataUsageMeasurements");
+    return json_null();
+  }
   json_t *obj = json_object();
   json_object_set_new(obj, "appId",json_string(userDataUsageMeasurements->appID));
   json_object_set_new(obj, "flowInfo", serialize_flow_information(userDataUsageMeasurements->flowInfo));
@@ -320,7 +324,7 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   if(notificationItem->userDataUsageMeasurements){
     userMeasurements = json_array();
     for (size_t i = 0; i < cvector_size(notificationItem->userDataUsageMeasurements); i++){
-      clib_warning("[encoder]  in the loop of serialize_Notification_Item, in the for i: %d", i);
+      clib_warning("[encoder]  in the loop of serialize_UserDataUsageMeasurements, in the for i: %d", i);
       json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem->userDataUsageMeasurements[i]));
     }
   }
