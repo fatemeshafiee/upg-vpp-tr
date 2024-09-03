@@ -66,7 +66,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->src_bytes = flow->stats[0].bytes;
         new_data->dst_pkts = flow->stats[1].pkts;
         new_data->dst_bytes = flow->stats[1].bytes;
-        usage_report_per_flow_t* usage_report_per_flow_vector = NULL;
+        cvector_vector_type(usage_report_per_flow_t*) usage_report_per_flow_vector = NULL;
         usage_report_per_flow_vector = hmget(usage_hash, new_data->src_ip);
         cvector_push_back(usage_report_per_flow_vector,new_data);
         hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
