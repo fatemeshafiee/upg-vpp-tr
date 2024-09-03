@@ -28,8 +28,7 @@ json_t *serialize_ThroughputStatisticsMeasurement(ThroughputStatisticsMeasuremen
 json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataUsageMeasurements);
 
 json_t *serialize_Notification_Item(NotificationItem *notificationItem);
-json_t *serialize_callBack(NotificationItem *notificationItem, char *correlationId, int achievedSampRatio);
-
+json_t *serialize_callBack(NotificationItem *notificationItem, const char *correlationId , int achievedSampRatio);
 
 
 
