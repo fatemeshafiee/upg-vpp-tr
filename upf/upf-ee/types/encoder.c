@@ -316,17 +316,29 @@ json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataU
 }
 
 json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
+  clib_warning("[encoder] in serialize_Notification_Item, line 319");
   json_t *obj = json_object();
+  clib_warning("[encoder] in serialize_Notification_Item, line 321");
   json_object_set_new(obj, "eventType", json_string(getEventTypeString(notificationItem->type)));
+  clib_warning("[encoder] in serialize_Notification_Item, line 322");
   json_object_set_new(obj,"ueIpv4Addr", json_string(notificationItem->ueIpv4Addr));
+  clib_warning("[encoder] in serialize_Notification_Item, line 323");
   json_object_set_new(obj,"ueIpv6Prefix", json_string(notificationItem->ueIpv6Prefix));
+  clib_warning("[encoder] in serialize_Notification_Item, line 324");
   json_object_set_new(obj,"ueMacAddr", json_string(notificationItem->ueMacAddr));
+  clib_warning("[encoder] in serialize_Notification_Item, line 325");
   json_object_set_new(obj,"dnn", json_string(notificationItem->dnn));
+  clib_warning("[encoder] in serialize_Notification_Item, line 326");
   json_object_set_new(obj,"snssai", serialize_snssai(notificationItem->snssai));
+  clib_warning("[encoder] in serialize_Notification_Item, line 327");
   json_object_set_new(obj,"gpsi", json_string(notificationItem->gpsi));
+  clib_warning("[encoder] in serialize_Notification_Item, line 328");
   json_object_set_new(obj,"supi", json_string(notificationItem->supi));
+  clib_warning("[encoder] in serialize_Notification_Item, line 329");
   json_object_set_new(obj,"timeStamp",time_to_json(notificationItem->timeStamp));
+  clib_warning("[encoder] in serialize_Notification_Item, line 330");
   json_object_set_new(obj,"startTime", time_to_json(notificationItem->startTime));
+  clib_warning("[encoder] in serialize_Notification_Item, line 331");
   json_t * userMeasurements = json_null();
   if(notificationItem->userDataUsageMeasurements){
     userMeasurements = json_array();
@@ -342,7 +354,9 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
 json_t *serialize_callBack(NotificationItem *notificationItem, const char *correlationId , int achievedSampRatio) {
   json_t *obj = json_object();
   json_t * notificationItems = json_array();
+  clib_warning("[encoder] in serialize_callBack, line 345");
   json_array_append_new(notificationItems, serialize_Notification_Item(notificationItem));
+  clib_warning("[encoder] in serialize_callBack, line 346");
   json_object_set_new(obj, "notificationItems",notificationItems);
   clib_warning("[encoder] in serialize_callBack, correlationId is %s",correlationId );
   json_object_set_new(obj,"correlationId", json_string(correlationId));
