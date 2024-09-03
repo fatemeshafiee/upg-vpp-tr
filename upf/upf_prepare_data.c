@@ -71,6 +71,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         clib_warning("[9| flow_info]  line 71");
         usage_report_per_flow_vector = hmget(usage_hash, new_data->src_ip);
         clib_warning("[9| flow_info]  line 73 %p", usage_report_per_flow_vector);
+        clib_warning("[9| flow_info]  line 73 %d", cvector_size(usage_report_per_flow_vector));
         cvector_push_back(usage_report_per_flow_vector,new_data);
         clib_warning("[9| flow_info]  line 75");
         hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
