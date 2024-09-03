@@ -329,12 +329,14 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
   return  obj;
 }
-json_t *serialize_callBack(NotificationItem *notificationItem, char *correlationId, int achievedSampRatio) {
+json_t *serialize_callBack(NotificationItem *notificationItem, const char *correlationId , int achievedSampRatio) {
   json_t *obj = json_object();
   json_t * notificationItems = json_array();
   json_array_append_new(notificationItems, serialize_Notification_Item(notificationItem));
   json_object_set_new(obj, "notificationItems",notificationItems);
+  clib_warning("[encoder] in serialize_callBack, correlationId is %s",correlationId );
   json_object_set_new(obj,"correlationId", json_string(correlationId));
+  clib_warning("[encoder] in serialize_callBack, achievedSampRatio is %d",achievedSampRatio );
   json_object_set_new(obj,"achievedSampRatio", json_integer(achievedSampRatio));
   clib_warning("[encoder] End of of serialize_callBack");
 
