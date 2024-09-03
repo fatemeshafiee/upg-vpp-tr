@@ -40,15 +40,15 @@ void prepare_ee_data(flowtable_main_t *fm){
     for(u32 i=0; i < num; i++){
       flow = pool_elt_at_index (fm->flows, i);
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
-        usage_report_per_flow_t new_data;
+        usage_report_per_flow_t *new_data = malloc(sizeof(usage_report_per_flow_t));
         flow_key_t key = flow->key;
         char buffer[INET6_ADDRSTRLEN];
         inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
-        new_data.dst_ip = buffer;
+        new_data->dst_ip = buffer;
         clib_warning("[1|flow_info] ip[1].  %s", buffer);
         inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
         clib_warning("[1|flow_info] ip[0].  %s", buffer);
-        new_data.src_ip = buffer;
+        new_data->src_ip = buffer;
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
         clib_warning("[5| flow_info] portocol %u", key.proto);
@@ -57,19 +57,19 @@ void prepare_ee_data(flowtable_main_t *fm){
         clib_warning("[8| flow_info] stst 1 pkts %d", flow->stats[1].pkts);
         clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
 
-        new_data.seid = key.seid;
+        new_data->seid = key.seid;
 
-        new_data.src_port = key.port[0];
-        new_data.dst_port = key.port[1];
-        new_data.proto = key.proto;
-        new_data.src_pkts = flow->stats[0].pkts;
-        new_data.src_bytes = flow->stats[0].bytes;
-        new_data.dst_pkts = flow->stats[1].pkts;
-        new_data.dst_bytes = flow->stats[1].bytes;
+        new_data->src_port = key.port[0];
+        new_data->dst_port = key.port[1];
+        new_data->proto = key.proto;
+        new_data->src_pkts = flow->stats[0].pkts;
+        new_data->src_bytes = flow->stats[0].bytes;
+        new_data->dst_pkts = flow->stats[1].pkts;
+        new_data->dst_bytes = flow->stats[1].bytes;
         usage_report_per_flow_t* usage_report_per_flow_vector = NULL;
-        usage_report_per_flow_vector = hmget(usage_hash, new_data.src_ip);
+        usage_report_per_flow_vector = hmget(usage_hash, new_data->src_ip);
         cvector_push_back(usage_report_per_flow_vector,new_data);
-        hmput(usage_hash,new_data.src_ip,usage_report_per_flow_vector);
+        hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
         clib_warning("[flow_info] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
       }
     }
