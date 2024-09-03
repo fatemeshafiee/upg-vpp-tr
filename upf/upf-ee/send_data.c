@@ -49,7 +49,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
       clib_warning("[send_data] fillNotificationItem, the hash size is %d",i);
-      NotificationItem *item = malloc(sizeof (NotificationItem));;
+      NotificationItem *item = malloc(sizeof (NotificationItem));
       item->type = USER_DATA_USAGE_TRENDS;
       struct tm* tm = malloc(sizeof(struct tm));
       time_t current_time;
@@ -130,10 +130,12 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
     clib_warning("[EventReport_UDUT] in create_custom_report");
     cvector_vector_type(NotificationItem *) Notifvec = NULL;
     fillNotificationItem(upfSub, Notifvec, type);
+    clib_warning("[EventReport_UDUT] having the notif");
     for(size_t i = 0; i < cvector_size(Notifvec); i++){
+      clib_warning("[EventReport_UDUT] in the for");
       json_t* callBack_Report = serialize_callBack(Notifvec[i], upfSub.notifyCorrelationId, 0);
       if (!callBack_Report) {
-        fprintf(stdout, "The json_t object is NULL.\n");
+        clib_warning("The json_t object is NULL.\n");
       }
       char *json_str = json_dumps(callBack_Report, JSON_INDENT(2));
       send_report (json_str, upfSub, type);
