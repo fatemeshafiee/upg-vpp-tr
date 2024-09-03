@@ -43,6 +43,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
   if(type==USER_DATA_USAGE_TRENDS){
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
+    clib_warning("[send_data] fillNotificationItem, after locking the ee_lock");
+
     size_t hash_length = hmlen(usage_hash);
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
