@@ -44,13 +44,14 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
     size_t hash_length = hmlen(usage_hash);
+    clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
+      clib_warning("[send_data] fillNotificationItem, the hash size is %d",i);
       NotificationItem *item = malloc(sizeof (NotificationItem));;
       item->type = USER_DATA_USAGE_TRENDS;
       struct tm* tm = malloc(sizeof(struct tm));
       time_t current_time;
       time(&current_time);
-      clib_warning("[send_data] fillNotificationItem, getting crrent time");
       item->timeStamp = current_time;
       item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
       item->snssai.sst = 0;
@@ -64,7 +65,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
 
         // TODO: make sure the uplink and downlink are right.
         clib_warning("[send_data] fillNotificationItem, in the loop 67");
-
         int volume = rep->src_bytes + rep->dst_bytes;
         char *strVolume = malloc(20 + 1);
         sprintf(strVolume, "%dB", volume);
