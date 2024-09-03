@@ -66,8 +66,9 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         clib_warning("[send_data] fillNotificationItem, in the loop");
         usage_report_per_flow_t* rep = usage_report_per_flow_vector[i];
         // TODO: make sure the uplink and downlink are right.
-        clib_warning("[send_data] fillNotificationItem, in the loop 67");
+        clib_warning("[send_data] fillNotificationItem, in the loop #1");
         int volume = rep->src_bytes + rep->dst_bytes;
+        clib_warning("[send_data] fillNotificationItem, in the loop #2");
         char *strVolume = malloc(20 + 1);
         sprintf(strVolume, "%dB", volume);
 //      sprintf(strVolume, "%s", "B");
@@ -77,6 +78,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
         usage->volumeMeasurement->dlNbOfPackets = rep->src_pkts;
         usage->volumeMeasurement->ulNbOfPackets = rep->dst_pkts;
+        clib_warning("[send_data] fillNotificationItem, in the loop #3");
 
         volume = rep->src_bytes;
         sprintf(strVolume, "%dB", volume);
