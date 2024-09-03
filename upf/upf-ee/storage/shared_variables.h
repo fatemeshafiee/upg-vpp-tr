@@ -12,7 +12,8 @@
 #define INITIALIZER(...)
 #endif
 EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
-EXTERN struct {char* key; cvector_vector_type(usage_report_per_flow_t*) value;} *usage_hash INITIALIZER(NULL);
+//EXTERN struct {char* key; cvector_vector_type(usage_report_per_flow_t*) value;} *usage_hash INITIALIZER(NULL);
+EXTERN struct {char* key; usage_report_per_flow_t* value;} *usage_hash INITIALIZER(NULL);
 EXTERN pthread_mutex_t ee_lock;
 #endif //UPG_VPP_SHARED_VARIABLES_H
 //hmput(subHash,new_subscription->EventList[i].type, v);

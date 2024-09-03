@@ -61,12 +61,13 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->ueIpv4Addr = usage_hash[i].key;
 
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
-      cvector_vector_type(usage_report_per_flow_t *)usage_report_per_flow_vector = usage_hash[i].value;
-      clib_warning("[send_data_len] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
+      usage_report_per_flow_t *usage_report_per_flow_vector = usage_hash[i].value;
+      clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
+//      for (int j = 0; j < vec_len(usage_report_per_flow_vector); j++)
+      usage_report_per_flow_t* rep;
 
-      for (int j = 0; j < cvector_size(usage_report_per_flow_vector); j++){
+      vec_foreach(rep, usage_report_per_flow_vector){
         clib_warning("[send_data] fillNotificationItem, in the loop");
-        usage_report_per_flow_t* rep = usage_report_per_flow_vector[j];
         // TODO: make sure the uplink and downlink are right.
         clib_warning("[send_data] fillNotificationItem, in the loop #1");
         int volume = rep->src_bytes + rep->dst_bytes;

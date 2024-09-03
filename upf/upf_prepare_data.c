@@ -67,16 +67,24 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->dst_pkts = flow->stats[1].pkts;
         new_data->dst_bytes = flow->stats[1].bytes;
         clib_warning("[9| flow_info]  line 69");
-        cvector_vector_type(usage_report_per_flow_t*) usage_report_per_flow_vector = NULL;
-        clib_warning("[9| flow_info]  line 71");
-        usage_report_per_flow_vector = hmget(usage_hash, new_data->src_ip);
-        clib_warning("[9| flow_info]  line 73 %p", usage_report_per_flow_vector);
-        clib_warning("[9| flow_info]  line 73 %d", cvector_size(usage_report_per_flow_vector));
-        cvector_push_back(usage_report_per_flow_vector,new_data);
-        clib_warning("[9| flow_info]  line 75");
-        hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
-        clib_warning("[9| flow_info]  line 78");
-        clib_warning("[flow_info] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
+//        cvector_vector_type(usage_report_per_flow_t*) usage_report_per_flow_vector = NULL;
+//        clib_warning("[9| flow_info]  line 71");
+//        usage_report_per_flow_vector = hmget(usage_hash, new_data->src_ip);
+//        clib_warning("[9| flow_info]  line 73 %p", usage_report_per_flow_vector);
+//        clib_warning("[9| flow_info]  line 73 %d", cvector_size(usage_report_per_flow_vector));
+//        cvector_push_back(usage_report_per_flow_vector,new_data);
+//        clib_warning("[9| flow_info]  line 75");
+//        hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
+//        clib_warning("[9| flow_info]  line 78");
+//        clib_warning("[flow_info] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
+        usage_report_per_flow_t* usage_report_per_flow_vector = NULL;
+        clib_warning("[9| flow_info]  line 81");
+        usage_report_per_flow_vector = hmget(usage_hash, new_data.src_ip);
+        clib_warning("[9| flow_info]  line 82");
+        vec_add1(usage_report_per_flow_vector,new_data);
+        hmput(usage_hash,new_data.src_ip,usage_report_per_flow_vector);
+        clib_warning("[flow_info] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
+
       }
     }
 
