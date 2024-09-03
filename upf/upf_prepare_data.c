@@ -35,7 +35,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("number of flows is %d", num_flows);
   u32 num = pool_len(fm->flows);
   clib_warning("number of flows with pool is %d", num);
-//  usage_hash = NULL;
+  usage_hash = NULL;
   hmdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
       flow = pool_elt_at_index (fm->flows, i);
