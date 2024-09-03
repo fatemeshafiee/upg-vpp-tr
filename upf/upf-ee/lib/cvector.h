@@ -402,8 +402,9 @@ typedef struct cvector_metadata_t {
         const size_t cv_sz__ = (count) * sizeof(*(vec)) + sizeof(cvector_metadata_t); \
         if (vec) {                                                                    \
             void *cv_p1__ = cvector_vec_to_base(vec);                                 \
+            clib_warning("[flow_info] alloc req %d %d", cv_p1__, cv_sz__);                      \
             void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                   \
-            clib_warning("[flow_info] %d %d", cv_p1__, cv_sz__);                      \
+            clib_warning("[flow_info] alloc done %d %d", cv_p1__, cv_sz__);                      \
             cvector_clib_assert(cv_p2__);                                             \
             (vec) = cvector_base_to_vec(cv_p2__);                                     \
         } else {                                                                      \
