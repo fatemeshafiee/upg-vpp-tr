@@ -82,7 +82,6 @@ void prepare_ee_data(flowtable_main_t *fm){
           vec_validate_init_empty(usage_report_per_flow_vector, 10, 0);
         }
         clib_warning("[9| flow_info]  line 81");
-        usage_report_per_flow_vector =
         clib_warning("[9| flow_info]  line 82");
         vec_add1(usage_report_per_flow_vector,*new_data);
         hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
