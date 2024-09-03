@@ -25,7 +25,7 @@
 #define flow_debug(...)				\
   do { } while (0)
 #endif
-
+//extern struct {char* key; usage_report_per_flow_t* value;} *usage_hash;
 
 void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
@@ -68,10 +68,9 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data.dst_bytes = flow->stats[1].bytes;
         usage_report_per_flow_t* usage_report_per_flow_vector = NULL;
         usage_report_per_flow_vector = hmget(usage_hash, new_data.src_ip);
-        vec_add1(usage_report_per_flow_vector,new_data);
+        cvector_push_back(usage_report_per_flow_vector,new_data);
         hmput(usage_hash,new_data.src_ip,usage_report_per_flow_vector);
-        clib_warning("[flow_info] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
-
+        clib_warning("[flow_info] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
       }
     }
 
