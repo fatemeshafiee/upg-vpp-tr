@@ -39,7 +39,7 @@ void parse_time(const char* date_time, struct  tm* tm){
 }
 
 
-void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem *) Notifvec,EventType type) {
+void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
     clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
@@ -118,8 +118,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       }
       item->userDataUsageMeasurements = userDataMeasurements;
       clib_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
-      cvector_push_back(Notifvec, item);
-      clib_warning("[send_data] fillNotificationItem, the Noitve_size %d\n", cvector_size(Notifvec));
+      cvector_push_back(*Notifvec, item);
+      clib_warning("[send_data] fillNotificationItem, the Noitve_size %d\n", cvector_size(*Notifvec));
 
     }
     pthread_mutex_unlock(&ee_lock);
