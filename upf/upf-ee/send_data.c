@@ -60,6 +60,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       usage_report_per_flow_t* rep;
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
       usage_report_per_flow_t *usage_report_per_flow_vector = usage_hash[i].value;
+      clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
+
       vec_foreach(rep, usage_report_per_flow_vector){
         clib_warning("[send_data] fillNotificationItem, in the loop");
 
