@@ -41,6 +41,7 @@
 #define cvector_clib_memmove memmove
 #endif
 
+#include <vlib/vlib.h>
 /* NOTE: Similar to C's qsort and bsearch, you will receive a T*
  * for a vector of Ts. This means that you cannot use `free` directly
  * as a destructor. Instead if you have for example a cvector_vector_type(int *)
@@ -402,6 +403,7 @@ typedef struct cvector_metadata_t {
         if (vec) {                                                                    \
             void *cv_p1__ = cvector_vec_to_base(vec);                                 \
             void *cv_p2__ = cvector_clib_realloc(cv_p1__, cv_sz__);                   \
+            clib_warning("[flow_info] %d %d", cv_p1__, cv_sz__);                      \
             cvector_clib_assert(cv_p2__);                                             \
             (vec) = cvector_base_to_vec(cv_p2__);                                     \
         } else {                                                                      \
