@@ -297,12 +297,19 @@ json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataU
     clib_warning("[encoder] returning NULL in serialize_UserDataUsageMeasurements");
     return json_null();
   }
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 300");
   json_t *obj = json_object();
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 301");
   json_object_set_new(obj, "appId",json_string(userDataUsageMeasurements->appID));
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 302");
   json_object_set_new(obj, "flowInfo", serialize_flow_information(userDataUsageMeasurements->flowInfo));
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 303");
   json_object_set_new(obj, "volumeMeasurement",serialize_VolumeMeasurement(userDataUsageMeasurements->volumeMeasurement));
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 304");
   json_object_set_new(obj, "throughputMeasurement", serialize_ThroughputMeasurement(userDataUsageMeasurements->throughputMeasurement));
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 305");
   json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements->applicationRelatedInformation));
+  clib_warning("[encoder] in serialize_UserDataUsageMeasurements 306");
   json_object_set_new(obj, "throughputStatisticsMeasurement",serialize_ThroughputStatisticsMeasurement(userDataUsageMeasurements->throughputStatisticsMeasurement));
   clib_warning("[encoder] End of of serialize_UserDataUsageMeasurements");
   return  obj;
