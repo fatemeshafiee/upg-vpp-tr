@@ -320,7 +320,7 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   if(notificationItem->userDataUsageMeasurements){
     userMeasurements = json_array();
     for (size_t i = 0; i < cvector_size(notificationItem->userDataUsageMeasurements); i++){
-      clib_warning("[encoder] End of of serialize_Notification_Item, in the for i: %d", i);
+      clib_warning("[encoder]  in the loop of serialize_Notification_Item, in the for i: %d", i);
       json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem->userDataUsageMeasurements[i]));
     }
   }
