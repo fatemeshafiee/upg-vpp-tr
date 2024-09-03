@@ -301,7 +301,6 @@ json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataU
   json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements->applicationRelatedInformation));
   json_object_set_new(obj, "throughputStatisticsMeasurement",serialize_ThroughputStatisticsMeasurement(userDataUsageMeasurements->throughputStatisticsMeasurement));
   clib_warning("[encoder] End of of serialize_UserDataUsageMeasurements");
-
   return  obj;
 }
 
@@ -321,12 +320,12 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   if(notificationItem->userDataUsageMeasurements){
     userMeasurements = json_array();
     for (size_t i = 0; i < cvector_size(notificationItem->userDataUsageMeasurements); i++){
+      clib_warning("[encoder] End of of serialize_Notification_Item, in the for i: %d", i);
       json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem->userDataUsageMeasurements[i]));
     }
   }
-  clib_warning("[encoder] End of of serialize_Notification_Item");
-
   json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
+  clib_warning("[encoder] End of of serialize_Notification_Item");
   return  obj;
 }
 json_t *serialize_callBack(NotificationItem *notificationItem, const char *correlationId , int achievedSampRatio) {
