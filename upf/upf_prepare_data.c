@@ -77,7 +77,7 @@ void prepare_ee_data(flowtable_main_t *fm){
 //        hmput(usage_hash,new_data->src_ip,usage_report_per_flow_vector);
 //        clib_warning("[9| flow_info]  line 78");
 //        clib_warning("[flow_info] the length of the vector is %d", cvector_size(usage_report_per_flow_vector));
-        usage_report_per_flow_t* usage_report_per_flow_vector = malloc(sizeof usage_report_per_flow_t );
+        usage_report_per_flow_t* usage_report_per_flow_vector = malloc(sizeof(usage_report_per_flow_t) );
         if(hmget(usage_hash, new_data->src_ip) == NULL){
           vec_validate_init_empty(usage_report_per_flow_vector, 1, *new_data);
           clib_warning("[9| flow_info]  in the if");
