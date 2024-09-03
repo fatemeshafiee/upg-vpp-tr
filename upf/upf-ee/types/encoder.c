@@ -300,6 +300,8 @@ json_t *serialize_UserDataUsageMeasurements(UserDataUsageMeasurements *userDataU
   json_object_set_new(obj, "throughputMeasurement", serialize_ThroughputMeasurement(userDataUsageMeasurements->throughputMeasurement));
   json_object_set_new(obj, "applicationRelatedInformation",serialize_ApplicationRelatedInformation(userDataUsageMeasurements->applicationRelatedInformation));
   json_object_set_new(obj, "throughputStatisticsMeasurement",serialize_ThroughputStatisticsMeasurement(userDataUsageMeasurements->throughputStatisticsMeasurement));
+  clib_warning("[encoder] End of of serialize_UserDataUsageMeasurements");
+
   return  obj;
 }
 
@@ -321,8 +323,8 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
     for (size_t i = 0; i < cvector_size(notificationItem->userDataUsageMeasurements); i++){
       json_array_append_new(userMeasurements, serialize_UserDataUsageMeasurements(notificationItem->userDataUsageMeasurements[i]));
     }
-
   }
+  clib_warning("[encoder] End of of serialize_Notification_Item");
 
   json_object_set_new(obj,"userDataUsageMeasurements",userMeasurements);
   return  obj;
@@ -334,5 +336,7 @@ json_t *serialize_callBack(NotificationItem *notificationItem, char *correlation
   json_object_set_new(obj, "notificationItems",notificationItems);
   json_object_set_new(obj,"correlationId", json_string(correlationId));
   json_object_set_new(obj,"achievedSampRatio", json_integer(achievedSampRatio));
+  clib_warning("[encoder] End of of serialize_callBack");
+
   return  obj;
 }

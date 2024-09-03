@@ -124,7 +124,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
     }
     pthread_mutex_unlock(&ee_lock);
   }
-
   clib_warning("[send_data] fillNotificationItem, end of function");
 }
 void create_send_report(UpfEventSubscription upfSub,EventType type){
@@ -143,12 +142,13 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
       char *json_str = json_dumps(callBack_Report, JSON_INDENT(2));
       send_report (json_str, upfSub, type);
     }
+    clib_warning("[EventReport_UDUT] End of create_send_report");
   }
 }
 void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
   // we Assume that we have the upf raw data hare
   // we call the function that can customized the needed measuremen
-  clib_warning("[EventReport_UDUT] in send_report");
+  clib_warning("[EventReport_UDUT] in send_report 151");
 
   CURL *curl;
   CURLcode res;
@@ -156,6 +156,7 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
   curl_global_init(CURL_GLOBAL_DEFAULT);
   curl = curl_easy_init();
   if (curl) {
+    clib_warning("[EventReport_UDUT] in send_report 159");
 
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
@@ -164,6 +165,7 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L); // To set the size dependent to json
+    clib_warning("[EventReport_UDUT] in send_report 168");
 
     struct curl_slist *headers = NULL;
 
@@ -179,6 +181,8 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
 
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
+    clib_warning("[EventReport_UDUT] in send_report 184");
+
   }
 
 }
