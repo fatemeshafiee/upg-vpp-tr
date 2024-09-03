@@ -113,6 +113,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         usage->flowInfo->packetFilterUsage = false;
         usage->flowInfo->spi = NULL;
         usage->flowInfo->tosTrafficClass = NULL;
+        usage->appID = "\0";
         cvector_push_back(userDataMeasurements, usage);
         clib_warning("[send_data] fillNotificationItem, in the loop 113. %p\n", usage->flowInfo->ethFlowDescription);
       }
