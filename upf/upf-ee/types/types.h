@@ -223,13 +223,13 @@ typedef struct {
 
 typedef struct {
     EventType type;
-    char* ueIpv4Addr;
-    char* ueIpv6Prefix;
-    char* ueMacAddr;
-    char* dnn;
+    const char* ueIpv4Addr;
+    const char* ueIpv6Prefix;
+    const char* ueMacAddr;
+    const char* dnn;
     Snssai snssai;
-    char* gpsi;
-    char* supi;
+    const char* gpsi;
+    const char* supi;
     time_t timeStamp;
     time_t startTime;
     //qosMonitoringMeasurement
