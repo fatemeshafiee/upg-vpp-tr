@@ -320,7 +320,7 @@ json_t *serialize_Notification_Item(NotificationItem *notificationItem) {
   json_t *obj = json_object();
   clib_warning("[encoder] in serialize_Notification_Item, line 321");
   json_object_set_new(obj, "eventType", json_string(getEventTypeString(notificationItem->type)));
-  clib_warning("[encoder] in serialize_Notification_Item, line 322, %s",notificationItem->ueIpv4Addr );
+  clib_warning("[encoder] in serialize_Notification_Item, line 322, %s",notificationItem->ueIpv4Addr);
   json_object_set_new(obj,"ueIpv4Addr", json_string(notificationItem->ueIpv4Addr));
   clib_warning("[encoder] in serialize_Notification_Item, line 323");
   json_object_set_new(obj,"ueIpv6Prefix", json_string(notificationItem->ueIpv6Prefix));
