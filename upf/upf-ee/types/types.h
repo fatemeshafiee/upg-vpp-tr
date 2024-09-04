@@ -240,8 +240,8 @@ typedef struct {
 typedef struct
 {
     uint64_t seid;
-    char* src_ip;
-    char* dst_ip;
+    const char* src_ip;
+    const char* dst_ip;
     uint16_t src_port;
     uint16_t dst_port;
     uint8_t  proto;
@@ -249,7 +249,6 @@ typedef struct
     uint64_t src_bytes;
     uint32_t dst_pkts;
     uint64_t dst_bytes;
-
 } usage_report_per_flow_t;
 
 
