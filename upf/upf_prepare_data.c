@@ -36,6 +36,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   u32 num = pool_len(fm->flows);
   clib_warning("number of flows with pool is %d", num);
   usage_hash = NULL;
+  sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
       flow = pool_elt_at_index (fm->flows, i);
@@ -68,7 +69,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->dst_bytes = flow->stats[1].bytes;
         clib_warning("[9| flow_info]  line 69 %s, %s \n", new_data->src_ip, buffer);
         clib_warning("the len of the hash is %d", shlen(usage_hash));
-        usage_report_per_flow_t* usage_report_per_flow_vector = shgetp(usage_hash, buffer);
+        usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, buffer);
         clib_warning("[flow_info] before the if");
         if(usage_report_per_flow_vector == NULL){
           usage_report_per_flow_vector = malloc(sizeof(usage_report_per_flow_t));
