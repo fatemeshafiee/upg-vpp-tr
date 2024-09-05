@@ -67,8 +67,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->dst_pkts = flow->stats[1].pkts;
         new_data->dst_bytes = flow->stats[1].bytes;
         clib_warning("[9| flow_info]  line 69 %s, %s \n", new_data->src_ip, buffer);
-        usage_report_per_flow_t* usage_report_per_flow_vector;
-        usage_report_per_flow_vector = shgets(usage_hash, new_data->src_ip);
+        usage_report_per_flow_t* usage_report_per_flow_vector = shgetp(usage_hash, buffer);
         clib_warning("[flow_info] before the if");
         if(usage_report_per_flow_vector == NULL){
           usage_report_per_flow_vector = malloc(sizeof(usage_report_per_flow_t));
