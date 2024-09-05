@@ -81,7 +81,7 @@ void prepare_ee_data(flowtable_main_t *fm){
           vec_add1(usage_report_per_flow_vector,*new_data);
         }
         clib_warning("[flow_info] the src Ip is  %s", new_data->src_ip);
-        shputs(usage_hash,strdup(new_data->src_ip),usage_report_per_flow_vector);
+        shput(usage_hash,strdup(new_data->src_ip),usage_report_per_flow_vector);
         clib_warning("[flow_info] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
 
       }
