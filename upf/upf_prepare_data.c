@@ -35,7 +35,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("number of flows is %d", num_flows);
   u32 num = pool_len(fm->flows);
   clib_warning("number of flows with pool is %d", num);
-//  usage_hash = NULL;
+  usage_hash = NULL;
   sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
@@ -76,7 +76,8 @@ void prepare_ee_data(flowtable_main_t *fm){
           usage_report_per_flow_vector = malloc(sizeof(usage_report_per_flow_t));
           clib_warning("[9| flow_info]  in the if, before validating vector");
           vec_validate_init_empty(usage_report_per_flow_vector, 1, *new_data);
-          clib_warning("[9| flow_info]  in the if");
+
+          clib_warning("[9| flow_info]  in the if the vec len is %d", usage_report_per_flow_vector);
           clib_warning("[9| flow_info]  urpfv %p", usage_report_per_flow_vector);
         }
         else{

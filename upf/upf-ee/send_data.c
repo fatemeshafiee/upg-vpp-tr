@@ -68,6 +68,9 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       usage_report_per_flow_t* rep;
 
       vec_foreach(rep, usage_report_per_flow_vector){
+        if(rep == NULL){
+          continue;
+        }
         clib_warning("[send_data] fillNotificationItem, in the loop");
         // TODO: make sure the uplink and downlink are right.
         clib_warning("[send_data] fillNotificationItem, in the loop #1");
@@ -204,6 +207,7 @@ void* EventReport_UDUT() {
             if (current_time - retrieved_vec[i]->eventReportingMode.TimeOfSubscription >=retrieved_vec[i]->eventReportingMode.repPeriod){
               clib_warning("[EventReport_UDUT] CALLING SEND report function");
               create_send_report(*retrieved_vec[i], USER_DATA_USAGE_TRENDS); // dummy
+              clib_warning("[EventReport_UDUT|207] after SENDing the report.");
               retrieved_vec[i]->eventReportingMode.TimeOfLastReport = current_time;
               retrieved_vec[i]->eventReportingMode.sent_reports += 1;
             }
@@ -211,6 +215,7 @@ void* EventReport_UDUT() {
           else if (current_time - retrieved_vec[i]->eventReportingMode.TimeOfLastReport >=retrieved_vec[i]->eventReportingMode.repPeriod){
             clib_warning("[EventReport_UDUT] CALLING SEND report function");
             create_send_report(*retrieved_vec[i], USER_DATA_USAGE_TRENDS); // dummy
+            clib_warning("EventReport_UDUT|207] after SENDing the report.");
             retrieved_vec[i]->eventReportingMode.TimeOfLastReport = current_time;
             retrieved_vec[i]->eventReportingMode.sent_reports += 1;
           }
