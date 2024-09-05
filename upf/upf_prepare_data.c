@@ -73,7 +73,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, buffer);
         clib_warning("[flow_info] before the if");
         if(usage_report_per_flow_vector == NULL){
-          usage_report_per_flow_vector = malloc(sizeof(usage_report_per_flow_t));
+          usage_report_per_flow_vector = NULL;
           clib_warning("[9| flow_info]  in the if, before validating vector");
           vec_add1(usage_report_per_flow_vector,*new_data);
 //          vec_validate_init_empty(usage_report_per_flow_vector, 1, *new_data);
