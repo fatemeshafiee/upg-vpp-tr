@@ -77,7 +77,7 @@ void prepare_ee_data(flowtable_main_t *fm){
           clib_warning("[9| flow_info]  in the if, before validating vector");
           vec_validate_init_empty(usage_report_per_flow_vector, 1, *new_data);
 
-          clib_warning("[9| flow_info]  in the if the vec len is %d", usage_report_per_flow_vector);
+          clib_warning("[9| flow_info]  in the if the vec len is %d", vec_len(usage_report_per_flow_vector));
           clib_warning("[9| flow_info]  urpfv %p", usage_report_per_flow_vector);
         }
         else{
