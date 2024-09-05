@@ -35,10 +35,11 @@ void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("number of flows is %d", num_flows);
   u32 num = pool_len(fm->flows);
   clib_warning("number of flows with pool is %d", num);
-  usage_hash = NULL;
+//  usage_hash = NULL;
   sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
+      clib_warning("in the for the i is %d", i);
       flow = pool_elt_at_index (fm->flows, i);
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
         usage_report_per_flow_t *new_data = malloc(sizeof(usage_report_per_flow_t));
