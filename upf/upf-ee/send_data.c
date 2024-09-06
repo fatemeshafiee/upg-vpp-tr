@@ -59,6 +59,11 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->snssai.sst = 0;
       item->snssai.sd[0] = "\0";
       item->ueIpv4Addr = usage_hash[i].key;
+      item->dnn = NULL;
+      item->gpsi = NULL;
+      item->supi = NULL;
+      item->ueMacAddr = NULL;
+      item->ueIpv6Prefix = NULL;
       clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
       clib_warning("assianing the IPadd which is in tha hash %s", usage_hash[i].key);
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
