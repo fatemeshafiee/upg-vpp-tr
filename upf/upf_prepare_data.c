@@ -30,6 +30,7 @@
 void prepare_ee_data(flowtable_main_t *fm){
   clib_warning("[flow_info] let's see what is the bug!!!!!");
   flow_entry_t *flow;
+  clib_warning("[flow_info] Locking the ee_lock");
   pthread_mutex_lock(&ee_lock);
   u32 num_flows = vec_len(fm->flows);
   clib_warning("number of flows is %d", num_flows);
@@ -95,6 +96,8 @@ void prepare_ee_data(flowtable_main_t *fm){
     }
 
   pthread_mutex_unlock(&ee_lock);
+  clib_warning("[flow_info] unlocking the ee_lock");
+
 
   return;
 }
