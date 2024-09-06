@@ -83,7 +83,6 @@ void prepare_ee_data(flowtable_main_t *fm){
         else{
           clib_warning("[9| flow_info]  in the else");
           clib_warning("[9| flow_info]  urpfv %p", usage_report_per_flow_vector);
-//          usage_report_per_flow_vector = shget(usage_hash, new_data->src_ip);
           vec_add1(usage_report_per_flow_vector,*new_data);
           shdel(usage_hash, buffer);
         }
