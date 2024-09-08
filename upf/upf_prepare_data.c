@@ -47,10 +47,10 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->dst_ip = malloc(sizeof (buffer));
         new_data->src_ip = malloc(sizeof (buffer));
         inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
-        memccpy(new_data->dst_ip, buffer, strlen(buffer) + 1);
+        memcpy(new_data->dst_ip, buffer, strlen(buffer) + 1);
         clib_warning("[1|flow_info] ip[1].  %s", new_data->dst_ip);
         inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
-        memccpy(new_data->src_ip, buffer, strlen(buffer) + 1);
+        memcpy(new_data->src_ip, buffer, strlen(buffer) + 1);
         clib_warning("[1|flow_info] ip[0].  %s", new_data->src_ip);
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
