@@ -41,14 +41,10 @@ void parse_time(const char* date_time, struct  tm* tm){
 
 void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
-    clib_warning("[send_data] fillNotificationItem, before locking the ee_lock");
     pthread_mutex_lock(&ee_lock);
-    clib_warning("[send_data] fillNotificationItem, after locking the ee_lock");
-
     size_t hash_length = shlen(usage_hash);
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
-      clib_warning("[send_data] fillNotificationItem, the hash size is %d",i);
       NotificationItem *item = malloc(sizeof (NotificationItem));
       item->type = USER_DATA_USAGE_TRENDS;
       struct tm* tm = malloc(sizeof(struct tm));
@@ -76,11 +72,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         if(rep == NULL){
           continue;
         }
-        clib_warning("[send_data] fillNotificationItem, in the loop");
         // TODO: make sure the uplink and downlink are right.
-        clib_warning("[send_data] fillNotificationItem, in the loop #1");
         int volume = rep->src_bytes + rep->dst_bytes;
-        clib_warning("[send_data] fillNotificationItem, in the loop #2");
         char *strVolume = malloc(20 + 1);
         sprintf(strVolume, "%dB", volume);
 //      sprintf(strVolume, "%s", "B");
@@ -90,24 +83,22 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
         usage->volumeMeasurement->dlNbOfPackets = rep->src_pkts;
         usage->volumeMeasurement->ulNbOfPackets = rep->dst_pkts;
-        clib_warning("[send_data] fillNotificationItem, in the loop #3");
-
         volume = rep->src_bytes;
         sprintf(strVolume, "%dB", volume);
         usage->volumeMeasurement->dlVolume = strVolume;
-
         volume = rep->dst_bytes;
         sprintf(strVolume, "%dB", volume);
         usage->volumeMeasurement->ulVolume = strVolume;
-        clib_warning("[send_data] fillNotificationItem, in the loop 95");
 
         char buffer[INET6_ADDRSTRLEN];
+        clib_warning("the src Ip is %s", rep->src_ip);
+        clib_warning("the Dst Ip is %s", rep->dst_ip);
         json_t *obj = json_object();
         json_object_set_new(obj,"SeId", json_integer(rep->seid));
-        inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
-        json_object_set_new(obj,"SrcIp", json_string(buffer));
-        inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
-        json_object_set_new(obj,"DstIp", json_string(buffer));
+//        inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
+        json_object_set_new(obj,"SrcIp", json_string(rep->src_ip));
+//        inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
+        json_object_set_new(obj,"DstIp", json_string(rep->dst_ip));
         json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
         json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
         usage->flowInfo = malloc(sizeof (FlowInformation));
@@ -127,7 +118,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         clib_warning("[send_data] fillNotificationItem, in the loop 113. %p\n", usage->flowInfo->ethFlowDescription);
       }
       item->userDataUsageMeasurements = userDataMeasurements;
-      clib_warning("[send_data] fillNotificationItem, assigning userDataMeasurements");
       cvector_push_back(*Notifvec, item);
       clib_warning("[send_data] fillNotificationItem, the Noitve_size %d\n", cvector_size(*Notifvec));
 
@@ -142,7 +132,6 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
     cvector_vector_type(NotificationItem *) Notifvec = NULL;
     fillNotificationItem(upfSub, &Notifvec, type);
     clib_warning("[EventReport_UDUT] fillNotificationItem, the Noitve_size %d\n", cvector_size(Notifvec));
-    clib_warning("[EventReport_UDUT] having the notif");
     for(size_t i = 0; i < cvector_size(Notifvec); i++){
       clib_warning("[EventReport_UDUT] in the for");
       json_t* callBack_Report = serialize_callBack(Notifvec[i], upfSub.notifyCorrelationId, 0);
@@ -158,16 +147,12 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
 void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
   // we Assume that we have the upf raw data hare
   // we call the function that can customized the needed measuremen
-  clib_warning("[EventReport_UDUT] in send_report 151");
-
   CURL *curl;
   CURLcode res;
 
   curl_global_init(CURL_GLOBAL_DEFAULT);
   curl = curl_easy_init();
   if (curl) {
-    clib_warning("[EventReport_UDUT] in send_report 159");
-
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
     fprintf(stdout, "dat: %s\n", json_data);
@@ -175,7 +160,6 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_data);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, -1L); // To set the size dependent to json
-    clib_warning("[EventReport_UDUT] in send_report 168");
 
     struct curl_slist *headers = NULL;
 
