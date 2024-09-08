@@ -46,10 +46,10 @@ void prepare_ee_data(flowtable_main_t *fm){
         char buffer[INET6_ADDRSTRLEN];
         inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
         new_data->dst_ip = buffer;
-        clib_warning("[1|flow_info] ip[1].  %s", buffer);
+        clib_warning("[1|flow_info] ip[1].  %s", new_data->dst_ip);
         inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
-        clib_warning("[1|flow_info] ip[0].  %s", buffer);
         new_data->src_ip = buffer;
+        clib_warning("[1|flow_info] ip[0].  %s", new_data->src_ip);
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
         clib_warning("[5| flow_info] portocol %u", key.proto);
@@ -67,34 +67,20 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->src_bytes = flow->stats[0].bytes;
         new_data->dst_pkts = flow->stats[1].pkts;
         new_data->dst_bytes = flow->stats[1].bytes;
-//        clib_warning("[9| flow_info]  line 69 %s, %s \n", new_data->src_ip, buffer);
-//        clib_warning("the len of the hash is %d", shlen(usage_hash));
         usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, buffer);
-//        clib_warning("[flow_info] before the if");
         if(usage_report_per_flow_vector == NULL){
           usage_report_per_flow_vector = NULL;
-//          clib_warning("[9| flow_info]  in the if, before validating vector");
           vec_add1(usage_report_per_flow_vector,*new_data);
-//          vec_validate_init_empty(usage_report_per_flow_vector, 1, *new_data);
-//          clib_warning("[9| flow_info]  in the if the vec len is %d", vec_len(usage_report_per_flow_vector));
-//          clib_warning("[9| flow_info]  urpfv %p", usage_report_per_flow_vector);
         }
         else{
-//          clib_warning("[9| flow_info]  in the else");
-//          clib_warning("[9| flow_info]  urpfv %p", usage_report_per_flow_vector);
+
           vec_add1(usage_report_per_flow_vector,*new_data);
           shdel(usage_hash, buffer);
         }
-//        clib_warning("[flow_info] the src Ip is  %s", new_data->src_ip);
         shput(usage_hash, new_data->src_ip, usage_report_per_flow_vector);
-//        clib_warning("[flow_info] after put");
-//        clib_warning("[flow_info] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
 
       }
     }
-
   pthread_mutex_unlock(&ee_lock);
-//  clib_warning("[flow_info] unlocking the ee_lock");
-
   return;
 }
