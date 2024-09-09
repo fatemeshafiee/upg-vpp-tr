@@ -80,7 +80,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         else{
 
           vec_add1(usage_report_per_flow_vector,*new_data);
-          shdel(usage_hash, buffer);
+          shdel(usage_hash, new_data->src_ip);
         }
         shput(usage_hash, new_data->src_ip, usage_report_per_flow_vector);
 
