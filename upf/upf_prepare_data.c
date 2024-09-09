@@ -44,13 +44,24 @@ void prepare_ee_data(flowtable_main_t *fm){
         usage_report_per_flow_t *new_data = malloc(sizeof(usage_report_per_flow_t));
         flow_key_t key = flow->key;
         char buffer[INET6_ADDRSTRLEN];
-        new_data->dst_ip = malloc(sizeof (buffer));
-        new_data->src_ip = malloc(sizeof (buffer));
-        inet_ntop(AF_INET, &(key.ip[1]), buffer, sizeof(buffer));
-        memcpy(new_data->dst_ip, buffer, strlen(buffer) + 1);
+        new_data->dst_ip = malloc(INET6_ADDRSTRLEN);
+        new_data->src_ip = malloc(INET6_ADDRSTRLEN);
+
+        u8* f = key.ip[1].as_u8;
+        for (int i = 0; i < 16; i++){
+          clib_warning("[1|flow_ip 1] %d", f[i]);
+        }
+
+        u8* f2 = key.ip[0].as_u8;
+        for (int i = 0; i < 16; i++){
+          clib_warning("[1|flow_ip 0] %d", f2[i]);
+        }
+
+        inet_ntop(AF_INET, &(key.ip[1]), buffer, INET6_ADDRSTRLEN);
+        memcpy(new_data->dst_ip, buffer, INET6_ADDRSTRLEN);
         clib_warning("[1|flow_info] ip[1].  %s", new_data->dst_ip);
-        inet_ntop(AF_INET, &(key.ip[0]), buffer, sizeof(buffer));
-        memcpy(new_data->src_ip, buffer, strlen(buffer) + 1);
+        inet_ntop(AF_INET, &(key.ip[0]), buffer, INET6_ADDRSTRLEN);
+        memcpy(new_data->src_ip, buffer, INET6_ADDRSTRLEN);
         clib_warning("[1|flow_info] ip[0].  %s", new_data->src_ip);
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
