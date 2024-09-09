@@ -56,7 +56,7 @@ void prepare_ee_data(flowtable_main_t *fm){
                   );
 
           u8* f2 = key.ip[0].as_u8;
-          sprintf(new_data->dst_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
+          sprintf(new_data->src_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
                   f2[0],f2[1],f2[2],f2[3],
                   f2[4],f2[5],f2[6],f2[7],
                   f2[8],f2[9],f2[10],f2[11],
