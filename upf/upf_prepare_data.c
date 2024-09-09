@@ -43,15 +43,37 @@ void prepare_ee_data(flowtable_main_t *fm){
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
         usage_report_per_flow_t *new_data = malloc(sizeof(usage_report_per_flow_t));
         flow_key_t key = flow->key;
+        if(key.proto == 58){
+          new_data->dst_ip = malloc( 40 * sizeof(char));
+          new_data->src_ip = malloc(40 * sizeof(char));
 
-        new_data->dst_ip = malloc(16 * sizeof(char));
-        new_data->src_ip = malloc(16 * sizeof(char));
+          u8* f = key.ip[1].as_u8;
+          sprintf(new_data->dst_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
+                  f[0],f[1],f[2],f[3],
+                  f[4],f[5],f[6],f[7],
+                  f[8],f[9],f[10],f[11],
+                  f[12],f[13],f[14],f[15],
+                  );
 
-        u8* f = key.ip[1].as_u8;
-        sprintf(new_data->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
+          u8* f2 = key.ip[0].as_u8;
+          sprintf(new_data->dst_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
+                  f2[0],f2[1],f2[2],f2[3],
+                  f2[4],f2[5],f2[6],f2[7],
+                  f2[8],f2[9],f2[10],f2[11],
+                  f2[12],f2[13],f2[14],f2[15],
+          );
+        }
+        else{
+          new_data->dst_ip = malloc(16 * sizeof(char));
+          new_data->src_ip = malloc(16 * sizeof(char));
 
-        u8* f2 = key.ip[0].as_u8;
-        sprintf(new_data->src_ip, "%d.%d.%d.%d", f2[12], f2[13], f2[14], f2[15]);
+          u8* f = key.ip[1].as_u8;
+          sprintf(new_data->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
+
+          u8* f2 = key.ip[0].as_u8;
+          sprintf(new_data->src_ip, "%d.%d.%d.%d", f2[12], f2[13], f2[14], f2[15]);
+
+        }
 
         clib_warning("[1|flow_info] ip[1].  %s", new_data->dst_ip);
         clib_warning("[1|flow_info] ip[0].  %s", new_data->src_ip);
