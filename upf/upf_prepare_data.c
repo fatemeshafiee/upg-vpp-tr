@@ -72,7 +72,7 @@ void prepare_ee_data(flowtable_main_t *fm){
         new_data->src_bytes = flow->stats[0].bytes;
         new_data->dst_pkts = flow->stats[1].pkts;
         new_data->dst_bytes = flow->stats[1].bytes;
-        usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, buffer);
+        usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, new_data->src_ip);
         if(usage_report_per_flow_vector == NULL){
           usage_report_per_flow_vector = NULL;
           vec_add1(usage_report_per_flow_vector,*new_data);
