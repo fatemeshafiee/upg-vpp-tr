@@ -21,3 +21,20 @@ typedef struct
     u64 dst_bytes;
 
 } usage_report_per_flow_t;
+
+typedef struct
+{
+    u64 seid;
+    time_t packet_time;
+    u16 packet_length;
+    char * highest_layer;
+    int ip_flags;
+    ip46_address_t src_ip;
+    ip46_address_t dst_ip;
+    int tcp_length;
+    int tcp_ack;
+    int tcp_flags;
+    int tcp_window_size;
+    int udp_length;
+    int ICMP_type;
+} usage_report_per_packet_t;

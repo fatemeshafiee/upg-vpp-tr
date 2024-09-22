@@ -37,15 +37,88 @@ void parse_time(const char* date_time, struct  tm* tm){
 
   return;
 }
+void key_to_string(flow_key* key, const char * result){
+  json_t *obj = json_object();
+  json_object_set_new(obj,"SeId", json_integer(key->seid));
+  json_object_set_new(obj,"SrcIp", json_string(key->src_ip));
+  json_object_set_new(obj,"DstIp", json_string(key->dst_ip));
+  json_object_set_new(obj,"SrcPort", json_integer(key->src_port));
+  json_object_set_new(obj,"DstPort", json_integer(key->dst_port));
+  result = json_dumps(obj, JSON_INDENT(2));
 
-
-void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
+}
+// TODO:we should have different notification Items reports sent for different UEs
+void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type){
   if(type==USER_DATA_USAGE_TRENDS){
     pthread_mutex_lock(&ee_lock);
-    size_t hash_length = shlen(usage_hash);
-    clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
+    size_t hash_length = shlen(usage_packet_hash);
+    clib_warning("[send_data] fillNotificationItemPerPacket, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
       NotificationItem *item = malloc(sizeof (NotificationItem));
+      item->type = USER_DATA_USAGE_TRENDS;
+      struct tm* tm = malloc(sizeof(struct tm));
+      time_t current_time;
+      time(&current_time);
+      item->timeStamp = current_time;
+      item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
+      item->snssai.sst = 0;
+      item->snssai.sd[0] = "\0";
+      // when UE is the source it is uplink
+      item->dnn = NULL;
+      item->gpsi = NULL;
+      item->supi = NULL;
+      item->ueMacAddr = NULL;
+      item->ueIpv6Prefix = NULL;
+      clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
+      cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
+      usage_report_per_packet_t* usage_report_per_packet_vector = usage_packet_hash[i].value;
+      clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_packet_vector));
+      usage_report_per_packet_t * rep;
+      UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
+      usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
+      usage->flowInfo = malloc(sizeof (FlowInformation));
+      key_to_string(usage_packet_hash[i].key,  usage->flowInfo->packFiltId);
+      packet_info = json_array();
+      bool downlink;
+      int count = 0;
+      int volume = 0;
+      vec_foreach(rep, usage_report_per_packet_vector){
+        if(rep == NULL)
+          continue;
+        volume += rep->packet_length;
+        count += 1;
+        downlink = rep->is_reverse;
+        json_t *obj = json_object();
+        json_object_set_new(obj,"packet_time",time_to_json(rep->packet_time));
+        json_object_set_new(obj,"packet_length", json_integer(rep->packet_length));
+        json_object_set_new(obj,"highest_layer", json_string(rep->highest_layer));
+        json_object_set_new(obj,"ip_flags", json_integer(rep->ip_flags));
+        json_object_set_new(obj,"tcp_length", json_integer(rep->tcp_length));
+        json_object_set_new(obj,"tcp_ack", json_integer(rep->tcp_ack));
+        json_object_set_new(obj,"tcp_window_size", json_integer(rep->tcp_window_size));
+        json_object_set_new(obj,"udp_length", json_integer(rep->udp_length));
+        json_object_set_new(obj,"ICMP_type", json_integer(rep->ICMP_type));
+        json_array_append_new(packet_info, obj);
+      }
+      usage->flowInfo->flowDescription = json_dumps(packet_info, JSON_INDENT(4));
+      usage->volumeMeasurement->totalNbOfPackets = count;
+      char *strVolume = malloc(20 + 1);
+      sprintf(strVolume, "%dB", volume);
+      usage->volumeMeasurement->totalVolume = strVolume;
+      if(downlink){
+        usage->volumeMeasurement->dlNbOfPackets = count;
+        usage->volumeMeasurement->dlVolume = strVolume;
+        usage->volumeMeasurement->ulNbOfPackets = 0;
+        usage->volumeMeasurement->ulVolume = "0B";
+      }
+      else{
+        usage->volumeMeasurement->dlNbOfPackets = 0;
+        usage->volumeMeasurement->dlVolume = "0B";
+        usage->volumeMeasurement->ulNbOfPackets = count;
+        usage->volumeMeasurement->ulVolume = strVolume;
+      }
+      NotificationItem *item = malloc(sizeof(NotificationItem));
+
       item->type = USER_DATA_USAGE_TRENDS;
       struct tm* tm = malloc(sizeof(struct tm));
       time_t current_time;
@@ -62,6 +135,24 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->ueIpv6Prefix = NULL;
       clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
       clib_warning("assianing the IPadd which is in tha hash %s", usage_hash[i].key);
+
+//      item->userDataUsageMeasurements = usage; worng should be list
+      cvector_push_back(*Notifvec, item);
+
+    }
+    usage_report_per_packet_t = NULL;
+    pthread_mutex_unlock(&ee_lock);
+
+  }
+}
+void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
+  if(type==USER_DATA_USAGE_TRENDS){
+    pthread_mutex_lock(&ee_lock);
+    size_t hash_length = shlen(usage_hash);
+    clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
+    struct {char* key; NotificationItem * value;} * ue_to_notif = NULL;
+    for(size_t i=0;i<hash_length;i++){
+
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
       usage_report_per_flow_t* usage_report_per_flow_vector = usage_hash[i].value;
       clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
@@ -95,9 +186,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         clib_warning("the Dst Ip is %s", rep->dst_ip);
         json_t *obj = json_object();
         json_object_set_new(obj,"SeId", json_integer(rep->seid));
-//        inet_ntop(AF_INET, &(rep->src_ip), buffer, sizeof(buffer));
         json_object_set_new(obj,"SrcIp", json_string(rep->src_ip));
-//        inet_ntop(AF_INET, &(rep->dst_ip), buffer, sizeof(buffer));
         json_object_set_new(obj,"DstIp", json_string(rep->dst_ip));
         json_object_set_new(obj,"SrcPort", json_integer(rep->src_port));
         json_object_set_new(obj,"DstPort", json_integer(rep->dst_port));
@@ -117,6 +206,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         cvector_push_back(userDataMeasurements, usage);
         clib_warning("[send_data] fillNotificationItem, in the loop 113. %p\n", usage->flowInfo->ethFlowDescription);
       }
+
       item->userDataUsageMeasurements = userDataMeasurements;
       cvector_push_back(*Notifvec, item);
       clib_warning("[send_data] fillNotificationItem, the Noitve_size %d\n", cvector_size(*Notifvec));

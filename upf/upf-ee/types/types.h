@@ -251,6 +251,32 @@ typedef struct
     uint64_t dst_bytes;
 } usage_report_per_flow_t;
 
+typedef struct {
+    u64 seid;
+    const char* src_ip;
+    const char* dst_ip;
+    u16 src_port;
+    u16 dst_port;
+    u16  proto;
+
+} flow_key;
+
+typedef struct
+{
+    flow_key * key;
+    time_t packet_time;
+    u16 packet_length;
+    char * highest_layer;
+    int ip_flags;
+    int tcp_length;
+    int tcp_ack;
+    int tcp_flags;
+    int tcp_window_size;
+    int udp_length;
+    int ICMP_type;
+    bool is_reverse;
+
+} usage_report_per_packet_t;
 
 
 UpfEventTrigger getUpfEventTrigger(const char *s);
