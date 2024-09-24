@@ -6,6 +6,8 @@
 #include <vlib/unix/unix.h>
 #include "upf-ee/types/types.h"
 
+
+
 #define DEFINE_UPF_SHARED
 #include "upf-ee/storage/shared_variables.h"
 #undef DEFINE_UPF_SHARED
@@ -26,6 +28,11 @@
   do { } while (0)
 #endif
 #include "upf.h"
+#include <vnet/tcp/tcp_packet.h>
+#include <vnet/ip/ip.h>
+#include <vnet/tcp/tcp_inlines.h>
+#include <vnet/fib/ip4_fib.h>
+#include <vnet/fib/ip6_fib.h>
 //extern struct {char* key; usage_report_per_flow_t* value;} *usage_hash;
 #define TCP_PROTOCOL 6
 #define UDP_PROTOCOL 17
@@ -180,19 +187,19 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     new_data->udp_length = 0;
     new_data->ICMP_type = 0;
     new_data->highest_layer = "TCP";
-    if (new_data->key->src_port == 80 || new_data->key->dest_port == 80) {
+    if (new_data->key->src_port == 80 || new_data->key->dst_port == 80) {
       new_data->highest_layer = "HTTP";
-    } else if (new_data->key->src_port == 443 || new_data->key->dest_port == 443) {
+    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
       new_data->highest_layer = "HTTPS";
-    } else if (new_data->key->src_port == 25 || new_data->key->dest_port == 25) {
+    } else if (new_data->key->src_port == 25 || new_data->key->dst_port == 25) {
       new_data->highest_layer = "SMTP";
-    } else if (new_data->key->src_port == 110 || new_data->key->dest_port == 110) {
+    } else if (new_data->key->src_port == 110 || new_data->key->dst_port == 110) {
       new_data->highest_layer = "POP3";
-    } else if (new_data->key->src_port == 143 || new_data->key->dest_port == 143) {
+    } else if (new_data->key->src_port == 143 || new_data->key->dst_port == 143) {
       new_data->highest_layer = "IMAP";
-    } else if (new_data->key->src_port == 22 || new_data->key->dest_port == 22) {
+    } else if (new_data->key->src_port == 22 || new_data->key->dst_port == 22) {
       new_data->highest_layer = "SSH";
-    } else if (new_data->key->src_port == 443 || new_data->key->dest_port == 443) {
+    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
       new_data->highest_layer = "TLS";
     }
   }
@@ -209,9 +216,9 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     new_data->key->src_port = udp->src_port;
     new_data->key->dst_port = udp-> dst_port;
     new_data->udp_length = udp->length - 8;
-    if (new_data->key->src_port == 53 || new_data->key->dest_port == 53) {
+    if (new_data->key->src_port == 53 || new_data->key->dst_port == 53) {
       new_data->highest_layer = "DNS";
-    } else if (new_data->key->src_port == 443 || new_data->key->dest_port == 443) {
+    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
       new_data->highest_layer = "DTLS";
     }
 
@@ -236,7 +243,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     new_data->ICMP_type = 0;
     new_data->key->src_port = 0;
     new_data->key->dst_port = 0;
-    new_data->proto = 0;
+    new_data->key->proto = 0;
   }
   usage_report_per_packet_t * usage_report_per_packet_vector = shget(usage_packet_hash, new_data->key);
   if(usage_report_per_packet_vector == NULL){
