@@ -28,7 +28,9 @@
   do { } while (0)
 #endif
 #include "upf.h"
+#include <vnet/vnet.h>
 #include <vnet/tcp/tcp_packet.h>
+#include <vnet/udp/udp_packet.h>
 #include <vnet/ip/ip.h>
 #include <vnet/tcp/tcp_inlines.h>
 #include <vnet/fib/ip4_fib.h>
@@ -137,7 +139,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
   sh_new_strdup(usage_packet_hash);
   shdefault(usage_packet_hash, NULL);
   usage_report_per_packet_t *new_data = malloc(sizeof(usage_report_per_packet_t));
-  new_data->highest_layer = malloc(sizeof(10 * (char)));
+  new_data->highest_layer = malloc(10 * sizeof(char));
 //  ip6_header_t *
   u8* payload;
   int ip_header_length = 40;
@@ -147,7 +149,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     new_data->key->src_ip = malloc(16 * sizeof(char));
     ip_header_length = ((p4->ip_version_and_header_length >> 4) & 0x0F) * 4;
     u32_to_ip(p4->src_address.data_u32, new_data->key->src_ip);
-    u32_to_ip (p4->dst_address.data_u32, new_data->key>dst_ip);
+    u32_to_ip (p4->dst_address.data_u32, new_data->key->dst_ip);
     new_data->ip_flags = p4->flags_and_fragment_offset & 0x7;
     new_data->packet_length = p4->length; //it is the total length
     new_data->key->proto = p4->protocol;
@@ -162,7 +164,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     new_data->key->src_ip = malloc(40 * sizeof(char));
     ip6_header_t * p6 = (ip6_header_t *) p0;
     u8* f = p6->src_address.as_u8;
-    sprintf(new_data->key->src_ip, "%d.%d.%d.%d", f2[12], f2[13], f2[14], f2[15]);
+    sprintf(new_data->key->src_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
     f = p6->dst_address.as_u8;
     sprintf(new_data->key->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
     new_data->ip_flags = 0;
@@ -176,7 +178,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
   }
 
   if(new_data->key->proto == TCP_PROTOCOL){
-    struct tcp_header_t* tcp = (struct tcp_header_t*) payload;
+    tcp_header_t* tcp = (struct tcp_header_t*) payload;
     new_data->tcp_ack = tcp->ack_num;
     new_data->tcp_flags = tcp->flags;
     new_data->key->src_port = tcp->src_port;
@@ -204,7 +206,7 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
     }
   }
   else if (new_data->key->proto == UDP_PROTOCOL){
-    struct udp_header_t* udp = (udp_header_t*) payload;
+    udp_header_t* udp = (udp_header_t*) payload;
     new_data->highest_layer = "UDP";
 
     new_data->tcp_length = 0;
