@@ -122,7 +122,7 @@ void u32_to_ip(uint32_t ip, char *str_ip) {
   );
 }
 
-void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0){
+void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t current_time){
 
   pthread_mutex_lock(&ee_lock);
 //  usage_packet_hash = NULL;
@@ -246,7 +246,8 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0){
     vec_add1(usage_report_per_packet_vector,*new_data);
             shdel(usage_packet_hash, new_data->key);
   }
-          shput(usage_packet_hash, new_data->key, usage_report_per_packet_vector);
+  shput(usage_packet_hash, new_data->key, usage_report_per_packet_vector);
+  new_data->packet_time = current_time;
   pthread_mutex_unlock(&ee_lock);
 
 }
