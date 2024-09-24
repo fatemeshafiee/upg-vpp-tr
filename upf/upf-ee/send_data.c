@@ -64,7 +64,7 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
       usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
       usage->flowInfo = malloc(sizeof (FlowInformation));
       key_to_string(usage_packet_hash[i].key,  usage->flowInfo->packFiltId);
-      packet_info = json_array();
+      json_t * packet_info = json_array();
       bool downlink;
       int count = 0;
       int volume = 0;
@@ -135,7 +135,7 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
         item->ueIpv6Prefix = NULL;
         cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
         cvector_push_back(userDataMeasurements, usage);
-        shput(ue_to_notif, ue_ip, item)
+        shput(ue_to_notif, ue_ip, item);
       }
       else{
         cvector_push_back(item->userDataUsageMeasurements, usage);
@@ -145,10 +145,10 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
     }
     size_t ue_to_notif_len = shlen(ue_to_notif);
     for(int i = 0; i<ue_to_notif_len; i++){
-      cvector_push_back(*Notifvec, ue_to_notif_len[i].value);
+      cvector_push_back(*Notifvec, ue_to_notif[i].value);
 
     }
-    usage_report_per_packet_t = NULL;
+    usage_packet_hash = NULL;
     pthread_mutex_unlock(&ee_lock);
 
   }
