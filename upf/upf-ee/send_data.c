@@ -51,26 +51,12 @@ void key_to_string(flow_key* key, const char * result){
 void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type){
   if(type==USER_DATA_USAGE_TRENDS){
     pthread_mutex_lock(&ee_lock);
+    struct {char* key; NotificationItem * value;} * ue_to_notif = NULL;
+    sh_new_strdup(ue_to_notif);
+    shdefault(ue_to_notif, NULL);
     size_t hash_length = shlen(usage_packet_hash);
     clib_warning("[send_data] fillNotificationItemPerPacket, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
-      NotificationItem *item = malloc(sizeof (NotificationItem));
-      item->type = USER_DATA_USAGE_TRENDS;
-      struct tm* tm = malloc(sizeof(struct tm));
-      time_t current_time;
-      time(&current_time);
-      item->timeStamp = current_time;
-      item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
-      item->snssai.sst = 0;
-      item->snssai.sd[0] = "\0";
-      // when UE is the source it is uplink
-      item->dnn = NULL;
-      item->gpsi = NULL;
-      item->supi = NULL;
-      item->ueMacAddr = NULL;
-      item->ueIpv6Prefix = NULL;
-      clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
-      cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
       usage_report_per_packet_t* usage_report_per_packet_vector = usage_packet_hash[i].value;
       clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_packet_vector));
       usage_report_per_packet_t * rep;
@@ -105,20 +91,75 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
       char *strVolume = malloc(20 + 1);
       sprintf(strVolume, "%dB", volume);
       usage->volumeMeasurement->totalVolume = strVolume;
+      char * ue_ip = malloc(sizeof(char )* 20);
       if(downlink){
         usage->volumeMeasurement->dlNbOfPackets = count;
         usage->volumeMeasurement->dlVolume = strVolume;
         usage->volumeMeasurement->ulNbOfPackets = 0;
         usage->volumeMeasurement->ulVolume = "0B";
+        usage->flowInfo->flowDescription = DOWNLINK;
+        strcpy(ue_ip, usage_packet_hash[i].key->dst_ip);
       }
       else{
         usage->volumeMeasurement->dlNbOfPackets = 0;
         usage->volumeMeasurement->dlVolume = "0B";
         usage->volumeMeasurement->ulNbOfPackets = count;
         usage->volumeMeasurement->ulVolume = strVolume;
+        usage->flowInfo->flowDescription = UPLINK;
+        strcpy(ue_ip, usage_packet_hash[i].key->src_ip);
       }
-      NotificationItem *item = malloc(sizeof(NotificationItem));
 
+      clib_warning("The UE IP is", ue_ip);
+
+
+
+      NotificationItem *item = shget(ue_to_notif, ue_ip);
+      if(item == NULL){
+
+        item = malloc(sizeof(NotificationItem));
+        item->ueIpv4Addr = ue_ip;
+        clib_warning("item->ueIpv4Addr", item->ueIpv4Addr );
+        item->type = USER_DATA_USAGE_TRENDS;
+        struct tm* tm = malloc(sizeof(struct tm));
+        time_t current_time;
+        time(&current_time);
+        item->timeStamp = current_time;
+        item->startTime = upfSub.eventReportingMode.TimeOfSubscription;
+        item->snssai.sst = 0;
+        item->snssai.sd[0] = "\0";
+        // when UE is the source it is uplink
+        item->dnn = NULL;
+        item->gpsi = NULL;
+        item->supi = NULL;
+        item->ueMacAddr = NULL;
+        item->ueIpv6Prefix = NULL;
+        cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
+        cvector_push_back(userDataMeasurements, usage);
+        shput(ue_to_notif, ue_ip, item)
+      }
+      else{
+        cvector_push_back(item->userDataUsageMeasurements, usage);
+      }
+
+
+    }
+    size_t ue_to_notif_len = shlen(ue_to_notif);
+    for(int i = 0; i<ue_to_notif_len; i++){
+      cvector_push_back(*Notifvec, ue_to_notif_len[i].value);
+
+    }
+    usage_report_per_packet_t = NULL;
+    pthread_mutex_unlock(&ee_lock);
+
+  }
+}
+void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
+  if(type==USER_DATA_USAGE_TRENDS){
+    pthread_mutex_lock(&ee_lock);
+    size_t hash_length = shlen(usage_hash);
+    clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
+    for(size_t i=0;i<hash_length;i++){
+      NotificationItem *item = malloc(sizeof(NotificationItem));
       item->type = USER_DATA_USAGE_TRENDS;
       struct tm* tm = malloc(sizeof(struct tm));
       time_t current_time;
@@ -135,24 +176,6 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
       item->ueIpv6Prefix = NULL;
       clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
       clib_warning("assianing the IPadd which is in tha hash %s", usage_hash[i].key);
-
-//      item->userDataUsageMeasurements = usage; worng should be list
-      cvector_push_back(*Notifvec, item);
-
-    }
-    usage_report_per_packet_t = NULL;
-    pthread_mutex_unlock(&ee_lock);
-
-  }
-}
-void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
-  if(type==USER_DATA_USAGE_TRENDS){
-    pthread_mutex_lock(&ee_lock);
-    size_t hash_length = shlen(usage_hash);
-    clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
-    struct {char* key; NotificationItem * value;} * ue_to_notif = NULL;
-    for(size_t i=0;i<hash_length;i++){
-
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
       usage_report_per_flow_t* usage_report_per_flow_vector = usage_hash[i].value;
       clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
@@ -206,7 +229,6 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         cvector_push_back(userDataMeasurements, usage);
         clib_warning("[send_data] fillNotificationItem, in the loop 113. %p\n", usage->flowInfo->ethFlowDescription);
       }
-
       item->userDataUsageMeasurements = userDataMeasurements;
       cvector_push_back(*Notifvec, item);
       clib_warning("[send_data] fillNotificationItem, the Noitve_size %d\n", cvector_size(*Notifvec));
@@ -220,7 +242,7 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
   if(type == USER_DATA_USAGE_TRENDS){
     clib_warning("[EventReport_UDUT] in create_custom_report");
     cvector_vector_type(NotificationItem *) Notifvec = NULL;
-    fillNotificationItem(upfSub, &Notifvec, type);
+    fillNotificationItemPerPacket(upfSub, &Notifvec, type);
     clib_warning("[EventReport_UDUT] fillNotificationItem, the Noitve_size %d\n", cvector_size(Notifvec));
     for(size_t i = 0; i < cvector_size(Notifvec); i++){
       clib_warning("[EventReport_UDUT] in the for");
