@@ -179,12 +179,12 @@ void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t cu
 
   if(new_data->key->proto == TCP_PROTOCOL){
     tcp_header_t* tcp = (struct tcp_header_t*) payload;
-    new_data->tcp_ack = tcp->ack_num;
+    new_data->tcp_ack = tcp->ack_number;
     new_data->tcp_flags = tcp->flags;
     new_data->key->src_port = tcp->src_port;
     new_data->key->dst_port = tcp->dst_port;
     new_data->tcp_window_size = tcp->window;
-    int tcp_header_length = (tcp->tcp_header_u32s_and_reserved & 0x0F) * 4;
+    int tcp_header_length = (tcp->data_offset_and_reserved & 0x0F) * 4;
     new_data->tcp_length = new_data->packet_length - ip_header_length - tcp_header_length;
     new_data->udp_length = 0;
     new_data->ICMP_type = 0;
