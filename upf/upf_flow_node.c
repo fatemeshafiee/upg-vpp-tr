@@ -353,7 +353,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
           u32 sidx = upf_buffer_opaque (b0)->gtpu.session_index;
           upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
 //          upf_pfcp_fatemeh_traffic_report(sess, (uword) sidx, fm, p0, b0);
-            prepare_ee_data_per_packet(is_ip4,p0, b0, (time_t) current_time);
+//            prepare_ee_data_per_packet(is_ip4,p0, b0, (time_t) current_time);
           clib_warning("[FATEMEH] Called packet report for b0 in dual loop.  %d", 10000001);
         }
       if(b1->current_length > 0)
@@ -362,7 +362,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
           upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
 //          upf_pfcp_fatemeh_traffic_report(sess, (uword) sidx, fm, p1, b1);
 
-          prepare_ee_data_per_packet(is_ip4,p1, b1, (time_t) current_time);
+//          prepare_ee_data_per_packet(is_ip4,p1, b1, (time_t) current_time);
           clib_warning("[FATEMEH] Called packet report for b1 in dual loop. %d", 10000001);
         }
 

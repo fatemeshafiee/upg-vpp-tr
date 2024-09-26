@@ -120,145 +120,146 @@ void prepare_ee_data(flowtable_main_t *fm){
 
       }
     }
+  clib_warning("end of ");
   pthread_mutex_unlock(&ee_lock);
   return;
 }
-void u32_to_ip(uint32_t ip, char *str_ip) {
-  sprintf(str_ip, "%u.%u.%u.%u",
-          (ip >> 24) & 0xFF,
-          (ip >> 16) & 0xFF,
-          (ip >> 8) & 0xFF,
-          ip & 0xFF
-  );
-}
-
-void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t current_time){
-
-  pthread_mutex_lock(&ee_lock);
-//  usage_packet_hash = NULL;
-  sh_new_strdup(usage_packet_hash);
-  shdefault(usage_packet_hash, NULL);
-  usage_report_per_packet_t *new_data = malloc(sizeof(usage_report_per_packet_t));
-  new_data->highest_layer = malloc(10 * sizeof(char));
-//  ip6_header_t *
-  u8* payload;
-  int ip_header_length = 40;
-  if(is_ip4){
-    ip4_header_t* p4= (ip4_header_t*) p0;
-    new_data->key->dst_ip = malloc(16 * sizeof(char));
-    new_data->key->src_ip = malloc(16 * sizeof(char));
-    ip_header_length = ((p4->ip_version_and_header_length >> 4) & 0x0F) * 4;
-    u32_to_ip(p4->src_address.data_u32, new_data->key->src_ip);
-    u32_to_ip (p4->dst_address.data_u32, new_data->key->dst_ip);
-    new_data->ip_flags = p4->flags_and_fragment_offset & 0x7;
-    new_data->packet_length = p4->length; //it is the total length
-    new_data->key->proto = p4->protocol;
-    payload = vlib_buffer_get_current (b0) +
-              upf_buffer_opaque (b0)->gtpu.data_offset + ip_header_length;
-    new_data->highest_layer = "DATA";
-    new_data->is_reverse = (ip4_address_compare (&p4->src_address, &p4->dst_address) < 0) ?
-                           1 : 0;
-  }
-  else{
-    new_data->key->dst_ip = malloc( 40 * sizeof(char));
-    new_data->key->src_ip = malloc(40 * sizeof(char));
-    ip6_header_t * p6 = (ip6_header_t *) p0;
-    u8* f = p6->src_address.as_u8;
-    sprintf(new_data->key->src_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
-    f = p6->dst_address.as_u8;
-    sprintf(new_data->key->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
-    new_data->ip_flags = 0;
-    new_data->packet_length = p6->payload_length;
-    new_data->key->proto = p6->protocol;
-    payload = vlib_buffer_get_current (b0) +
-                  upf_buffer_opaque (b0)->gtpu.data_offset + 40;
-    new_data->highest_layer = "DATA";
-    new_data->is_reverse = (ip6_address_compare (&p6->src_address, &p6->dst_address) < 0) ?
-                               1 : 0;
-  }
-
-  if(new_data->key->proto == TCP_PROTOCOL){
-    tcp_header_t* tcp = (struct tcp_header_t*) payload;
-    new_data->tcp_ack = tcp->ack_number;
-    new_data->tcp_flags = tcp->flags;
-    new_data->key->src_port = tcp->src_port;
-    new_data->key->dst_port = tcp->dst_port;
-    new_data->tcp_window_size = tcp->window;
-    int tcp_header_length = (tcp->data_offset_and_reserved & 0x0F) * 4;
-    new_data->tcp_length = new_data->packet_length - ip_header_length - tcp_header_length;
-    new_data->udp_length = 0;
-    new_data->ICMP_type = 0;
-    new_data->highest_layer = "TCP";
-    if (new_data->key->src_port == 80 || new_data->key->dst_port == 80) {
-      new_data->highest_layer = "HTTP";
-    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
-      new_data->highest_layer = "HTTPS";
-    } else if (new_data->key->src_port == 25 || new_data->key->dst_port == 25) {
-      new_data->highest_layer = "SMTP";
-    } else if (new_data->key->src_port == 110 || new_data->key->dst_port == 110) {
-      new_data->highest_layer = "POP3";
-    } else if (new_data->key->src_port == 143 || new_data->key->dst_port == 143) {
-      new_data->highest_layer = "IMAP";
-    } else if (new_data->key->src_port == 22 || new_data->key->dst_port == 22) {
-      new_data->highest_layer = "SSH";
-    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
-      new_data->highest_layer = "TLS";
-    }
-  }
-  else if (new_data->key->proto == UDP_PROTOCOL){
-    udp_header_t* udp = (udp_header_t*) payload;
-    new_data->highest_layer = "UDP";
-
-    new_data->tcp_length = 0;
-    new_data->tcp_flags = 0;
-    new_data->tcp_window_size = 0;
-    new_data->tcp_ack = 0;
-    new_data->ICMP_type = 0;
-
-    new_data->key->src_port = udp->src_port;
-    new_data->key->dst_port = udp-> dst_port;
-    new_data->udp_length = udp->length - 8;
-    if (new_data->key->src_port == 53 || new_data->key->dst_port == 53) {
-      new_data->highest_layer = "DNS";
-    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
-      new_data->highest_layer = "DTLS";
-    }
-
-  }
-  else if(new_data->key->proto == 1){
-    new_data->highest_layer = "ICMP";
-    new_data->tcp_length = 0;
-    new_data->tcp_flags = 0;
-    new_data->tcp_window_size = 0;
-    new_data->tcp_ack = 0;
-    new_data->key->src_port = 0;
-    new_data->key->dst_port = 0;
-    new_data->udp_length = 0;
-    new_data->ICMP_type = *payload;
-  }
-  else{
-    new_data->tcp_length = 0;
-    new_data->tcp_flags = 0;
-    new_data->tcp_window_size = 0;
-    new_data->tcp_ack = 0;
-    new_data->udp_length = 0;
-    new_data->ICMP_type = 0;
-    new_data->key->src_port = 0;
-    new_data->key->dst_port = 0;
-    new_data->key->proto = 0;
-  }
-  usage_report_per_packet_t * usage_report_per_packet_vector = shget(usage_packet_hash, new_data->key);
-  if(usage_report_per_packet_vector == NULL){
-    usage_report_per_packet_vector = NULL;
-    vec_add1(usage_report_per_packet_vector,*new_data);
-  }
-  else{
-
-    vec_add1(usage_report_per_packet_vector,*new_data);
-            shdel(usage_packet_hash, new_data->key);
-  }
-  shput(usage_packet_hash, new_data->key, usage_report_per_packet_vector);
-  new_data->packet_time = current_time;
-  pthread_mutex_unlock(&ee_lock);
-
-}
+//void u32_to_ip(uint32_t ip, char *str_ip) {
+//  sprintf(str_ip, "%u.%u.%u.%u",
+//          (ip >> 24) & 0xFF,
+//          (ip >> 16) & 0xFF,
+//          (ip >> 8) & 0xFF,
+//          ip & 0xFF
+//  );
+//}
+//
+//void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t current_time){
+//
+//  pthread_mutex_lock(&ee_lock);
+////  usage_packet_hash = NULL;
+//  sh_new_strdup(usage_packet_hash);
+//  shdefault(usage_packet_hash, NULL);
+//  usage_report_per_packet_t *new_data = malloc(sizeof(usage_report_per_packet_t));
+//  new_data->highest_layer = malloc(10 * sizeof(char));
+////  ip6_header_t *
+//  u8* payload;
+//  int ip_header_length = 40;
+//  if(is_ip4){
+//    ip4_header_t* p4= (ip4_header_t*) p0;
+//    new_data->key->dst_ip = malloc(16 * sizeof(char));
+//    new_data->key->src_ip = malloc(16 * sizeof(char));
+//    ip_header_length = ((p4->ip_version_and_header_length >> 4) & 0x0F) * 4;
+//    u32_to_ip(p4->src_address.data_u32, new_data->key->src_ip);
+//    u32_to_ip (p4->dst_address.data_u32, new_data->key->dst_ip);
+//    new_data->ip_flags = p4->flags_and_fragment_offset & 0x7;
+//    new_data->packet_length = p4->length; //it is the total length
+//    new_data->key->proto = p4->protocol;
+//    payload = vlib_buffer_get_current (b0) +
+//              upf_buffer_opaque (b0)->gtpu.data_offset + ip_header_length;
+//    new_data->highest_layer = "DATA";
+//    new_data->is_reverse = (ip4_address_compare (&p4->src_address, &p4->dst_address) < 0) ?
+//                           1 : 0;
+//  }
+//  else{
+//    new_data->key->dst_ip = malloc( 40 * sizeof(char));
+//    new_data->key->src_ip = malloc(40 * sizeof(char));
+//    ip6_header_t * p6 = (ip6_header_t *) p0;
+//    u8* f = p6->src_address.as_u8;
+//    sprintf(new_data->key->src_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
+//    f = p6->dst_address.as_u8;
+//    sprintf(new_data->key->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
+//    new_data->ip_flags = 0;
+//    new_data->packet_length = p6->payload_length;
+//    new_data->key->proto = p6->protocol;
+//    payload = vlib_buffer_get_current (b0) +
+//                  upf_buffer_opaque (b0)->gtpu.data_offset + 40;
+//    new_data->highest_layer = "DATA";
+//    new_data->is_reverse = (ip6_address_compare (&p6->src_address, &p6->dst_address) < 0) ?
+//                               1 : 0;
+//  }
+//
+//  if(new_data->key->proto == TCP_PROTOCOL){
+//    tcp_header_t* tcp = (struct tcp_header_t*) payload;
+//    new_data->tcp_ack = tcp->ack_number;
+//    new_data->tcp_flags = tcp->flags;
+//    new_data->key->src_port = tcp->src_port;
+//    new_data->key->dst_port = tcp->dst_port;
+//    new_data->tcp_window_size = tcp->window;
+//    int tcp_header_length = (tcp->data_offset_and_reserved & 0x0F) * 4;
+//    new_data->tcp_length = new_data->packet_length - ip_header_length - tcp_header_length;
+//    new_data->udp_length = 0;
+//    new_data->ICMP_type = 0;
+//    new_data->highest_layer = "TCP";
+//    if (new_data->key->src_port == 80 || new_data->key->dst_port == 80) {
+//      new_data->highest_layer = "HTTP";
+//    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
+//      new_data->highest_layer = "HTTPS";
+//    } else if (new_data->key->src_port == 25 || new_data->key->dst_port == 25) {
+//      new_data->highest_layer = "SMTP";
+//    } else if (new_data->key->src_port == 110 || new_data->key->dst_port == 110) {
+//      new_data->highest_layer = "POP3";
+//    } else if (new_data->key->src_port == 143 || new_data->key->dst_port == 143) {
+//      new_data->highest_layer = "IMAP";
+//    } else if (new_data->key->src_port == 22 || new_data->key->dst_port == 22) {
+//      new_data->highest_layer = "SSH";
+//    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
+//      new_data->highest_layer = "TLS";
+//    }
+//  }
+//  else if (new_data->key->proto == UDP_PROTOCOL){
+//    udp_header_t* udp = (udp_header_t*) payload;
+//    new_data->highest_layer = "UDP";
+//
+//    new_data->tcp_length = 0;
+//    new_data->tcp_flags = 0;
+//    new_data->tcp_window_size = 0;
+//    new_data->tcp_ack = 0;
+//    new_data->ICMP_type = 0;
+//
+//    new_data->key->src_port = udp->src_port;
+//    new_data->key->dst_port = udp-> dst_port;
+//    new_data->udp_length = udp->length - 8;
+//    if (new_data->key->src_port == 53 || new_data->key->dst_port == 53) {
+//      new_data->highest_layer = "DNS";
+//    } else if (new_data->key->src_port == 443 || new_data->key->dst_port == 443) {
+//      new_data->highest_layer = "DTLS";
+//    }
+//
+//  }
+//  else if(new_data->key->proto == 1){
+//    new_data->highest_layer = "ICMP";
+//    new_data->tcp_length = 0;
+//    new_data->tcp_flags = 0;
+//    new_data->tcp_window_size = 0;
+//    new_data->tcp_ack = 0;
+//    new_data->key->src_port = 0;
+//    new_data->key->dst_port = 0;
+//    new_data->udp_length = 0;
+//    new_data->ICMP_type = *payload;
+//  }
+//  else{
+//    new_data->tcp_length = 0;
+//    new_data->tcp_flags = 0;
+//    new_data->tcp_window_size = 0;
+//    new_data->tcp_ack = 0;
+//    new_data->udp_length = 0;
+//    new_data->ICMP_type = 0;
+//    new_data->key->src_port = 0;
+//    new_data->key->dst_port = 0;
+//    new_data->key->proto = 0;
+//  }
+//  usage_report_per_packet_t * usage_report_per_packet_vector = shget(usage_packet_hash, new_data->key);
+//  if(usage_report_per_packet_vector == NULL){
+//    usage_report_per_packet_vector = NULL;
+//    vec_add1(usage_report_per_packet_vector,*new_data);
+//  }
+//  else{
+//
+//    vec_add1(usage_report_per_packet_vector,*new_data);
+//            shdel(usage_packet_hash, new_data->key);
+//  }
+//  shput(usage_packet_hash, new_data->key, usage_report_per_packet_vector);
+//  new_data->packet_time = current_time;
+//  pthread_mutex_unlock(&ee_lock);
+//
+//}
