@@ -112,12 +112,12 @@ void prepare_ee_data(flowtable_main_t *fm){
 
           clib_warning("1'in the if of prepare ee data");
           usage_report_per_flow_vector = NULL;
-          vec_add1(usage_report_per_flow_vector,new_data);
+          vec_add1(usage_report_per_flow_vector,*new_data);
           clib_warning("2'in the if of prepare ee data");
         }
         else{
           clib_warning("1'in the else of prepare ee data");
-          vec_add1(usage_report_per_flow_vector,new_data);
+          vec_add1(usage_report_per_flow_vector,*new_data);
           shdel(usage_hash, new_data->src_ip);
           clib_warning("2'in the else of prepare ee data");
         }
