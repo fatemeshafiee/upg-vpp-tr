@@ -120,7 +120,7 @@ void prepare_ee_data(flowtable_main_t *fm){
 
       }
     }
-  clib_warning("end of ");
+  clib_warning("end of prepare ee data");
   pthread_mutex_unlock(&ee_lock);
   return;
 }
