@@ -242,7 +242,7 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
   if(type == USER_DATA_USAGE_TRENDS){
     clib_warning("[EventReport_UDUT] in create_custom_report");
     cvector_vector_type(NotificationItem *) Notifvec = NULL;
-    fillNotificationItemPerPacket(upfSub, &Notifvec, type);
+    fillNotificationItem(upfSub, &Notifvec, type);
     clib_warning("[EventReport_UDUT] fillNotificationItem, the Noitve_size %d\n", cvector_size(Notifvec));
     for(size_t i = 0; i < cvector_size(Notifvec); i++){
       clib_warning("[EventReport_UDUT] in the for");
