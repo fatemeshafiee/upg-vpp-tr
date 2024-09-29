@@ -186,6 +186,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         if(rep == NULL){
           continue;
         }
+        clib_warning("[vec_foreach] line 189")
         // TODO: make sure the uplink and downlink are right.
         int volume = rep->src_bytes + rep->dst_bytes;
         char *strVolume = malloc(20 + 1);
@@ -257,6 +258,13 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
       char *json_str = json_dumps(callBack_Report, JSON_INDENT(2));
       send_report (json_str, upfSub, type);
     }
+    for (size_t i = 0; i < cvector_size(Notifvec); i++) {
+      if (Notifvec[i] != NULL) {
+        free(Notifvec[i]);
+      }
+    }
+    cvector_free(Notifvec);
+
     clib_warning("[EventReport_UDUT] End of create_send_report");
   }
 }

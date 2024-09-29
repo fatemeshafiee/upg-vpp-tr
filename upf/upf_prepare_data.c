@@ -38,14 +38,29 @@
 //extern struct {char* key; usage_report_per_flow_t* value;} *usage_hash;
 #define TCP_PROTOCOL 6
 #define UDP_PROTOCOL 17
+void free_usage_hash(){
+  if (usage_hash != NULL) {
+    size_t hash_length = shlen(usage_hash);
+    for (size_t i = 0; i < hash_length; i++) {
+      if (usage_hash[i].key != NULL) {
+        free(usage_hash[i].key);
+      }
+
+      if (usage_hash[i].value != NULL) {
+        free(usage_hash[i].value);
+      }
+    }
+
+    free(usage_hash);
+    usage_hash = NULL;
+  }
+}
 void prepare_ee_data(flowtable_main_t *fm){
   flow_entry_t *flow;
   pthread_mutex_lock(&ee_lock);
   u32 num_flows = vec_len(fm->flows);
-//  clib_warning("number of flows is %d", num_flows);
   u32 num = pool_len(fm->flows);
-//  clib_warning("number of flows with pool is %d", num);
-  usage_hash = NULL;
+  free_usage_hash();
   sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
