@@ -189,8 +189,10 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         clib_warning("[vec_foreach] line 189");
         // TODO: make sure the uplink and downlink are right.
         int volume = rep->src_bytes + rep->dst_bytes;
-        char *strVolume = malloc(20 + 1);
+        clib_warning("the volume is volume");
+        char *strVolume = malloc(40 + 1);
         sprintf(strVolume, "%dB", volume);
+        clib_warning("the volume is volume");
 //      sprintf(strVolume, "%s", "B");
         UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
         usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
