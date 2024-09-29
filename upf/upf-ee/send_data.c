@@ -186,14 +186,12 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         if(rep == NULL){
           continue;
         }
-        clib_warning("[vec_foreach] line 189");
         // TODO: make sure the uplink and downlink are right.
         int volume = rep->src_bytes + rep->dst_bytes;
         clib_warning("the volume is %d %d %d", volume,rep->src_bytes , rep->dst_bytes);
-        char *strVolume = malloc(40 + 1);
-        sprintf(strVolume, "%dB", volume);
+        char *totalVolume = malloc(20 + 1);
+        sprintf(totalVolume, "%dB", volume);
         clib_warning("the volume is %d", volume);
-//      sprintf(strVolume, "%s", "B");
         UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
         usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
         usage->volumeMeasurement->totalVolume = strVolume;
@@ -201,16 +199,16 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         usage->volumeMeasurement->dlNbOfPackets = rep->dst_pkts;
         usage->volumeMeasurement->ulNbOfPackets = rep->src_pkts;
         volume = rep->dst_bytes;
-        sprintf(strVolume, "%dB", volume);
+        char *dlVolume = malloc(20 + 1);
+        sprintf(dlVolume, "%dB", volume);
         clib_warning("%d%d",volume,rep->dst_bytes);
-        usage->volumeMeasurement->dlVolume = strVolume;
-        clib_warning("the dl volume is %s",strVolume);
+        usage->volumeMeasurement->dlVolume = dlVolume;
+        clib_warning("the dl volume is %s",dlVolume);
         volume = rep->src_bytes;
-        sprintf(strVolume, "%dB", volume);
-        clib_warning("the ul volume is %s",strVolume);
-        usage->volumeMeasurement->ulVolume = strVolume;
-
-        char buffer[INET6_ADDRSTRLEN];
+        char *ulVolume = malloc(20 + 1);
+        sprintf(ulVolume, "%dB", volume);
+        clib_warning("the ul volume is %s",ulVolume);
+        usage->volumeMeasurement->ulVolume = ulVolume;
         clib_warning("the src Ip is %s", rep->src_ip);
         clib_warning("the Dst Ip is %s", rep->dst_ip);
         json_t *obj = json_object();
@@ -262,7 +260,7 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
     for (size_t i = 0; i < cvector_size(Notifvec); i++) {
       if (Notifvec[i] != NULL) {
         clib_warning("[1|free] hash Notifvec[i]");
-        free(Notifvec[i]);
+        free(Notifvec[i]->userDataUsageMeasurements);
       }
     }
     clib_warning("[2|free] free notifs cvector ");
