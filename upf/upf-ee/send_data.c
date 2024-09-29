@@ -260,9 +260,11 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
     }
     for (size_t i = 0; i < cvector_size(Notifvec); i++) {
       if (Notifvec[i] != NULL) {
+        clib_warning("[1|free] hash Notifvec[i]");
         free(Notifvec[i]);
       }
     }
+    clib_warning("[2|free] free notifs cvector ");
     cvector_free(Notifvec);
 
     clib_warning("[EventReport_UDUT] End of create_send_report");

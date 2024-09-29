@@ -40,18 +40,22 @@
 #define UDP_PROTOCOL 17
 void free_usage_hash(){
   if (usage_hash != NULL) {
-//    size_t hash_length = shlen(usage_hash);
-//    for (size_t i = 0; i < hash_length; i++) {
-//      if (usage_hash[i].key != NULL) {
-//        free(usage_hash[i].key);
-//      }
-//
-//      if (usage_hash[i].value != NULL) {
-//        free(usage_hash[i].value);
-//      }
-//    }
+    size_t hash_length = shlen(usage_hash);
+    for (size_t i = 0; i < hash_length; i++) {
+      if (usage_hash[i].key != NULL) {
+        clib_warning("[1|free] hash key");
+        free(usage_hash[i].key);
+      }
 
+      if (usage_hash[i].value != NULL) {
+        clib_warning("[2|free] hash value");
+        free(usage_hash[i].value);
+      }
+    }
+    clib_warning("[3|free] hash structure");
     free(usage_hash);
+    clib_warning("[4|free] hash = NULL");
+
     usage_hash = NULL;
   }
 }
