@@ -195,13 +195,17 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
         usage->volumeMeasurement->totalVolume = strVolume;
         usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
-        usage->volumeMeasurement->dlNbOfPackets = rep->src_pkts;
-        usage->volumeMeasurement->ulNbOfPackets = rep->dst_pkts;
-        volume = rep->src_bytes;
+        usage->volumeMeasurement->dlNbOfPackets = rep->dst_pkts;
+        usage->volumeMeasurement->ulNbOfPackets = rep->src_pkts;
+        volume =rep->dst_bytes;
+        strVolume ="";
         sprintf(strVolume, "%dB", volume);
         usage->volumeMeasurement->dlVolume = strVolume;
-        volume = rep->dst_bytes;
+        clib_warning("the dl volume is %s",strVolume);
+        volume = rep->src_bytes;
+        strVolume ="";
         sprintf(strVolume, "%dB", volume);
+        clib_warning("the ul volume is %s",strVolume);
         usage->volumeMeasurement->ulVolume = strVolume;
 
         char buffer[INET6_ADDRSTRLEN];
