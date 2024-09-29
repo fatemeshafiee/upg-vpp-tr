@@ -58,7 +58,7 @@ void prepare_ee_data(flowtable_main_t *fm){
           new_data->src_ip = malloc(40 * sizeof(char));
 
           u8* f = key.ip[1].as_u8;
-          sprintf(new_data->dst_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
+          sprintf(new_data->src_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
                   f[0],f[1],f[2],f[3],
                   f[4],f[5],f[6],f[7],
                   f[8],f[9],f[10],f[11],
@@ -66,7 +66,7 @@ void prepare_ee_data(flowtable_main_t *fm){
                   );
 
           u8* f2 = key.ip[0].as_u8;
-          sprintf(new_data->src_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
+          sprintf(new_data->dst_ip, "%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X:%02X%02X",
                   f2[0],f2[1],f2[2],f2[3],
                   f2[4],f2[5],f2[6],f2[7],
                   f2[8],f2[9],f2[10],f2[11],
@@ -78,15 +78,15 @@ void prepare_ee_data(flowtable_main_t *fm){
           new_data->src_ip = malloc(16 * sizeof(char));
 
           u8* f = key.ip[1].as_u8;
-          sprintf(new_data->dst_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
+          sprintf(new_data->src_ip, "%d.%d.%d.%d", f[12], f[13], f[14], f[15]);
 
           u8* f2 = key.ip[0].as_u8;
-          sprintf(new_data->src_ip, "%d.%d.%d.%d", f2[12], f2[13], f2[14], f2[15]);
+          sprintf(new_data->dst_ip, "%d.%d.%d.%d", f2[12], f2[13], f2[14], f2[15]);
 
         }
 
-        clib_warning("[1|flow_info] ip[1].  %s", new_data->dst_ip);
-        clib_warning("[1|flow_info] ip[0].  %s", new_data->src_ip);
+        clib_warning("[1|flow_info] ip[1].  %s", new_data->src_ip);
+        clib_warning("[1|flow_info] ip[0].  %s", new_data->dst_ip);
         clib_warning("[3| flow_info] port[0] %u", key.port[0]);
         clib_warning("[4| flow_info] port[1] %u", key.port[1]);
         clib_warning("[5| flow_info] portocol %u", key.proto);
@@ -97,13 +97,13 @@ void prepare_ee_data(flowtable_main_t *fm){
 
         new_data->seid = key.seid;
 
-        new_data->src_port = key.port[0];
-        new_data->dst_port = key.port[1];
+        new_data->src_port = key.port[1];
+        new_data->dst_port = key.port[0];
         new_data->proto = key.proto;
-        new_data->src_pkts = flow->stats[0].pkts;
-        new_data->src_bytes = flow->stats[0].bytes;
-        new_data->dst_pkts = flow->stats[1].pkts;
-        new_data->dst_bytes = flow->stats[1].bytes;
+        new_data->src_pkts = flow->stats[1].pkts;
+        new_data->src_bytes = flow->stats[1].bytes;
+        new_data->dst_pkts = flow->stats[0].pkts;
+        new_data->dst_bytes = flow->stats[0].bytes;
         usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, new_data->src_ip);
         clib_warning("line 109 of prepare ee data");
 
