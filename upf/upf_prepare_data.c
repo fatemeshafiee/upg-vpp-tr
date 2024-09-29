@@ -40,16 +40,10 @@
 #define UDP_PROTOCOL 17
 void free_usage_hash(){
   if (usage_hash != NULL) {
-    size_t hash_length = shlen(usage_hash);
-    for (size_t i = 0; i < hash_length; i++) {
-
     clib_warning("[3|free] hash structure");
     free(usage_hash);
     clib_warning("[4|free] hash = NULL");
-
-    usage_hash = NULL;
-  }
-}
+    usage_hash = NULL;}
 }
 void prepare_ee_data(flowtable_main_t *fm){
   flow_entry_t *flow;
