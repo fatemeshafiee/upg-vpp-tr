@@ -194,7 +194,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
         clib_warning("the volume is %d", volume);
         UserDataUsageMeasurements *usage = malloc(sizeof (UserDataUsageMeasurements));
         usage->volumeMeasurement = malloc(sizeof (VolumeMeasurement));
-        usage->volumeMeasurement->totalVolume = strVolume;
+        usage->volumeMeasurement->totalVolume = totalVolume;
         usage->volumeMeasurement->totalNbOfPackets = rep->src_pkts + rep->dst_pkts;
         usage->volumeMeasurement->dlNbOfPackets = rep->dst_pkts;
         usage->volumeMeasurement->ulNbOfPackets = rep->src_pkts;
