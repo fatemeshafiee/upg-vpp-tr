@@ -298,12 +298,12 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     int report_num = upfSub.eventReportingMode.sent_reports;
     char report_num_str[10];
     char report_num_head[50] = "Report_number: ";
-    snprintf(report_str, sizeof(report_str), "%d", report_num);
+    snprintf(report_num_str, sizeof(report_num_str), "%d", report_num);
     strcat(report_num_head, report_num_str);
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
     char c_time[20];
-    get_current_time(c_time, sizeof(c_time))
+    get_current_time(c_time, sizeof(c_time));
     fprintf(stdout,"the report number sent and the time is %d%s\n", report_num, c_time);
     fprintf(stdout, "dat: %s\n", json_data);
     fflush(stdout);
