@@ -173,8 +173,11 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
 void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
     pthread_mutex_lock(&ee_lock);
+    clib_warning("[EventReport_UDUT] before locking the mutex");
     size_t hash_length = shlen(usage_hash);
+    clib_warning("[EventReport_UDUT] After locking the mutex");
     if (hash_length == 0){
+      clib_warning("[EventReport_UDUT] There is no data to report");
       return;
     }
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
@@ -267,6 +270,7 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
   if(type == USER_DATA_USAGE_TRENDS){
     clib_warning("[EventReport_UDUT] in create_custom_report");
     cvector_vector_type(NotificationItem *) Notifvec = NULL;
+    clib_warning("[EventReport_UDUT] after creating the notif vec");
     fillNotificationItem(upfSub, &Notifvec, type);
     if(Notifvec == NULL){
       clib_warning("[EventReport_UDUT] There is no data to report");
