@@ -16,19 +16,10 @@ jmp_buf exceptionBuffer;
 void get_current_time(char *buffer, size_t buffer_size) {
 
   time_t now = time(NULL);
-  if (now == -1) {
-    snprintf(buffer, buffer_size, "Error getting time");
-    return;
-  }
   struct tm local_tm;
-  if (localtime_r(&now, &local_tm) == NULL) {
-    snprintf(buffer, buffer_size, "Error converting to local time");
-    return;
-  }
-  if (strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm) == 0) {
+  localtime_r(&now, &local_tm);
+  strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm);
 
-    snprintf(buffer, buffer_size, "Error formatting time");
-  }
 }
 
 void log_api(const char *url, const char *method) {
@@ -90,9 +81,9 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
       clib_warning("\nAAAAH %s\n", upload_data);
       clib_warning("\nAAAAH %d\n", *upload_data_size);
       log_api(url_str, method_str);
-      char c_time[20];
-//      get_current_time(c_time, sizeof(c_time));
-//      clib_warning("[DSN_Latency]The subscription request received the time is %s", c_time);
+      char c_time[30];
+      get_current_time(c_time, sizeof(c_time));
+      clib_warning("[DSN_Latency]The subscription request received the time is %s", c_time);
       response_api = subscription_router(url_str,method_str,post_data->data, subscription_id, &created, &subId);
     }
     else {
