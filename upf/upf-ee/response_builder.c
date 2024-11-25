@@ -119,6 +119,6 @@ RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId,
     return NULL;
   MHD_add_response_header(response,"Location",location);
   MHD_add_response_header(response, "Content-Type", "application/json");
-
+  clib_warning("[FATEMEH] in the create response, End of function");
   return response;
 }
