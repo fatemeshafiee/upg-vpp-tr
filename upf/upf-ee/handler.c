@@ -113,8 +113,11 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
   if(created) response = HTTP_build_created_response_JSON(response_api.body, subId, url_str);
   else response = HTTP_build_response_JSON(response_api.body);
 
-  if (!response)
+  if (!response){
+    clib_warning("[FATEMEH] the response is null");
     return MHD_NO;
+  }
+
 
   ret = MHD_queue_response(connection, response_api.status, response);
   MHD_destroy_response(response);
