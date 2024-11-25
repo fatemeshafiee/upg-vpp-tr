@@ -104,7 +104,7 @@ RSPX HTTP_build_response_JSON(const char *message) {
 }
 RSPX HTTP_build_created_response_JSON(const char *message, const char* newSubId, char * url_str) {
   struct MHD_Response *response;
-
+  clib_warning("[FATEMEH] in the create response");
   response = MHD_create_response_from_buffer(strlen(message), (void *)message, MHD_RESPMEM_PERSISTENT);
   size_t url_len = strlen(url_str);
   size_t sub_id_len = strlen(newSubId);
