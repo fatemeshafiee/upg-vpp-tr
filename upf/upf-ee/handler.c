@@ -92,7 +92,7 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
       log_api(url_str, method_str);
       char c_time[20];
       get_current_time(c_time, sizeof(c_time));
-      clib_warning("The subscription request received the time is %s", c_time);
+      clib_warning("[DSN_Latency]The subscription request received the time is %s", c_time);
       response_api = subscription_router(url_str,method_str,post_data->data, subscription_id, &created, &subId);
     }
     else {
