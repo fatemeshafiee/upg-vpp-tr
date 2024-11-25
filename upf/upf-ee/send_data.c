@@ -11,7 +11,7 @@
 #include <vlibapi/api.h>
 #include <vlibmemory/api.h>
 #include <vlib/unix/unix.h>
-void get_current_time(char *buffer, size_t buffer_size) {
+void get_current_time_send(char *buffer, size_t buffer_size) {
 
   time_t now = time(NULL);
   if (now == -1) {
@@ -303,7 +303,7 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
     char c_time[20];
-    get_current_time(c_time, sizeof(c_time));
+    get_current_time_send(c_time, sizeof(c_time));
     fprintf(stdout,"the report number sent and the time is %d%s\n", report_num, c_time);
     fprintf(stdout, "dat: %s\n", json_data);
     fflush(stdout);
