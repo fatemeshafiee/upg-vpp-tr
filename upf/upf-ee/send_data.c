@@ -175,6 +175,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
     clib_warning("[EventReport_UDUT] After locking the mutex");
     if (usage_hash == NULL){
       clib_warning("[EventReport_UDUT] There is no data to report");
+      pthread_mutex_unlock(&ee_lock);
       return;
     }
     size_t hash_length = shlen(usage_hash);
