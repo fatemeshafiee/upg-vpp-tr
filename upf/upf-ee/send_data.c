@@ -174,6 +174,9 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
   if(type==USER_DATA_USAGE_TRENDS){
     pthread_mutex_lock(&ee_lock);
     size_t hash_length = shlen(usage_hash);
+    if (hash_length == 0){
+      return;
+    }
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
       NotificationItem *item = malloc(sizeof(NotificationItem));
