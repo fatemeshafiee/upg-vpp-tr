@@ -13,7 +13,6 @@
 #include <vlib/unix/unix.h>
 void get_current_time_send(char *buffer, size_t buffer_size) {
 
-
     struct timeval tv;
     struct tm local_tm;
     gettimeofday(&tv, NULL);
@@ -173,13 +172,12 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
 void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
     pthread_mutex_lock(&ee_lock);
-    clib_warning("[EventReport_UDUT] before locking the mutex");
-    size_t hash_length = shlen(usage_hash);
     clib_warning("[EventReport_UDUT] After locking the mutex");
-    if (hash_length == 0){
+    if (usage_hash == NULL){
       clib_warning("[EventReport_UDUT] There is no data to report");
       return;
     }
+    size_t hash_length = shlen(usage_hash);
     clib_warning("[send_data] fillNotificationItem, the hash size is %d",hash_length);
     for(size_t i=0;i<hash_length;i++){
       NotificationItem *item = malloc(sizeof(NotificationItem));
