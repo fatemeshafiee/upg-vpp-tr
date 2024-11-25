@@ -13,20 +13,20 @@
 #include <vlib/unix/unix.h>
 void get_current_time_send(char *buffer, size_t buffer_size) {
 
-  time_t now = time(NULL);
-  if (now == -1) {
-    snprintf(buffer, buffer_size, "Error getting time");
-    return;
-  }
-  struct tm local_tm;
-  if (localtime_r(&now, &local_tm) == NULL) {
-    snprintf(buffer, buffer_size, "Error converting to local time");
-    return;
-  }
-  if (strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm) == 0) {
 
-    snprintf(buffer, buffer_size, "Error formatting time");
-  }
+    struct timeval tv;
+    struct tm local_tm;
+    gettimeofday(&tv, NULL);
+    localtime_r(&tv.tv_sec, &local_tm);
+    int millisec = tv.tv_usec / 1000;
+    snprintf(buffer, buffer_size, "%04d-%02d-%02d %02d:%02d:%02d.%03d",
+             local_tm.tm_year + 1900, local_tm.tm_mon + 1, local_tm.tm_mday,
+             local_tm.tm_hour, local_tm.tm_min, local_tm.tm_sec, millisec);
+//  time_t now = time(NULL);
+//  struct tm local_tm;
+//  localtime_r(&now, &local_tm);
+//  strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm);
+
 }
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
@@ -302,7 +302,7 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     strcat(report_num_head, report_num_str);
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
-    char c_time[30];
+    char c_time[50];
     get_current_time_send(c_time, sizeof(c_time));
     clib_warning("[DSN_Latency]the report number sent and the time is %d, %s\n", report_num, c_time);
 //    fprintf(stdout,);

@@ -8,17 +8,25 @@
 #include <vlib/unix/unix.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 jmp_buf exceptionBuffer;
 
 #define TRY if (setjmp(exceptionBuffer) == 0)
 #define CATCH else
 
 void get_current_time(char *buffer, size_t buffer_size) {
-
-  time_t now = time(NULL);
+  struct timeval tv;
   struct tm local_tm;
-  localtime_r(&now, &local_tm);
-  strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm);
+  gettimeofday(&tv, NULL);
+  localtime_r(&tv.tv_sec, &local_tm);
+  int millisec = tv.tv_usec / 1000;
+  snprintf(buffer, buffer_size, "%04d-%02d-%02d %02d:%02d:%02d.%03d",
+           local_tm.tm_year + 1900, local_tm.tm_mon + 1, local_tm.tm_mday,
+           local_tm.tm_hour, local_tm.tm_min, local_tm.tm_sec, millisec);
+//  time_t now = time(NULL);
+//  struct tm local_tm;
+//  localtime_r(&now, &local_tm);
+//  strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm);
 
 }
 
@@ -81,7 +89,7 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
       clib_warning("\nFATEMEH %s\n", upload_data);
       clib_warning("\nFATEMEH %d\n", *upload_data_size);
       log_api(url_str, method_str);
-      char c_time[30];
+      char c_time[50];
       get_current_time(c_time, sizeof(c_time));
       clib_warning("[DSN_Latency]The subscription request received the time is %s", c_time);
       response_api = subscription_router(url_str,method_str,post_data->data, subscription_id, &created, &subId);
