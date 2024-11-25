@@ -261,6 +261,22 @@ typedef struct {
 
 } flow_key;
 
+//typedef struct
+//{
+//    flow_key * key;
+//    time_t packet_time;
+//    u16 packet_length;
+//    char * highest_layer;
+//    int ip_flags;
+//    int tcp_length;
+//    int tcp_ack;
+//    int tcp_flags;
+//    int tcp_window_size;
+//    int udp_length;
+//    int ICMP_type;
+//    bool is_reverse;
+//
+//} usage_report_per_packet_t;
 typedef struct
 {
     flow_key * key;

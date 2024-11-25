@@ -128,6 +128,12 @@ void prepare_ee_data(flowtable_main_t *fm){
   pthread_mutex_unlock(&ee_lock);
   return;
 }
+
+//void prepare_ee_data_per_packet(u8 is_ip4,u8 * p0, vlib_buffer_t * b0, time_t current_time){
+//  pthread_mutex_lock(&ee_lock);
+//
+//}
+
 //void u32_to_ip(uint32_t ip, char *str_ip) {
 //  sprintf(str_ip, "%u.%u.%u.%u",
 //          (ip >> 24) & 0xFF,

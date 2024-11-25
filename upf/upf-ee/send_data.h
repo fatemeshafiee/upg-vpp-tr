@@ -20,6 +20,7 @@
 #include <jansson.h>
 #include <vlib/vlib.h>
 #include <vlib/unix/unix.h>
+void get_current_time(char *buffer, size_t buffer_size);
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
 void parse_time(const char* date_time, struct  tm* tm);
 void key_to_string(flow_key* key, const char * result);

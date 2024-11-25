@@ -4,13 +4,30 @@
 //userDataMeasurements
 // Created by Fatemeh Shafiei Ardestani on 2024-07-13.
 //
-
+#include <stdio.h>
+#include <string.h>
 #include "send_data.h"
 #include <vlib/vlib.h>
 #include <vlibapi/api.h>
 #include <vlibmemory/api.h>
 #include <vlib/unix/unix.h>
+void get_current_time(char *buffer, size_t buffer_size) {
 
+  time_t now = time(NULL);
+  if (now == -1) {
+    snprintf(buffer, buffer_size, "Error getting time");
+    return;
+  }
+  struct tm local_tm;
+  if (localtime_r(&now, &local_tm) == NULL) {
+    snprintf(buffer, buffer_size, "Error converting to local time");
+    return;
+  }
+  if (strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm) == 0) {
+
+    snprintf(buffer, buffer_size, "Error formatting time");
+  }
+}
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
   size_t realsize = size * nmemb;
   printf("%.*s", (int)realsize, (char *)contents); // Print the response data
@@ -271,15 +288,21 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
 }
 void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
   // we Assume that we have the upf raw data hare
-  // we call the function that can customized the needed measuremen
+  // we call the function that can customized the needed measurements
   CURL *curl;
   CURLcode res;
 
   curl_global_init(CURL_GLOBAL_DEFAULT);
   curl = curl_easy_init();
   if (curl) {
+    int report_num = upfSub.eventReportingMode.sent_reports;
+    char report_num_str[10];
+    char report_num_head[50] = "Report_number: ";
+    snprintf(report_str, sizeof(report_str), "%d", report_num);
+    strcat(report_num_head, report_num_str);
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
+    fprintf(stdout,"the report number sent and the time is %d%s\n", report_num, get_current_time());
     fprintf(stdout, "dat: %s\n", json_data);
     fflush(stdout);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
@@ -290,10 +313,12 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
 
     headers = curl_slist_append(headers, "Expect:"); // To Disable 100 continue
     headers = curl_slist_append(headers, "Content-Type: application/json");
+    headers = curl_slist_append(headers, report_num_head);
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
     res = curl_easy_perform(curl);
+
     // Check for errors
     if (res != CURLE_OK)
       fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));

@@ -6,10 +6,30 @@
 #include <vlibapi/api.h>
 #include <vlibmemory/api.h>
 #include <vlib/unix/unix.h>
+#include <stdio.h>
+#include <time.h>
 jmp_buf exceptionBuffer;
 
 #define TRY if (setjmp(exceptionBuffer) == 0)
 #define CATCH else
+
+void get_current_time(char *buffer, size_t buffer_size) {
+
+  time_t now = time(NULL);
+  if (now == -1) {
+    snprintf(buffer, buffer_size, "Error getting time");
+    return;
+  }
+  struct tm local_tm;
+  if (localtime_r(&now, &local_tm) == NULL) {
+    snprintf(buffer, buffer_size, "Error converting to local time");
+    return;
+  }
+  if (strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &local_tm) == 0) {
+
+    snprintf(buffer, buffer_size, "Error formatting time");
+  }
+}
 
 void log_api(const char *url, const char *method) {
   clib_warning("[server_info] We got request[%s] %s\n", method, url);
@@ -70,6 +90,9 @@ enum MHD_Result default_handler(void *cls, struct MHD_Connection *connection, co
       clib_warning("\nAAAAH %s\n", upload_data);
       clib_warning("\nAAAAH %d\n", *upload_data_size);
       log_api(url_str, method_str);
+      char c_time[20];
+      get_current_time(c_time, sizeof(c_time));
+      clib_warning("The subscription request received the time is %s", c_time);
       response_api = subscription_router(url_str,method_str,post_data->data, subscription_id, &created, &subId);
     }
     else {

@@ -316,7 +316,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	      upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
 	      flow_trace_t *t = vlib_add_trace (vm, node, b0, sizeof (*t));
 	      t->session_index = sidx;
-	      t->cp_seid = sess->cp_seid;
+	      t->cp_seid = sess-> ;
 	      t->sw_if_index = vnet_buffer (b0)->sw_if_index[VLIB_RX];
 	      t->next_index = next0;
 	      clib_memcpy (t->packet_data, vlib_buffer_get_current (b0) +

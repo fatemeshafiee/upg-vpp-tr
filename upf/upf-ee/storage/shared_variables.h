@@ -14,6 +14,7 @@
 //EXTERN usage_report_per_flow_t *usage_report_per_flow_vector;
 //EXTERN struct {char* key; cvector_vector_type(usage_report_per_flow_t*) value;} *usage_hash INITIALIZER(NULL);
 EXTERN struct {char* key; usage_report_per_flow_t* value;} *usage_hash INITIALIZER(NULL);
+//EXTERN struct {flow_key* key; usage_report_per_packet_t* value;} *usage_packet_hash INITIALIZER(NULL);
 EXTERN struct {flow_key* key; usage_report_per_packet_t* value;} *usage_packet_hash INITIALIZER(NULL);
 EXTERN pthread_mutex_t ee_lock;
 #endif //UPG_VPP_SHARED_VARIABLES_H
