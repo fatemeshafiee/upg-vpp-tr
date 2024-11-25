@@ -302,7 +302,9 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     strcat(report_num_head, report_num_str);
     curl_easy_setopt(curl, CURLOPT_URL, upfSub.eventNotifyUri);
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
-    fprintf(stdout,"the report number sent and the time is %d%s\n", report_num, get_current_time());
+    char c_time[20];
+    get_current_time(c_time, sizeof(c_time))
+    fprintf(stdout,"the report number sent and the time is %d%s\n", report_num, c_time);
     fprintf(stdout, "dat: %s\n", json_data);
     fflush(stdout);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
