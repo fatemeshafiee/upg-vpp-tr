@@ -171,6 +171,7 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
 }
 void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
+    clib_warning("[EventReport_UDUT] before locking the mutex");
     pthread_mutex_lock(&ee_lock);
     clib_warning("[EventReport_UDUT] After locking the mutex");
     if (usage_hash == NULL){
