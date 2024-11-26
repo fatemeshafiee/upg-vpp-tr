@@ -316,7 +316,7 @@ void send_report(char *json_data,UpfEventSubscription upfSub,EventType type){
     fprintf(stdout,"the URI is %s\n", upfSub.eventNotifyUri);
     char c_time[50];
     get_current_time_send(c_time, sizeof(c_time));
-    clib_warning("[DSN_Latency]the report number sent and the time is %d, %s\n", report_num, c_time);
+    clib_warning("[DSN_Latency]the report number sent and the time is %d, %s ,%s\n", report_num, report_num_str ,c_time);
 //    fprintf(stdout,);
     fprintf(stdout, "dat: %s\n", json_data);
     fflush(stdout);
