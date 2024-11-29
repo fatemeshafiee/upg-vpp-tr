@@ -174,8 +174,8 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
     clib_warning("[EventReport_UDUT] before locking the mutex");
     int iter = 0;
     while (pthread_mutex_trylock(&ee_lock) != 0) {
-      clib_warning("the mutex is lock sleeping for a 0.1 second");
-      usleep(100000);
+      clib_warning("the mutex is lock sleeping for a 0.01 second");
+      usleep(10000);
       iter += 1;
       if (iter == 3){
         return;
