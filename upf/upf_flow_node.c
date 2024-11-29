@@ -300,7 +300,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     time(&ee_time);
     clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
-    if (ee_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
+    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
 
       prepare_ee_data(fm);
       last_ee_report_time = ee_time;
@@ -482,7 +482,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     time(&ee_time);
     clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
-    if (ee_time - last_ee_report_time >= 1 || last_ee_report_time == 0){
+    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
       prepare_ee_data(fm);
       last_ee_report_time = ee_time;
     }
