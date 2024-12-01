@@ -295,14 +295,14 @@ void create_send_report(UpfEventSubscription upfSub,EventType type){
       char *json_str = json_dumps(callBack_Report, JSON_INDENT(2));
       send_report (json_str, upfSub, type);
     }
-    for (size_t i = 0; i < cvector_size(Notifvec); i++) {
-      if (Notifvec[i] != NULL) {
-        clib_warning("[1|free] hash Notifvec[i]");
-        free(Notifvec[i]);
-      }
-    }
-    clib_warning("[2|free] free notifs cvector ");
-    cvector_free(Notifvec);
+//    for (size_t i = 0; i < cvector_size(Notifvec); i++) {
+//      if (Notifvec[i] != NULL) {
+//        clib_warning("[1|free] hash Notifvec[i]");
+//        free(Notifvec[i]);
+//      }
+//    }
+//    clib_warning("[2|free] free notifs cvector ");
+//    cvector_free(Notifvec);
 
     clib_warning("[EventReport_UDUT] End of create_send_report");
   }
