@@ -44,7 +44,7 @@ void prepare_ee_data(flowtable_main_t *fm){
   pthread_mutex_lock(&ee_lock);
   u32 num_flows = vec_len(fm->flows);
   u32 num = pool_len(fm->flows);
-  shfree(usage_hash);
+//  shfree(usage_hash);
   sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
@@ -125,6 +125,7 @@ void prepare_ee_data(flowtable_main_t *fm){
       }
     }
   clib_warning("end of prepare ee data");
+
   pthread_mutex_unlock(&ee_lock);
   return;
 }
