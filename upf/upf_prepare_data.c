@@ -120,9 +120,11 @@ void prepare_ee_data(flow_entry_t *flows){
 //          shdel(usage_hash, new_data->src_ip);
           clib_warning("2'in the else of prepare ee data");
         }
-        clib_warning("[CRASH] before adding.");
+        size_t hash_length = shlen(usage_hash);
+        clib_warning("[CRASH] before add, the hash size is %d",hash_length);
         shput(usage_hash, new_data->src_ip, usage_report_per_flow_vector);
-        clib_warning("[CRASH] AFTER adding.");
+        hash_length = shlen(usage_hash);
+        clib_warning("[CRASH] AFTER adding.the hash size is %d", hash_length);
       }
     }
   clib_warning("end of prepare ee data");
