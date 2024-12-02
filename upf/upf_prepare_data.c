@@ -96,16 +96,23 @@ void prepare_ee_data(flow_entry_t *flows){
         clib_warning("[9| flow_info] stst 1 bytes %d", flow->stats[1].bytes);
 
         new_data->seid = key.seid;
-
+        clib_warning("line 99 of prepare ee data");
         new_data->src_port = key.port[1];
+        clib_warning("line 101 of prepare ee data");
         new_data->dst_port = key.port[0];
+        clib_warning("line 103 of prepare ee data");
         new_data->proto = key.proto;
+        clib_warning("line 105 of prepare ee data");
         new_data->src_pkts = flow->stats[1].pkts;
+        clib_warning("line 107 of prepare ee data");
         new_data->src_bytes = flow->stats[1].bytes;
-        new_data->dst_pkts = flow->stats[0].pkts;
-        new_data->dst_bytes = flow->stats[0].bytes;
-        usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, new_data->src_ip);
         clib_warning("line 109 of prepare ee data");
+        new_data->dst_pkts = flow->stats[0].pkts;
+        clib_warning("line 111 of prepare ee data");
+        new_data->dst_bytes = flow->stats[0].bytes;
+        clib_warning("line 113 of prepare ee data");
+        usage_report_per_flow_t* usage_report_per_flow_vector = shget(usage_hash, new_data->src_ip);
+        clib_warning("line 115 of prepare ee data");
 
         if(usage_report_per_flow_vector == NULL){
 
