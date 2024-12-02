@@ -207,7 +207,7 @@ void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(Notifi
       item->ueMacAddr = NULL;
       item->ueIpv6Prefix = NULL;
       clib_warning("assianing the IPadd which is in the item %s", item->ueIpv4Addr);
-      clib_warning("assianing the IPadd which is in tha hash %s", usage_hash[i].key);
+      clib_warning("assianing the IPadd which is in the hash %s", usage_hash[i].key);
       cvector(UserDataUsageMeasurements *) userDataMeasurements = NULL;
       usage_report_per_flow_t* usage_report_per_flow_vector = usage_hash[i].value;
       clib_warning("[send_data_len] the length of the vector is %d", vec_len(usage_report_per_flow_vector));
