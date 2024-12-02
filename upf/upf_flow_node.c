@@ -114,6 +114,7 @@ static uword
 upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 		  vlib_frame_t * frame, u8 is_ip4)
 {
+  clib_warning("[FATEMEH] start of upf_flow_process");
   upf_main_t *gtm = &upf_main;
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
@@ -539,6 +540,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     prepare_ee_data(flows_copy);
     last_ee_report_time = ee_time;
   }
+  clib_warning("[FATEMEH] End of upf_flow_process");
   return frame->n_vectors;
 }
 
