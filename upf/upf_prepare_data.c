@@ -117,11 +117,12 @@ void prepare_ee_data(flow_entry_t *flows){
         else{
           clib_warning("1'in the else of prepare ee data");
           vec_add1(usage_report_per_flow_vector,*new_data);
-          shdel(usage_hash, new_data->src_ip);
+//          shdel(usage_hash, new_data->src_ip);
           clib_warning("2'in the else of prepare ee data");
         }
+        clib_warning("[CRASH] before adding.");
         shput(usage_hash, new_data->src_ip, usage_report_per_flow_vector);
-
+        clib_warning("[CRASH] AFTER adding.");
       }
     }
   clib_warning("end of prepare ee data");
