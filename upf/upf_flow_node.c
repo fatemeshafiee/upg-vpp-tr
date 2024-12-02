@@ -297,9 +297,9 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  to_next += 2;
 	  n_left_from -= 2;
 	  n_left_to_next -= 2;
-    time_t ee_time;
-    time(&ee_time);
-    clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
+//    time_t ee_time;
+//    time(&ee_time);
+//    clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
 //    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
 //
@@ -479,9 +479,9 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 	  n_left_from--;
 	  n_left_to_next--;
 
-    time_t ee_time;
-    time(&ee_time);
-    clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
+//    time_t ee_time;
+//    time(&ee_time);
+//    clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
 //    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
 //      prepare_ee_data(fm);
@@ -529,12 +529,14 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 #undef _
 
  flowtable_main_t *fm_copy = pool_dup(fm);
-
-    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
-      prepare_ee_data(fm_copy);
-      last_ee_report_time = ee_time;
-    }
-    return frame->n_vectors;
+  time_t ee_time;
+  time(&ee_time);
+  clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
+  if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
+    prepare_ee_data(fm_copy);
+    last_ee_report_time = ee_time;
+  }
+  return frame->n_vectors;
 }
 
 VLIB_NODE_FN (upf_ip4_flow_node) (vlib_main_t * vm,
