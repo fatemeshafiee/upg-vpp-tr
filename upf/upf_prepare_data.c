@@ -39,17 +39,17 @@
 #define TCP_PROTOCOL 6
 #define UDP_PROTOCOL 17
 
-void prepare_ee_data(flowtable_main_t *fm){
+void prepare_ee_data(flow_entry_t *flows){
   flow_entry_t *flow;
   pthread_mutex_lock(&ee_lock);
-  u32 num_flows = vec_len(fm->flows);
-  u32 num = pool_len(fm->flows);
+  u32 num_flows = vec_len(flows);
+  u32 num = pool_len(flows);
 //  shfree(usage_hash);
   sh_new_strdup(usage_hash);
   shdefault(usage_hash, NULL);
     for(u32 i=0; i < num; i++){
 //      clib_warning("in the for the i is %d", i);
-      flow = pool_elt_at_index (fm->flows, i);
+      flow = pool_elt_at_index (flows, i);
       if (flow->stats[0].pkts!=0 || flow->stats[1].pkts!=0){
         usage_report_per_flow_t *new_data = malloc(sizeof(usage_report_per_flow_t));
         flow_key_t key = flow->key;
