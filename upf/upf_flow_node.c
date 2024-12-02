@@ -140,6 +140,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   while (n_left_from > 0)
     {
       vlib_get_next_frame (vm, node, next_index, to_next, n_left_to_next);
+      clib_warning("[FATEMEH] in the dual loop: %d", 20000001);
 
       /* Dual loop */
 
@@ -261,7 +262,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 
 	  FLOW_DEBUG (fm, flow0);
 	  FLOW_DEBUG (fm, flow1);
-
+    clib_warning("[FATEMEH] in the dual loop, activating the flow: %d", 20000002);
 	  /* timer management */
 	  flow_update_active (flow0, current_time);
 	  flow_update_active (flow1, current_time);
@@ -355,7 +356,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
           upf_session_t *sess = pool_elt_at_index (gtm->sessions, sidx);
 //          upf_pfcp_fatemeh_traffic_report(sess, (uword) sidx, fm, p0, b0);
 //            prepare_ee_data_per_packet(is_ip4,p0, b0, (time_t) current_time);
-          clib_warning("[FATEMEH] Called packet report for b0 in dual loop.  %d", 10000001);
+//          clib_warning("[FATEMEH] Called packet report for b0 in dual loop.  %d", 10000001);
         }
       if(b1->current_length > 0)
         {
@@ -375,6 +376,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
       /* Single loop */
       while (n_left_from > 0 && n_left_to_next > 0)
 	{
+    clib_warning("[FATEMEH] in the single loop: %d", 20000003);
 	  u32 bi0;
 	  u32 next0;
 	  vlib_buffer_t *b0;
@@ -527,8 +529,9 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 			      FLOWTABLE_ERROR_ ## sym, CPT_ ## sym);
   foreach_flowtable_error
 #undef _
-
- flowtable_main_t *fm_copy = pool_dup(fm);
+  clib_warning("before copy");
+  flowtable_main_t *fm_copy = pool_dup(fm);
+  clib_warning("after copy");
   time_t ee_time;
   time(&ee_time);
   clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
