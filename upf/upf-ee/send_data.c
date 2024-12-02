@@ -172,15 +172,18 @@ void fillNotificationItemPerPacket(UpfEventSubscription upfSub,cvector_vector_ty
 void fillNotificationItem(UpfEventSubscription upfSub,cvector_vector_type(NotificationItem **) Notifvec,EventType type) {
   if(type==USER_DATA_USAGE_TRENDS){
     clib_warning("[EventReport_UDUT] before locking the mutex");
-    int iter = 0;
-    while (pthread_mutex_trylock(&ee_lock) != 0) {
-      clib_warning("the mutex is lock sleeping for a 0.01 second");
-      usleep(10000);
-      iter += 1;
-      if (iter == 3){
-        return;
-      }
+//    int iter = 0;
+    if (pthread_mutex_trylock(&ee_lock) != 0){
+      return;
     }
+//    while (pthread_mutex_trylock(&ee_lock) != 0) {
+//      clib_warning("the mutex is lock sleeping for a 0.01 second");
+//      usleep(10000);
+//      iter += 1;
+//      if (iter == 3){
+//        return;
+//      }
+//    }
 //    pthread_mutex_lock(&ee_lock);
     clib_warning("[EventReport_UDUT] After locking the mutex");
     if (usage_hash == NULL){
