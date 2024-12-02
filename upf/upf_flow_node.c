@@ -118,6 +118,7 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
   u32 n_left_from, *from, next_index, *to_next, n_left_to_next;
   flowtable_main_t *fm = &flowtable_main;
 
+
   // [GOAL 1 | FATEMEH] DONE
   // This is the first entry point for every packet that is processed by flow.
   // i.e. when running curl
@@ -300,11 +301,11 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     time(&ee_time);
     clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
-    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
-
-      prepare_ee_data(fm);
-      last_ee_report_time = ee_time;
-    }
+//    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
+//
+//      prepare_ee_data(fm);
+//      last_ee_report_time = ee_time;
+//    }
 
 
 //    b0->flags |= VLIB_BUFFER_IS_TRACED;
@@ -482,10 +483,10 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
     time(&ee_time);
     clib_warning("[flow_info] the difference is %d\n",ee_time - last_ee_report_time);
 
-    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
-      prepare_ee_data(fm);
-      last_ee_report_time = ee_time;
-    }
+//    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
+//      prepare_ee_data(fm);
+//      last_ee_report_time = ee_time;
+//    }
 
 	  if (b0->flags & VLIB_BUFFER_IS_TRACED)
 	    {
@@ -526,6 +527,13 @@ upf_flow_process (vlib_main_t * vm, vlib_node_runtime_t * node,
 			      FLOWTABLE_ERROR_ ## sym, CPT_ ## sym);
   foreach_flowtable_error
 #undef _
+
+ flowtable_main_t *fm_copy = pool_dup(fm);
+
+    if (ee_time - last_ee_report_time >= 0.7 || last_ee_report_time == 0){
+      prepare_ee_data(fm_copy);
+      last_ee_report_time = ee_time;
+    }
     return frame->n_vectors;
 }
 
