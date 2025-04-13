@@ -2,7 +2,6 @@ This is a fork of the original repository.
 In this version, we enabled the UPF Event Exposure Service.
 Additionally, changes were made to PFCP to support other research purposes, including sending selected packet statistics to the SMF.
 
-=====================================
 User Plane Gateway (UPG) based on VPP
 =====================================
 [![CI](https://github.com/travelping/upg-vpp/actions/workflows/main.yaml/badge.svg?branch=master)](https://github.com/travelping/upg-vpp/actions/workflows/main.yaml)
