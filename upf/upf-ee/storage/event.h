@@ -1,6 +1,7 @@
-//
-// Created by Fatemeh Shafiei Ardestani on 2024-07-07.
-//
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 
 #ifndef REST_API_C_EVENT_H
 #define REST_API_C_EVENT_H

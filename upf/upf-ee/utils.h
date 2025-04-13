@@ -1,3 +1,6 @@
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2025-04-06
+//  See Git history for complete list of changes.
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

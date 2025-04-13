@@ -1,6 +1,11 @@
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 #include "response_builder.h"
 //#include "user_handler.h"
 #include <setjmp.h>
+
 
 void get_current_time(char *buffer, size_t buffer_size);
 void log_api(const char *url, const char *method);

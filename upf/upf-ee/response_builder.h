@@ -1,3 +1,7 @@
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 #include <string.h>
 #include <stdio.h>
 #include "storage/event.h"

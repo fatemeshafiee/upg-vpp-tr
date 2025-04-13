@@ -1,6 +1,7 @@
-//
-// Created by Fatemeh Shafiei Ardestani on 2024-08-13.
-//
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 #include "../types/types.h"
 #ifndef UPG_VPP_SHARED_VARIABLES_H
 #define UPG_VPP_SHARED_VARIABLES_H

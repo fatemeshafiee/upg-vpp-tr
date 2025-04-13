@@ -1,6 +1,7 @@
-//
-// Created by Fatemeh Shafiei Ardestani on 2024-08-18.
-//
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 #include "types.h"
 UeIpAddressVersion getUeIpAddressVersion(const char *s) {
   if (strcmp(s, "V4") == 0) return V4;

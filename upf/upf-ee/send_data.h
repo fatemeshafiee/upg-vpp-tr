@@ -1,3 +1,7 @@
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 #ifndef REST_API_C_SEND_DATA_H
 #define REST_API_C_SEND_DATA_H
 

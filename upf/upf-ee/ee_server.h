@@ -1,6 +1,7 @@
-//
-// Created by Fatemeh Shafiei Ardestani on 2024-08-20.
-//
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 
 #ifndef UPG_VPP_EE_SERVER_H
 #define UPG_VPP_EE_SERVER_H

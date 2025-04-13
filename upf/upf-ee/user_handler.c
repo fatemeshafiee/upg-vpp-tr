@@ -1,6 +1,7 @@
-////
-//// Created by Fatemeh Shafiei Ardestani on 2024-08-18.
-////
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
 //#include "user_handler.h"
 //HTTP_response create_subscription(const char *body, bool *created, char **newSubId) {
 //  if (body == NULL) {

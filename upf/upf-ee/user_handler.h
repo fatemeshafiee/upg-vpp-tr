@@ -11,3 +11,7 @@
 //HTTP_response create_subscription(const char *body, bool *created, char **newSubId);
 //HTTP_response subscription_router(const char *url, const char *method, const char *body, char *subscription_id, bool *created,
 //                    char **newSubId);
+
+// Added by: Fatemeh Shafiei Ardestani
+// Date: 2024-08-18.
+//  See Git history for complete list of changes.
